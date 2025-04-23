@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.4.32-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         10.4.27-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             12.10.0.7000
+-- HeidiSQL Versión:             12.4.0.6659
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,6 +18,21 @@
 -- Volcando estructura de base de datos para gestion_login
 CREATE DATABASE IF NOT EXISTS `gestion_login` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `gestion_login`;
+
+-- Volcando estructura para tabla gestion_login.analisis_foda
+CREATE TABLE IF NOT EXISTS `analisis_foda` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plan_id` int(11) NOT NULL,
+  `tipo` enum('Fuerza','Oportunidad','Debilidad','Amenaza') DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `plan_id` (`plan_id`),
+  CONSTRAINT `analisis_foda_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `planes_estrategicos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla gestion_login.analisis_foda: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla gestion_login.cache
 CREATE TABLE IF NOT EXISTS `cache` (
@@ -44,6 +59,100 @@ CREATE TABLE IF NOT EXISTS `cache_locks` (
 
 -- Volcando datos para la tabla gestion_login.cache_locks: ~0 rows (aproximadamente)
 
+-- Volcando estructura para tabla gestion_login.cadena_valor
+CREATE TABLE IF NOT EXISTS `cadena_valor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plan_id` int(11) NOT NULL,
+  `actividad` varchar(150) DEFAULT NULL,
+  `tipo` enum('Primaria','Secundaria') DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `plan_id` (`plan_id`),
+  CONSTRAINT `cadena_valor_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `planes_estrategicos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla gestion_login.cadena_valor: ~0 rows (aproximadamente)
+
+-- Volcando estructura para tabla gestion_login.fuerzas_porter
+CREATE TABLE IF NOT EXISTS `fuerzas_porter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plan_id` int(11) NOT NULL,
+  `fuerza` enum('Competidores','Clientes','Proveedores','Sustitutos','Nuevos Ingresos') DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `plan_id` (`plan_id`),
+  CONSTRAINT `fuerzas_porter_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `planes_estrategicos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla gestion_login.fuerzas_porter: ~0 rows (aproximadamente)
+
+-- Volcando estructura para tabla gestion_login.matriz_came
+CREATE TABLE IF NOT EXISTS `matriz_came` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plan_id` int(11) NOT NULL,
+  `estrategia` varchar(150) DEFAULT NULL,
+  `tipo` enum('Ofensiva','Defensiva','Supervivencia','Reorientación') DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `plan_id` (`plan_id`),
+  CONSTRAINT `matriz_came_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `planes_estrategicos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla gestion_login.matriz_came: ~0 rows (aproximadamente)
+
+-- Volcando estructura para tabla gestion_login.matriz_participacion
+CREATE TABLE IF NOT EXISTS `matriz_participacion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plan_id` int(11) NOT NULL,
+  `area` varchar(100) DEFAULT NULL,
+  `participacion` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `plan_id` (`plan_id`),
+  CONSTRAINT `matriz_participacion_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `planes_estrategicos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla gestion_login.matriz_participacion: ~0 rows (aproximadamente)
+
+-- Volcando estructura para tabla gestion_login.objetivos
+CREATE TABLE IF NOT EXISTS `objetivos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plan_id` int(11) NOT NULL,
+  `descripcion` text NOT NULL,
+  `tipo` enum('General','Específico') DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `plan_id` (`plan_id`),
+  CONSTRAINT `objetivos_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `planes_estrategicos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla gestion_login.objetivos: ~0 rows (aproximadamente)
+
+-- Volcando estructura para tabla gestion_login.planes_estrategicos
+CREATE TABLE IF NOT EXISTS `planes_estrategicos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `nombre_plan` varchar(150) DEFAULT NULL,
+  `mision` text DEFAULT NULL,
+  `vision` text DEFAULT NULL,
+  `valores` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_user` (`user_id`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla gestion_login.planes_estrategicos: ~0 rows (aproximadamente)
+
 -- Volcando estructura para tabla gestion_login.sessions
 CREATE TABLE IF NOT EXISTS `sessions` (
   `id` varchar(255) NOT NULL,
@@ -57,6 +166,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 
 -- Volcando datos para la tabla gestion_login.sessions: ~2 rows (aproximadamente)
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+	('9mD0rBWev5XeohlFMg0dRVthgyosxVOWG7bKzosD', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSXVGek81MlR5SlR2WXFpcmE4bm9oTDNYUlFQVkQ2NG43d3hURXFibyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC92YWxvcmVzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1745446836),
 	('ecCReqRyiEGzaOqzclrgjuKNafxNyKrofWNbeXZe', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 OPR/117.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiNjFzejN2VGRuZHROVEU4cVY1cmNUR2NGek5CWmVEUzZvQlBTQWZEVyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wYW5lbCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7fQ==', 1744625193);
 
 -- Volcando estructura para tabla gestion_login.users
