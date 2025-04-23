@@ -18,9 +18,25 @@ class PageController extends Controller
         return view('vision');
     }
 
+    public function valores()
+    {
+        return view('valores');
+    }
+
     // Muestra la vista del panel
     public function panel()
     {
         return view('panel');
     }
+
+    public function analisis_interno()
+    {
+        return view('analisis_interno');
+    }
+
+    public function objetivos()
+    {
+        return view('objetivos');
+    }
+    
 }
