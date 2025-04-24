@@ -23,10 +23,10 @@ class PageController extends Controller
         return view('valores');
     }
 
-    // Muestra la vista del panel
-    public function panel()
+    // Muestra la vista del dashboard
+    public function dashboard()
     {
-        return view('panel');
+        return view('dashboard');
     }
 
     public function analisis_interno()

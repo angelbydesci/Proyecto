@@ -71,7 +71,7 @@ Route::get('/vision', [PageController::class, 'vision'])->name('vision');
 Route::get('/valores', [PageController::class, 'valores'])->name('valores');
 Route::get('/analisis-interno', [PageController::class, 'analisis_interno'])->name('analisis_interno');
 Route::get('/objetivos', [PageController::class, 'objetivos'])->name('objetivos');
-Route::get('/panel', [PageController::class, 'panel'])->name('panel');
+Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 // Perfil
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
