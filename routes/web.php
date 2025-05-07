@@ -12,10 +12,6 @@ Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-// Panel (pantalla principal luego del login)
-Route::get('/panel', function () {
-    return view('panel');
-})->middleware('auth')->name('panel');
 
 // Dashboard opcional (si lo usas)
 Route::get('/dashboard', function () {
@@ -25,6 +21,11 @@ Route::get('/dashboard', function () {
 Route::get('/mision', function () {
     return view('mision'); // Vista de la página MISIÓN
 })->name('mision');
+
+Route::get('/dashboard2', function () {
+    return view('dashboard2'); // Vista de la página MISIÓN
+})->name('dashboard2');
+
 
 Route::get('/vision', function () {
     return view('vision'); // Vista de la página VISIÓN
@@ -72,6 +73,7 @@ Route::get('/valores', [PageController::class, 'valores'])->name('valores');
 Route::get('/analisis-interno', [PageController::class, 'analisis_interno'])->name('analisis_interno');
 Route::get('/objetivos', [PageController::class, 'objetivos'])->name('objetivos');
 Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard2', [PageController::class, 'dashboard2'])->name('dashboard2');
 // Perfil
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

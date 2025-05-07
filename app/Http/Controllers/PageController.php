@@ -28,6 +28,10 @@ class PageController extends Controller
     {
         return view('dashboard');
     }
+    public function dashboard2()
+    {
+        return view('dashboard2');
+    }
 
     public function analisis_interno()
     {

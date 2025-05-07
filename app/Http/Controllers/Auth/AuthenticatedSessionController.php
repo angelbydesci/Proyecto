@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect('/panel'); // Redirige a /panel en lugar de dashboard
+        return redirect('/dashboard'); // 
     }
 
 
