@@ -15,37 +15,22 @@
     </div>
 
     <div class="projects-list">
-        <!-- Proyecto 1 - Estático -->
-        <div class="project-card">
-            <input type="radio" name="selected_project" id="project_1" value="1" checked>
-            <label for="project_1">
-                <h3>Proyecto Ejemplo 1</h3>
-                <p>Creado: {{ now()->format('d/m/Y') }}</p>
-                <p>Última modificación: {{ now()->format('d/m/Y') }}</p>
-            </label>
-        </div>
-
-        <!-- Proyecto 2 - Estático -->
-        <div class="project-card">
-            <input type="radio" name="selected_project" id="project_2" value="2">
-            <label for="project_2">
-                <h3>Proyecto Ejemplo 2</h3>
-                <p>Creado: {{ now()->subDays(3)->format('d/m/Y') }}</p>
-                <p>Última modificación: {{ now()->subDays(1)->format('d/m/Y') }}</p>
-            </label>
-        </div>
-        <!-- Proyecto 3 - Estático -->
-        <div class="project-card">
-            <input type="radio" name="selected_project" id="project_3" value="3">
-            <label for="project_3">
-                <h3>Proyecto Ejemplo 3</h3>
-                <p>Creado: {{ now()->subWeek()->format('d/m/Y') }}</p>
-                <p>Última modificación: {{ now()->subDays(2)->format('d/m/Y') }}</p>
-            </label>
-        </div>
+        @forelse ($proyectos as $proyecto)
+            <div class="project-card">
+                <input type="radio" name="selected_project" id="project_{{ $proyecto->id }}" value="{{ $proyecto->id }}">
+                <label for="project_{{ $proyecto->id }}">
+                    <h3>{{ $proyecto->nombre_proyecto }}</h3>
+                    <p>Creado: {{ $proyecto->created_at->format('d/m/Y') }}</p>
+                    <p>Última modificación: {{ $proyecto->updated_at ? $proyecto->updated_at->format('d/m/Y') : 'Sin modificaciones' }}</p>
+                </label>
+            </div>
+        @empty
+            <p>No hay proyectos disponibles. ¡Crea uno nuevo!</p>
+        @endforelse
     </div>
 
     <div class="actions">
+
         <a href="{{ route('dashboard2') }}" class="btn btn-primary">Seleccionar Proyecto</a>
     </div>
   </div>
