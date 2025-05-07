@@ -1,8 +1,14 @@
-{{-- resources/views/dashboard.blade.php --}}
-@extends('layouts.app')
-@vite(['resources/css/dashboard.css', 'resources/js/app.js'])
-@section('content')
-<div class="dashboard-container">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de Proyectos</title>
+    @vite(['resources/css/dashboard.css', 'resources/js/app.js'])
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Contenido del dashboard aquí -->
     <div class="header">
         <h1>Selección de Proyectos</h1>
         <p>Seleccione el proyecto con el que desea trabajar</p>
@@ -28,7 +34,6 @@
                 <p>Última modificación: {{ now()->subDays(1)->format('d/m/Y') }}</p>
             </label>
         </div>
-
         <!-- Proyecto 3 - Estático -->
         <div class="project-card">
             <input type="radio" name="selected_project" id="project_3" value="3">
@@ -41,8 +46,8 @@
     </div>
 
     <div class="actions">
-        
         <a href="{{ route('dashboard2') }}" class="btn btn-primary">Seleccionar Proyecto</a>
     </div>
-</div>
-@endsection
+  </div>
+</body>
+</html>

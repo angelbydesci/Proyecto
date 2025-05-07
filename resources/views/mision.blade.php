@@ -1,6 +1,6 @@
 {{-- resources/views/mision.blade.php --}}
+
 @extends('layouts.app')
-@vite(['resources/css/app.css', 'resources/js/app.js'])
 
 @section('content')
 <div class="container">
@@ -35,10 +35,12 @@
     <!-- Botones en la parte inferior con el orden correcto -->
     <div class="d-flex justify-content-between mt-4">
         <!-- Botón para volver al panel (izquierda) -->
-        <a href="{{ route('panel') }}" class="btn btn-secondary">Volver al Panel</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary">Volver al dashboard</a>
 
         <!-- Botón para redirigir a la sección de visión (derecha) -->
         <a href="{{ route('vision') }}" class="btn btn-success">Ir a Visión</a>
     </div>
 </div>
+
+
 @endsection

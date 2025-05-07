@@ -3,57 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>Panel de Opciones</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-        }
-        .fila {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0;
-        }
-        .btn {
-            background-color: #3498db;
-            color: white;
-            padding: 20px;
-            margin: 5px;
-            width: 180px;
-            text-align: center;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .titulo {
-            background-color: #2980b9;
-            color: white;
-            padding: 10px;
-            font-weight: bold;
-        }
-    </style>
+    @vite(['resources/css/dashboard2.css'])
 </head>
 <body>
 
     <div class="titulo">INFORMACIÓN DE LA EMPRESA</div>
 
-    <div class="fila">
-        <a href="{{ route('mision') }}" class="btn">1. MISIÓN</a>
-        <a href="{{ route('analisis_interno') }}" class="btn">5. ANÁLISIS INTERNO Y EXTERNO</a>
-        <a href="{{ route('pest') }}" class="btn">9. PEST</a>
-    </div>
-    <div class="fila">
-        <a href="{{ route('vision') }}" class="btn">2. VISIÓN</a>
-        <a href="{{ route('cadena_de_valor') }}" class="btn">6. CADENA DE VALOR</a>
-        <a href="{{ route('estrategia') }}" class="btn">10. IDENTIFICACIÓN ESTRATEGIA</a>
-    </div>
-    <div class="fila">
-        <a href="{{ route('valores') }}" class="btn">3. VALORES</a>
-        <a href="{{ route('matriz_participacion') }}" class="btn">7. MATRIZ PARTICIPACIÓN</a>
-        <a href="{{ route('matriz_came') }}" class="btn">11. MATRIZ CAME</a>
-    </div>
-    <div class="fila">
-        <a href="{{ route('objetivos') }}" class="btn">4. OBJETIVOS</a>
-        <a href="{{ route('las_5_fuerzas') }}" class="btn">8. LAS 5 FUERZAS DE PORTER</a>
+    <div class="links">
+      <ul class="links__list" style="--item-total:11">
+        <li class="links__item" style="--item-count:1">
+          <a class="links__link" href="{{ route('mision') }}">
+            <span class="links__text">1. MISIÓN</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:2">
+          <a class="links__link" href="{{ route('vision') }}">
+            <span class="links__text">2. VISIÓN</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:3">
+          <a class="links__link" href="{{ route('valores') }}">
+            <span class="links__text">3. VALORES</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:4">
+          <a class="links__link" href="{{ route('objetivos') }}">
+            <span class="links__text">4. OBJETIVOS</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:5">
+          <a class="links__link" href="{{ route('analisis_interno') }}">
+            <span class="links__text">5. ANÁLISIS INTERNO</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:6">
+          <a class="links__link" href="{{ route('cadena_de_valor') }}">
+            <span class="links__text">6. CADENA DE VALOR</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:7">
+          <a class="links__link" href="{{ route('matriz_participacion') }}">
+            <span class="links__text">7. MATRIZ PARTICIPACIÓN</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:8">
+          <a class="links__link" href="{{ route('las_5_fuerzas') }}">
+            <span class="links__text">8. 5 FUERZAS PORTER</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:9">
+          <a class="links__link" href="{{ route('pest') }}">
+            <span class="links__text">9. PEST</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:10">
+          <a class="links__link" href="{{ route('estrategia') }}">
+            <span class="links__text">10. ESTRATEGIA</span>
+          </a>
+        </li>
+        <li class="links__item" style="--item-count:11">
+          <a class="links__link" href="{{ route('matriz_came') }}">
+            <span class="links__text">11. MATRIZ CAME</span>
+          </a>
+        </li>
+      </ul>
     </div>
 
     <div class="titulo">RESUMEN DEL PLAN EJECUTIVO</div>
