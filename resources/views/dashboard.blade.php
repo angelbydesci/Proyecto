@@ -30,9 +30,40 @@
     </div>
 
     <div class="actions">
-
         <a href="{{ route('dashboard2') }}" class="btn btn-primary">Seleccionar Proyecto</a>
+        <button id="add-project-btn" class="btn btn-secondary">Agregar Proyecto</button>
+    </div>
+
+    <!-- Formulario para agregar un proyecto -->
+    <div id="add-project-form" class="add-project-form">
+        <form action="{{ route('proyectos.store') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="nombre_proyecto">Nombre del Proyecto</label>
+                <input type="text" id="nombre_proyecto" name="nombre_proyecto" required>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" rows="3"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" id="cancel-add-project" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </form>
     </div>
   </div>
+
+  <script>
+      document.getElementById('add-project-btn').addEventListener('click', function () {
+          const form = document.getElementById('add-project-form');
+          form.classList.toggle('active');
+      });
+
+      document.getElementById('cancel-add-project').addEventListener('click', function () {
+          const form = document.getElementById('add-project-form');
+          form.classList.remove('active');
+      });
+  </script>
 </body>
 </html>

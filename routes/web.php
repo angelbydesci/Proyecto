@@ -27,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard2', function () {
         return view('dashboard2'); // Asegúrate de crear esta vista en resources/views/dashboard2.blade.php
     })->name('dashboard2');
+    // Ruta para almacenar un nuevo proyecto
+    Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
 });
 
 // ========================================
