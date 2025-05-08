@@ -1,6 +1,7 @@
 {{-- resources/views/mision.blade.php --}}
+@include('panel.panel')
 
-@extends('layouts.app')
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 
 @section('content')
 <div class="container">
@@ -41,6 +42,4 @@
         <a href="{{ route('vision') }}" class="btn btn-success">Ir a Visión</a>
     </div>
 </div>
-
-
 @endsection

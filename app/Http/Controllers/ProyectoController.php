@@ -49,7 +49,6 @@ class ProyectoController extends Controller
             'descripcion' => $request->descripcion,
         ]);
 
-        // Ruta para almacenar un nuevo proyecto
-        Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
+        return redirect()->route('dashboard')->with('success', 'Proyecto creado exitosamente.');
     }
 }
