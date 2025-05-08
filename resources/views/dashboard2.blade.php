@@ -12,24 +12,49 @@
     <div class="links">
       <ul class="links__list" style="--item-total:11">
         <li class="links__item" style="--item-count:1">
-          <a class="links__link" href="{{ route('mision') }}">
-            <span class="links__text">1. MISIÓN</span>
-          </a>
+          {{-- Asegúrate de que $proyecto esté disponible en esta vista --}}
+          @if(isset($proyecto))
+            <a class="links__link" href="{{ route('proyectos.showMision', $proyecto) }}">
+              <span class="links__text">1. MISIÓN</span>
+            </a>
+          @else
+            <a class="links__link" href="#" onclick="alert('Error: Proyecto no cargado.'); return false;">
+              <span class="links__text">1. MISIÓN (Proyecto no especificado)</span>
+            </a>
+          @endif
         </li>
         <li class="links__item" style="--item-count:2">
-          <a class="links__link" href="{{ route('vision') }}">
-            <span class="links__text">2. VISIÓN</span>
-          </a>
+          @if(isset($proyecto))
+            <a class="links__link" href="{{ route('proyectos.showVision', $proyecto) }}">
+              <span class="links__text">2. VISIÓN</span>
+            </a>
+          @else
+            <a class="links__link" href="#" onclick="alert('Error: Proyecto no cargado.'); return false;">
+              <span class="links__text">2. VISIÓN (Proyecto no especificado)</span>
+            </a>
+          @endif
         </li>
         <li class="links__item" style="--item-count:3">
-          <a class="links__link" href="{{ route('valores') }}">
-            <span class="links__text">3. VALORES</span>
-          </a>
+          @if(isset($proyecto))
+            <a class="links__link" href="{{ route('valores') }}"> {{-- Asumiendo que valores es general o necesita adaptación --}}
+              <span class="links__text">3. VALORES</span>
+            </a>
+          @else
+            <a class="links__link" href="#" onclick="alert('Error: Proyecto no cargado.'); return false;">
+              <span class="links__text">3. VALORES (Proyecto no especificado)</span>
+            </a>
+          @endif
         </li>
         <li class="links__item" style="--item-count:4">
-          <a class="links__link" href="{{ route('objetivos') }}">
-            <span class="links__text">4. OBJETIVOS</span>
-          </a>
+          @if(isset($proyecto))
+            <a class="links__link" href="{{ route('objetivos') }}"> {{-- Asumiendo que objetivos es general o necesita adaptación --}}
+              <span class="links__text">4. OBJETIVOS</span>
+            </a>
+          @else
+            <a class="links__link" href="#" onclick="alert('Error: Proyecto no cargado.'); return false;">
+              <span class="links__text">4. OBJETIVOS (Proyecto no especificado)</span>
+            </a>
+          @endif
         </li>
         <li class="links__item" style="--item-count:5">
           <a class="links__link" href="{{ route('analisis_interno') }}">

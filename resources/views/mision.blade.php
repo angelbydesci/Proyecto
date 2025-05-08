@@ -1,13 +1,11 @@
 {{-- resources/views/mision.blade.php --}}
-@include('panel.panel')
-
+@extends('layouts.app')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 @section('content')
 <div class="container">
-    <!-- Título de la Misión -->
-    <h2>MISIÓN</h2>
-    
+    <h2>MISIÓN DEL PROYECTO: {{ $proyecto->nombre_proyecto }}</h2>
+
     <p>"La MISIÓN es la razón de ser de la empresa/organización."</p>
     <ul>
         <li>Debe ser clara, concisa y compartida.</li>
@@ -17,7 +15,7 @@
 
     <p>En términos generales describe la actividad y razón de ser de la organización y contribuye como una referencia permanente en el proceso de planificación estratégica.</p>
     <p>Se expresa a través de una oración que define el propósito fundamental de su existencia, estableciendo qué hace la empresa, por qué y para quién lo hace.</p>
-    
+
     <h3>EJEMPLOS</h3>
     <h4>Empresa de servicios</h4>
     <p>"La gestión de servicios que contribuyen a la calidad de vida de las personas y generan valor para los grupos de interés."</p>
@@ -27,19 +25,40 @@
 
     <h4>Agencia de certificación</h4>
     <p>"Dar a nuestros clientes valor económico a través de la gestión de la Calidad, la Salud y la Seguridad, el Medio Ambiente y la Responsabilidad Social de sus activos, proyectos, productos y sistemas, obteniendo como resultado la capacidad para lograr la reducción de riesgos y la mejora de los resultados."</p>
-    
-    <h4>En este apartado describa la Misión de su empresa:</h4>
-    
-    <!-- Textarea para describir la misión -->
-    <textarea class="form-control" rows="4" placeholder="Escriba la misión de su empresa aquí..."></textarea>
 
-    <!-- Botones en la parte inferior con el orden correcto -->
-    <div class="d-flex justify-content-between mt-4">
-        <!-- Botón para volver al panel (izquierda) -->
-        <a href="{{ route('dashboard') }}" class="btn btn-secondary">Volver al dashboard</a>
+    <h4>En este apartado describa la Misión de su proyecto:</h4>
 
-        <!-- Botón para redirigir a la sección de visión (derecha) -->
-        <a href="{{ route('vision') }}" class="btn btn-success">Ir a Visión</a>
-    </div>
+    <form action="{{ route('proyectos.updateMision', $proyecto) }}" method="POST">
+        @csrf
+        @method('PATCH') {{-- CORREGIDO: Cambiado de PUT a PATCH --}}
+        <div class="form-group">
+            <textarea id="mision_texto" name="mision" class="form-control" rows="4" placeholder="Escriba la misión de su proyecto aquí...">{{ old('mision', $mision ?? '') }}</textarea>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ route('dashboard2', $proyecto) }}" class="btn btn-secondary">Volver al Panel</a>
+            <div>
+                <button type="submit" class="btn btn-primary mr-2">Guardar Misión</button>
+                <a href="{{ route('proyectos.showVision', $proyecto) }}" class="btn btn-success">Ir a Visión</a>
+            </div>
+        </div>
+    </form>
+
+    @if (session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger mt-3">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
 </div>
 @endsection

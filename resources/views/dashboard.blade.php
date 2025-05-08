@@ -30,7 +30,7 @@
     </div>
 
     <div class="actions">
-        <a href="{{ route('dashboard2') }}" class="btn btn-primary">Seleccionar Proyecto</a>
+        <a href="#" id="select-project-link" class="btn btn-primary">Seleccionar Proyecto</a>
         <button id="add-project-btn" class="btn btn-secondary">Agregar Proyecto</button>
     </div>
 
@@ -63,6 +63,20 @@
       document.getElementById('cancel-add-project').addEventListener('click', function () {
           const form = document.getElementById('add-project-form');
           form.classList.remove('active');
+      });
+
+      // Nuevo script para manejar la selección de proyecto
+      document.getElementById('select-project-link').addEventListener('click', function (event) {
+          event.preventDefault(); // Prevenir la navegación por defecto del enlace
+          const selectedProjectInput = document.querySelector('input[name="selected_project"]:checked');
+          if (selectedProjectInput) {
+              const projectId = selectedProjectInput.value;
+              // Construir la URL dinámicamente. 
+              // La ruta 'dashboard2' ahora espera un parámetro de proyecto.
+              window.location.href = `/dashboard2/${projectId}`; 
+          } else {
+              alert('Por favor, seleccione un proyecto.');
+          }
       });
   </script>
 </body>

@@ -152,33 +152,14 @@ CREATE TABLE IF NOT EXISTS `proyectos` (
   `user_id` int(11) NOT NULL,
   `nombre_proyecto` varchar(150) NOT NULL,
   `descripcion` text DEFAULT NULL,
+  `mision` text DEFAULT NULL, -- Nueva columna
+  `vision` text DEFAULT NULL, -- Nueva columna
+  `unidades_estrategicas` text DEFAULT NULL, -- Nueva columna
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `proyectos_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE IF NOT EXISTS `mision` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `proyecto_id` int(11) NOT NULL,
-  `texto` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `proyecto_id` (`proyecto_id`),
-  CONSTRAINT `mision_ibfk_1` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE IF NOT EXISTS `vision` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `proyecto_id` int(11) NOT NULL,
-  `texto` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `proyecto_id` (`proyecto_id`),
-  CONSTRAINT `vision_ibfk_1` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS `valores` (
@@ -191,18 +172,6 @@ CREATE TABLE IF NOT EXISTS `valores` (
   PRIMARY KEY (`id`),
   KEY `proyecto_id` (`proyecto_id`),
   CONSTRAINT `valores_ibfk_1` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE IF NOT EXISTS `unidades_estrategicas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `proyecto_id` int(11) NOT NULL,
-  `nombre` varchar(150) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `proyecto_id` (`proyecto_id`),
-  CONSTRAINT `unidades_estrategicas_ibfk_1` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS `objetivos_principales` (
@@ -229,6 +198,7 @@ CREATE TABLE IF NOT EXISTS `objetivos_especificos` (
 -- Volcando datos para la tabla gestion_login.users: ~1 rows (aproximadamente)
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`) VALUES
 	(1, 'Administrador', 'admin@peti.com', '$2y$12$C680abLVgyqrnpTS0juqROz7Uq9Y/9PGB5eV06UTvxqagYa8k5YOS', '2025-04-14 07:49:40');
+
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

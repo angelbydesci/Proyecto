@@ -24,9 +24,8 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 // Redirigir al dashboard después del login
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [ProyectoController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard2', function () {
-        return view('dashboard2'); // Asegúrate de crear esta vista en resources/views/dashboard2.blade.php
-    })->name('dashboard2');
+    // Modificar la ruta de dashboard2 para aceptar un proyecto
+    Route::get('/dashboard2/{proyecto}', [ProyectoController::class, 'showDashboard2'])->name('dashboard2');
     // Ruta para almacenar un nuevo proyecto
     Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
 });
@@ -70,6 +69,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// ========================================
+// RUTAS PARA PROYECTOS (MISIÓN, VISIÓN, UNIDADES ESTRATÉGICAS)
+// ========================================
+Route::middleware(['auth'])->group(function () {
+    // Rutas para mostrar información
+    Route::get('/proyectos/{proyecto}/mision', [ProyectoController::class, 'showMision'])->name('proyectos.showMision');
+    Route::get('/proyectos/{proyecto}/vision', [ProyectoController::class, 'showVision'])->name('proyectos.showVision');
+    Route::get('/proyectos/{proyecto}/unidades-estrategicas', [ProyectoController::class, 'showUnidadesEstrategicas'])->name('proyectos.showUnidadesEstrategicas');
+
+    // Rutas para actualizar información (usando PATCH o PUT)
+    Route::patch('/proyectos/{proyecto}/mision', [ProyectoController::class, 'updateMision'])->name('proyectos.updateMision');
+    Route::patch('/proyectos/{proyecto}/vision', [ProyectoController::class, 'updateVision'])->name('proyectos.updateVision');
+    Route::patch('/proyectos/{proyecto}/unidades-estrategicas', [ProyectoController::class, 'updateUnidadesEstrategicas'])->name('proyectos.updateUnidadesEstrategicas');
 });
 
 // ========================================

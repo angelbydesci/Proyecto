@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection; // Asegurar que Collection está importada
 
 class Proyecto extends Model
 {
@@ -13,8 +14,9 @@ class Proyecto extends Model
         'user_id',
         'nombre_proyecto',
         'descripcion',
-        'created_at',
-        'updated_at',
+        'mision',
+        'vision',
+        'unidades_estrategicas',
     ];
 
     /**
@@ -31,8 +33,12 @@ class Proyecto extends Model
      * @param array $data
      * @return Proyecto
      */
-    public static function agregarProyecto(array $data)
+    public static function agregarProyecto(array $data): Proyecto
     {
+        // Aseguramos que los campos opcionales tengan un valor por defecto si no están en $data
+        $data['mision'] = $data['mision'] ?? null;
+        $data['vision'] = $data['vision'] ?? null;
+        $data['unidades_estrategicas'] = $data['unidades_estrategicas'] ?? null;
         return self::create($data);
     }
 
@@ -40,10 +46,73 @@ class Proyecto extends Model
      * Listar todos los proyectos de un usuario.
      *
      * @param int $userId
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection<int, static>
      */
-    public static function listarProyectosPorUsuario(int $userId)
+    public static function listarProyectosPorUsuario(int $userId): Collection
     {
         return self::where('user_id', $userId)->get();
+    }
+
+    /**
+     * Obtener la misión de un proyecto.
+     *
+     * @return string|null
+     */
+    public function getMision(): ?string
+    {
+        return $this->mision;
+    }
+
+    /**
+     * Actualizar la misión de un proyecto.
+     *
+     * @param string|null $mision
+     * @return bool
+     */
+    public function actualizarMision(?string $mision): bool
+    {
+        return $this->update(['mision' => $mision]);
+    }
+
+    /**
+     * Obtener la visión de un proyecto.
+     *
+     * @return string|null
+     */
+    public function getVision(): ?string
+    {
+        return $this->vision;
+    }
+
+    /**
+     * Actualizar la visión de un proyecto.
+     *
+     * @param string|null $vision
+     * @return bool
+     */
+    public function actualizarVision(?string $vision): bool
+    {
+        return $this->update(['vision' => $vision]);
+    }
+
+    /**
+     * Obtener las unidades estratégicas de un proyecto.
+     *
+     * @return string|null
+     */
+    public function getUnidadesEstrategicas(): ?string
+    {
+        return $this->unidades_estrategicas;
+    }
+
+    /**
+     * Actualizar las unidades estratégicas de un proyecto.
+     *
+     * @param string|null $unidades
+     * @return bool
+     */
+    public function actualizarUnidadesEstrategicas(?string $unidades): bool
+    {
+        return $this->update(['unidades_estrategicas' => $unidades]);
     }
 }
