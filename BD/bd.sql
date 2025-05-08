@@ -166,7 +166,6 @@ CREATE TABLE IF NOT EXISTS `valores` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `proyecto_id` int(11) NOT NULL,
   `valor` varchar(255) NOT NULL,
-  `descripcion` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),

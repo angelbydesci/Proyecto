@@ -4,130 +4,159 @@ namespace App\Http\Controllers;
 
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class ProyectoController extends Controller
 {
     /**
      * Muestra la lista de proyectos en el dashboard.
+     *
+     * @return \Illuminate\View\View
      */
-    public function index(): View
+    public function index()
     {
+        // Obtener los proyectos del usuario autenticado
         $proyectos = Proyecto::listarProyectosPorUsuario(auth()->id());
+
         return view('dashboard', compact('proyectos'));
     }
 
     /**
      * Muestra el formulario para crear un nuevo proyecto.
+     *
+     * @return \Illuminate\View\View
      */
-    public function create(): View
+    public function create()
     {
-        return view('crear-proyecto'); // Asumiendo que tienes una vista para esto
+        return view('crear-proyecto');
     }
 
     /**
      * Almacena un nuevo proyecto en la base de datos.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'nombre_proyecto' => 'required|string|max:150',
             'descripcion' => 'nullable|string',
-            // No se validan mision, vision, unidades_estrategicas aquí directamente,
-            // ya que se manejarán como nulos por defecto en el modelo si no se proporcionan.
         ]);
 
-        Proyecto::agregarProyecto([
+        $proyecto = Proyecto::agregarProyecto([
             'user_id' => auth()->id(),
             'nombre_proyecto' => $request->nombre_proyecto,
             'descripcion' => $request->descripcion,
-            // Los campos mision, vision, unidades_estrategicas se pasarán como null
-            // o con su valor si se envían desde el formulario (aunque el form actual no los tiene)
-            'mision' => $request->input('mision'),
-            'vision' => $request->input('vision'),
-            'unidades_estrategicas' => $request->input('unidades_estrategicas'),
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Proyecto creado exitosamente.');
+        // Redirigir a la vista dashboard2 del proyecto recién creado
+        return redirect()->route('dashboard2', ['proyecto' => $proyecto]);
     }
 
     /**
-     * Muestra la misión de un proyecto específico.
+     * Muestra el dashboard específico de un proyecto.
+     *
+     * @param \App\Models\Proyecto $proyecto
+     * @return \Illuminate\View\View
      */
-    public function showMision(Proyecto $proyecto): View
+    public function showDashboard2(Proyecto $proyecto)
     {
-        // Aquí se podría añadir lógica de autorización si es necesario
-        // if ($proyecto->user_id !== auth()->id()) {
-        //     abort(403);
-        // }
-        return view('mision', [ // Cambiado de 'proyectos.show_mision' a 'mision'
-            'proyecto' => $proyecto,
-            'mision' => $proyecto->getMision() // Usando el método del modelo
-        ]);
-    }
+        // Asegurarse de que el proyecto pertenece al usuario autenticado (opcional, pero recomendado)
+        if ($proyecto->user_id !== auth()->id()) {
+            abort(403); // O redirigir a alguna parte, o manejar como prefieras
+        }
 
-    /**
-     * Muestra la visión de un proyecto específico.
-     */
-    public function showVision(Proyecto $proyecto): View
-    {
-        return view('vision', [ // CORREGIDO: Cambiado de 'proyectos.show_vision' a 'vision'
-            'proyecto' => $proyecto,
-            'vision' => $proyecto->getVision() // Usando el método del modelo
-        ]);
-    }
-
-    /**
-     * Muestra las unidades estratégicas de un proyecto específico.
-     */
-    public function showUnidadesEstrategicas(Proyecto $proyecto): View
-    {
-        return view('proyectos.show_unidades_estrategicas', [
-            'proyecto' => $proyecto,
-            'unidades_estrategicas' => $proyecto->getUnidadesEstrategicas() // Usando el método del modelo
-        ]);
-    }
-
-    /**
-     * Actualiza la misión de un proyecto específico.
-     */
-    public function updateMision(Request $request, Proyecto $proyecto): RedirectResponse
-    {
-        $request->validate(['mision' => 'nullable|string']);
-        $proyecto->actualizarMision($request->input('mision')); // Usando el método del modelo
-        return redirect()->back()->with('success', 'Misión actualizada exitosamente.');
-    }
-
-    /**
-     * Actualiza la visión de un proyecto específico.
-     */
-    public function updateVision(Request $request, Proyecto $proyecto): RedirectResponse
-    {
-        $request->validate(['vision' => 'nullable|string']);
-        $proyecto->actualizarVision($request->input('vision')); // Usando el método del modelo
-        return redirect()->back()->with('success', 'Visión actualizada exitosamente.');
-    }
-
-    /**
-     * Actualiza las unidades estratégicas de un proyecto específico.
-     */
-    public function updateUnidadesEstrategicas(Request $request, Proyecto $proyecto): RedirectResponse
-    {
-        $request->validate(['unidades_estrategicas' => 'nullable|string']);
-        $proyecto->actualizarUnidadesEstrategicas($request->input('unidades_estrategicas')); // Usando el método del modelo
-        return redirect()->back()->with('success', 'Unidades estratégicas actualizadas exitosamente.');
-    }
-
-    /**
-     * Muestra el dashboard secundario para un proyecto específico.
-     */
-    public function showDashboard2(Proyecto $proyecto): View
-    {
-        // Aquí se podría añadir lógica de autorización si es necesario
-        // if ($proyecto->user_id !== auth()->id()) {
-        //     abort(403);
-        // }
         return view('dashboard2', compact('proyecto'));
+    }
+
+    // ... Aquí podrían ir los métodos showMision, showVision, etc. que ya tienes en tu archivo de rutas ...
+    // Asegúrate de que existan o créalos según sea necesario. Por ejemplo:
+
+    public function showMision(Proyecto $proyecto)
+    {
+        // Lógica para mostrar la misión del proyecto
+        return view('mision', compact('proyecto'));
+    }
+
+    public function showVision(Proyecto $proyecto)
+    {
+        // Lógica para mostrar la visión del proyecto
+        return view('vision', compact('proyecto'));
+    }
+
+    public function showUnidadesEstrategicas(Proyecto $proyecto)
+    {
+        // Lógica para mostrar las unidades estratégicas
+        return view('ruta.a.tu.vista.unidades.estrategicas', compact('proyecto')); // Ajusta la ruta de la vista
+    }
+
+    public function showObjetivos(Proyecto $proyecto)
+    {
+        // Lógica para mostrar los objetivos
+        return view('objetivos', compact('proyecto'));
+    }
+
+    public function showAnalisisInterno(Proyecto $proyecto)
+    {
+        return view('analisis_interno', compact('proyecto'));
+    }
+
+    public function showCadenaDeValor(Proyecto $proyecto)
+    {
+        return view('cadena_de_valor', compact('proyecto'));
+    }
+
+    public function showMatrizParticipacion(Proyecto $proyecto)
+    {
+        return view('matriz_participacion', compact('proyecto'));
+    }
+
+    public function showLas5Fuerzas(Proyecto $proyecto)
+    {
+        return view('las_5_fuerzas', compact('proyecto'));
+    }
+
+    public function showPest(Proyecto $proyecto)
+    {
+        return view('pest', compact('proyecto'));
+    }
+
+    public function showEstrategia(Proyecto $proyecto)
+    {
+        return view('estrategia', compact('proyecto'));
+    }
+
+    public function showMatrizCame(Proyecto $proyecto)
+    {
+        return view('matriz_came', compact('proyecto'));
+    }
+
+
+    // Métodos para actualizar (PATCH/PUT)
+    public function updateMision(Request $request, Proyecto $proyecto)
+    {
+        $request->validate([
+            'mision' => 'required|string',
+        ]);
+        $proyecto->mision = $request->input('mision');
+        $proyecto->save();
+        return redirect()->route('proyectos.showMision', $proyecto)
+            ->with('success', 'Misión actualizada correctamente.');
+    }
+
+    public function updateVision(Request $request, Proyecto $proyecto)
+    {
+        $request->validate([
+            'vision' => 'required|string',
+        ]);
+        $proyecto->vision = $request->input('vision');
+        $proyecto->save();
+        return redirect()->route('proyectos.showVision', $proyecto)
+            ->with('success', 'Visión actualizada correctamente.');
+    }
+
+    public function updateUnidadesEstrategicas(Request $request, Proyecto $proyecto)
+    {
+        // Lógica para actualizar las unidades estratégicas
     }
 }

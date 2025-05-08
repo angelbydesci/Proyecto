@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     <!-- Título de la Visión -->
-    <h2>VISIÓN</h2>
+    <h2>VISIÓN DEL PROYECTO: {{ $proyecto->nombre_proyecto }}</h2>
     
     <p>"La VISIÓN de una empresa define lo que quiere lograr en el futuro. Es lo que la organización aspira llegar a ser en torno a 2-3 años."</p>
     <ul>
@@ -26,37 +26,45 @@
     <h4>Agencia de certificación</h4>
     <p>"Ser líderes en nuestro sector y un actor principal en todos los segmentos de mercado en los que estamos presentes, en los mercados clave."</p>
     
-    <h4>En este apartado describa la Visión de su empresa:</h4>
+    <h4>En este apartado describa la Visión de su proyecto:</h4>
     
-    <!-- Textarea para describir la visión -->
-    <textarea class="form-control" rows="4" placeholder="Escriba la visión de su empresa aquí..."></textarea>
+    <form action="{{ route('proyectos.updateVision', $proyecto) }}" method="POST">
+        @csrf
+        @method('PATCH')
+        <div class="form-group">
+            <textarea name="vision" class="form-control" rows="4" placeholder="Escriba la visión de su proyecto aquí...">{{ old('vision', $proyecto->vision ?? '') }}</textarea>
+        </div>
 
-    <!-- Relación entre Misión y Visión -->
-    <div class="mt-4 p-3 bg-light rounded">
-        <h3>Relación entre Misión y Visión</h3>
-        <div class="row text-center">
-            <div class="col-md-4">
-                <h5>¿Cuál es la situación actual?</h5>
-                <p class="text-muted">(Misión)</p>
-            </div>
-            <div class="col-md-4">
-                <h5>¿Qué camino a seguir?</h5>
-                <p class="text-muted">(Estrategia)</p>
-            </div>
-            <div class="col-md-4">
-                <h5>¿Cuál es la situación futura?</h5>
-                <p class="text-muted">(Visión)</p>
+        <!-- Relación entre Misión y Visión (se mantiene como estaba) -->
+        <div class="mt-4 p-3 bg-light rounded">
+            <h3>Relación entre Misión y Visión</h3>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <h5>¿Cuál es la situación actual?</h5>
+                    <p class="text-muted">(Misión)</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>¿Qué camino a seguir?</h5>
+                    <p class="text-muted">(Estrategia)</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>¿Cuál es la situación futura?</h5>
+                    <p class="text-muted">(Visión)</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Botones en la parte inferior -->
-    <div class="d-flex justify-content-between mt-4">
-        <!-- Botón para volver a misión (izquierda) -->
-        <a href="{{ route('mision') }}" class="btn btn-secondary">Volver a Misión</a>
+        <!-- Botones en la parte inferior -->
+        <div class="d-flex justify-content-between mt-4">
+            <!-- Botón para volver a misión (izquierda) -->
+            <a href="{{ route('proyectos.showMision', $proyecto) }}" class="btn btn-secondary">Volver a Misión</a>
+            <div>
+                <button type="submit" class="btn btn-primary mr-2">Guardar Visión</button>
+                {{-- El enlace a Valores se elimina temporalmente --}}
+            </div>
+        </div>
+    </form>
 
-        <!-- Botón para continuar (derecha) -->
-        <a href="{{ route('valores') }}" class="btn btn-success">Ir a Valores</a>
-    </div>
+
 </div>
 @endsection

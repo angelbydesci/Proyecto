@@ -30,11 +30,10 @@
 
     <form action="{{ route('proyectos.updateMision', $proyecto) }}" method="POST">
         @csrf
-        @method('PATCH') {{-- CORREGIDO: Cambiado de PUT a PATCH --}}
+        @method('PATCH')
         <div class="form-group">
-            <textarea id="mision_texto" name="mision" class="form-control" rows="4" placeholder="Escriba la misión de su proyecto aquí...">{{ old('mision', $mision ?? '') }}</textarea>
+            <textarea id="mision_texto" name="mision" class="form-control" rows="4" placeholder="Escriba la misión de su proyecto aquí...">{{ old('mision', $proyecto->mision ?? '') }}</textarea>
         </div>
-
         <div class="d-flex justify-content-between mt-4">
             <a href="{{ route('dashboard2', $proyecto) }}" class="btn btn-secondary">Volver al Panel</a>
             <div>

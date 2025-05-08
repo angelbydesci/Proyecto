@@ -108,11 +108,20 @@ class Proyecto extends Model
     /**
      * Actualizar las unidades estratégicas de un proyecto.
      *
-     * @param string|null $unidades
-     * @return bool
+     * @param string|null $unidades_estrategicas
+     * @return void
      */
-    public function actualizarUnidadesEstrategicas(?string $unidades): bool
+    public function actualizarUnidadesEstrategicas(?string $unidades_estrategicas): void
     {
-        return $this->update(['unidades_estrategicas' => $unidades]);
+        $this->unidades_estrategicas = $unidades_estrategicas;
+        $this->save();
+    }
+
+    /**
+     * Obtener los valores asociados a un proyecto.
+     */
+    public function valores()
+    {
+        return $this->hasMany(Valor::class, 'proyecto_id');
     }
 }

@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     <!-- Título -->
-    <h2>VALORES</h2>
+    <h2>VALORES DEL PROYECTO: {{ $proyecto->nombre_proyecto }}</h2>
     
     <!-- Explicación sobre valores -->
     <div class="mb-4 p-3 bg-light rounded">
@@ -54,27 +54,64 @@
         </div>
     </div>
 
-    <!-- Formulario para valores de la empresa -->
+    <!-- Sección para mostrar y agregar valores -->
     <div class="mb-4 p-4 border rounded bg-light">
-        <h4 class="mb-3">En este apartado exponga los Valores de su empresa</h4>
-        
-        @for($i = 1; $i <= 6; $i++)
-            <div class="form-group mb-3">
-                <label for="valor{{ $i }}">Valor {{ $i }}:</label>
-                <textarea 
-                    id="valor{{ $i }}" 
-                    class="form-control" 
-                    rows="2" 
-                    placeholder="Describa el valor {{ $i }} de su empresa"
-                    name="valores[]"></textarea>
-            </div>
-        @endfor
+        <h4 class="mb-3">Valores de su proyecto</h4>
+
+        @if ($valores->isEmpty())
+            <p>Aún no se han agregado valores para este proyecto.</p>
+        @else
+            <ul class="list-group mb-3">
+                @foreach ($valores as $valor)
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span style="flex-grow: 1; margin-right: 10px;">{{ $valor->valor }}</span>
+                        {{-- Formulario para eliminar valor --}}
+                        <form action="{{ route('valores.destroy', $valor) }}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar este valor?');" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </li>
+                @endforeach
+            </ul>
+        @endif
+
+        {{-- Formulario para agregar valor --}}
+        <div id="addValorSection" class="mt-3">
+            <form action="{{ route('proyectos.valores.store', $proyecto) }}" method="POST">
+                @csrf
+                <div class="form-group mb-2">
+                    <label for="valor_texto">Nuevo Valor:</label>
+                    <textarea id="valor_texto" name="valor" class="form-control" rows="2" placeholder="Describa el nuevo valor aquí..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Valor</button>
+            </form>
+        </div>
     </div>
+
+    <!-- Mensajes de éxito y error -->
+    @if (session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger mt-3">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <!-- Botones de navegación -->
     <div class="d-flex justify-content-between mt-4">
-        <a href="{{ route('vision') }}" class="btn btn-secondary">Volver a Vision</a>
-        <a href="{{ route('objetivos') }}" class="btn btn-success">Ir a Objetivos Estrategicos</a>
+        <a href="{{ route('proyectos.showVision', $proyecto) }}" class="btn btn-secondary">Volver a Visión</a>
+        {{-- Asumiendo que 'objetivos' será la siguiente sección y específica del proyecto --}}
+        {{-- <a href="{{ route('proyectos.objetivos.index', $proyecto) }}" class="btn btn-success">Ir a Objetivos Estratégicos</a> --}}
+        <a href="#" class="btn btn-success">Ir a Objetivos Estratégicos (Próximamente)</a>
     </div>
 </div>
 @endsection

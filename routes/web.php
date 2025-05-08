@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\ValorController; // Añadir esta línea
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -28,48 +29,39 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard2/{proyecto}', [ProyectoController::class, 'showDashboard2'])->name('dashboard2');
     // Ruta para almacenar un nuevo proyecto
     Route::post('/proyectos', [ProyectoController::class, 'store'])->name('proyectos.store');
+
+    // Rutas para Valores anidadas bajo un proyecto
+    Route::get('/proyectos/{proyecto}/valores', [ValorController::class, 'index'])->name('proyectos.valores.index');
+    Route::post('/proyectos/{proyecto}/valores', [ValorController::class, 'store'])->name('proyectos.valores.store');
+    Route::delete('/valores/{valor}', [ValorController::class, 'destroy'])->name('valores.destroy'); // Ruta para eliminar un valor
+
+    // Rutas para Objetivos (si también son específicos del proyecto)
+    Route::get('/proyectos/{proyecto}/objetivos', [ProyectoController::class, 'showObjetivos'])->name('proyectos.showObjetivos');
+
+    // Rutas nombradas que faltan para las secciones del dashboard2
+    Route::get('/proyectos/{proyecto}/cadena-de-valor', [ProyectoController::class, 'showCadenaDeValor'])->name('proyectos.showCadenaDeValor');
+    Route::get('/proyectos/{proyecto}/matriz-participacion', [ProyectoController::class, 'showMatrizParticipacion'])->name('proyectos.showMatrizParticipacion');
+    Route::get('/proyectos/{proyecto}/las-5-fuerzas', [ProyectoController::class, 'showLas5Fuerzas'])->name('proyectos.showLas5Fuerzas');
+    Route::get('/proyectos/{proyecto}/pest', [ProyectoController::class, 'showPest'])->name('proyectos.showPest');
+    Route::get('/proyectos/{proyecto}/estrategia', [ProyectoController::class, 'showEstrategia'])->name('proyectos.showEstrategia');
+    Route::get('/proyectos/{proyecto}/matriz-came', [ProyectoController::class, 'showMatrizCame'])->name('proyectos.showMatrizCame');
 });
 
 // ========================================
-// RUTAS DE PÁGINAS ESTÁTICAS
+// RUTAS DE PÁGINAS ESTÁTICAS (O SEMI-ESTÁTICAS)
 // ========================================
 
-// Páginas de misión, visión y valores
-Route::get('/mision', [PageController::class, 'mision'])->name('mision');
-Route::get('/vision', [PageController::class, 'vision'])->name('vision');
-Route::get('/valores', [PageController::class, 'valores'])->name('valores');
+// Estas rutas parecen ser genéricas o apuntar a un PageController.
+// Si 'mision', 'vision', 'valores', 'objetivos' etc., deben ser específicas del proyecto,
+// sus rutas deben definirse dentro del grupo de middleware de autenticación y usar ProyectoController o un controlador dedicado.
 
-// Páginas de análisis y estrategias
-Route::get('/analisis-interno', [PageController::class, 'analisis_interno'])->name('analisis_interno');
-Route::get('/objetivos', [PageController::class, 'objetivos'])->name('objetivos');
-Route::get('/cadena-de-valor', function () {
-    return view('cadena_de_valor');
-})->name('cadena_de_valor');
-Route::get('/matriz-participacion', function () {
-    return view('matriz_participacion');
-})->name('matriz_participacion');
-Route::get('/matriz-came', function () {
-    return view('matriz_came');
-})->name('matriz_came');
-Route::get('/pest', function () {
-    return view('pest');
-})->name('pest');
-Route::get('/estrategia', function () {
-    return view('estrategia');
-})->name('estrategia');
-Route::get('/las-5-fuerzas', function () {
-    return view('las_5_fuerzas');
-})->name('las_5_fuerzas');
-
-// ========================================
-// RUTAS DE PERFIL DE USUARIO
-// ========================================
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Ejemplo de cómo podrían ser si fueran genéricas (revisar si es el caso o si deben ser específicas del proyecto)
+// Route::get('/mision', [PageController::class, 'mision'])->name('mision');
+// Route::get('/vision', [PageController::class, 'vision'])->name('vision');
+// La ruta genérica para 'valores' se elimina para dar prioridad a la específica del proyecto.
+// Route::get('/valores', [PageController::class, 'valores'])->name('valores'); 
+// Route::get('/objetivos', [PageController::class, 'objetivos'])->name('objetivos');
+// ... otras rutas de PageController ...
 
 // ========================================
 // RUTAS PARA PROYECTOS (MISIÓN, VISIÓN, UNIDADES ESTRATÉGICAS)
@@ -79,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/proyectos/{proyecto}/mision', [ProyectoController::class, 'showMision'])->name('proyectos.showMision');
     Route::get('/proyectos/{proyecto}/vision', [ProyectoController::class, 'showVision'])->name('proyectos.showVision');
     Route::get('/proyectos/{proyecto}/unidades-estrategicas', [ProyectoController::class, 'showUnidadesEstrategicas'])->name('proyectos.showUnidadesEstrategicas');
+    Route::get('/proyectos/{proyecto}/analisis-interno', [ProyectoController::class, 'showAnalisisInterno'])->name('proyectos.showAnalisisInterno');
 
     // Rutas para actualizar información (usando PATCH o PUT)
     Route::patch('/proyectos/{proyecto}/mision', [ProyectoController::class, 'updateMision'])->name('proyectos.updateMision');
