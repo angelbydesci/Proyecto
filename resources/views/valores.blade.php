@@ -1,8 +1,8 @@
 {{-- resources/views/valores.blade.php --}}
-@extends('layouts.app')
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-@section('content')
+
 <div class="container">
     <!-- Título -->
     <h2>VALORES DEL PROYECTO: {{ $proyecto->nombre_proyecto }}</h2>
@@ -107,11 +107,4 @@
     @endif
 
     <!-- Botones de navegación -->
-    <div class="d-flex justify-content-between mt-4">
-        <a href="{{ route('proyectos.showVision', $proyecto) }}" class="btn btn-secondary">Volver a Visión</a>
-        {{-- Asumiendo que 'objetivos' será la siguiente sección y específica del proyecto --}}
-        {{-- <a href="{{ route('proyectos.objetivos.index', $proyecto) }}" class="btn btn-success">Ir a Objetivos Estratégicos</a> --}}
-        <a href="#" class="btn btn-success">Ir a Objetivos Estratégicos (Próximamente)</a>
-    </div>
 </div>
-@endsection

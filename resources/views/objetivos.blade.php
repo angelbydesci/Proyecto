@@ -150,10 +150,6 @@
             </table>
         </div>
     </div>
-    <!-- Botones de navegación -->
-    <div class="d-flex justify-content-between mt-4">
-        <a href="{{ route('valores') }}" class="btn btn-secondary">Volver a Valores</a>
-        <a href="{{ route('analisis_interno') }}" class="btn btn-success">Ir a Analiusis Interno y Externo</a>
-    </div>
+
 </div>
 @endsection

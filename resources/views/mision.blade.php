@@ -1,8 +1,8 @@
 {{-- resources/views/mision.blade.php --}}
-@extends('layouts.app')
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-@section('content')
+
 <div class="container">
     <h2>MISIÓN DEL PROYECTO: {{ $proyecto->nombre_proyecto }}</h2>
 
@@ -35,10 +35,8 @@
             <textarea id="mision_texto" name="mision" class="form-control" rows="4" placeholder="Escriba la misión de su proyecto aquí...">{{ old('mision', $proyecto->mision ?? '') }}</textarea>
         </div>
         <div class="d-flex justify-content-between mt-4">
-            <a href="{{ route('dashboard2', $proyecto) }}" class="btn btn-secondary">Volver al Panel</a>
             <div>
                 <button type="submit" class="btn btn-primary mr-2">Guardar Misión</button>
-                <a href="{{ route('proyectos.showVision', $proyecto) }}" class="btn btn-success">Ir a Visión</a>
             </div>
         </div>
     </form>
@@ -60,4 +58,4 @@
     @endif
 
 </div>
-@endsection
+

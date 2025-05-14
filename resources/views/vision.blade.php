@@ -1,8 +1,8 @@
 {{-- resources/views/vision.blade.php --}}
-@extends('layouts.app')
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-@section('content')
+
 <div class="container">
     <!-- Título de la Visión -->
     <h2>VISIÓN DEL PROYECTO: {{ $proyecto->nombre_proyecto }}</h2>
@@ -35,7 +35,7 @@
             <textarea name="vision" class="form-control" rows="4" placeholder="Escriba la visión de su proyecto aquí...">{{ old('vision', $proyecto->vision ?? '') }}</textarea>
         </div>
 
-        <!-- Relación entre Misión y Visión (se mantiene como estaba) -->
+        <!-- Relación entre Misión y Visión (No lo usare Creo)
         <div class="mt-4 p-3 bg-light rounded">
             <h3>Relación entre Misión y Visión</h3>
             <div class="row text-center">
@@ -52,19 +52,16 @@
                     <p class="text-muted">(Visión)</p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Botones en la parte inferior -->
         <div class="d-flex justify-content-between mt-4">
             <!-- Botón para volver a misión (izquierda) -->
-            <a href="{{ route('proyectos.showMision', $proyecto) }}" class="btn btn-secondary">Volver a Misión</a>
             <div>
                 <button type="submit" class="btn btn-primary mr-2">Guardar Visión</button>
-                {{-- El enlace a Valores se elimina temporalmente --}}
             </div>
         </div>
     </form>
 
 
 </div>
-@endsection
