@@ -131,7 +131,6 @@ class ProyectoController extends Controller
         return view('matriz_came', compact('proyecto'));
     }
 
-
     // Métodos para actualizar (PATCH/PUT)
     public function updateMision(Request $request, Proyecto $proyecto)
     {

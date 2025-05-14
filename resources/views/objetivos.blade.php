@@ -138,51 +138,83 @@
 
         <h4>A continuación reflexione sobre la misión, visión y valores definidos y establezca los objetivos estratégicos y específicos de su empresa. Le proponemos que comience con definir 3 objetivos estratégicos y dos específicos para cada uno de ellos</h4>
         
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead class="thead-light">
-                    <tr>
-                        <th style="width: 25%">MISIÓN</th>
-                        <th style="width: 35%">OBJETIVOS GENERALES O ESTRATÉGICOS</th>
-                        <th style="width: 40%">OBJETIVOS ESPECÍFICOS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{-- Fila 1 --}}
-                    <tr>
-                        <td rowspan="2">
-                            <textarea class="form-control border-0" rows="4" placeholder="Describa su misión"></textarea>
-                        </td>
-                        <td>
-                            <textarea class="form-control border-0" rows="2" placeholder="Objetivo estratégico 1"></textarea>
-                        </td>
-                        <td>
-                            <textarea class="form-control border-0" rows="1" placeholder="Objetivo específico 1.1"></textarea>
-                            <textarea class="form-control border-0 mt-2" rows="1" placeholder="Objetivo específico 1.2"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <textarea class="form-control border-0" rows="2" placeholder="Objetivo estratégico 2"></textarea>
-                        </td>
-                        <td>
-                            <textarea class="form-control border-0" rows="1" placeholder="Objetivo específico 2.1"></textarea>
-                            <textarea class="form-control border-0 mt-2" rows="1" placeholder="Objetivo específico 2.2"></textarea>
-                        </td>
-                    </tr>
-                    {{-- Fila 2 --}}
-                    <tr>
-                        <td>
-                            <textarea class="form-control border-0" rows="2" placeholder="Objetivo estratégico 3"></textarea>
-                        </td>
-                        <td>
-                            <textarea class="form-control border-0" rows="1" placeholder="Objetivo específico 3.1"></textarea>
-                            <textarea class="form-control border-0 mt-2" rows="1" placeholder="Objetivo específico 3.2"></textarea>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        {{-- Formulario para añadir Objetivo Principal --}}
+        <div class="mt-4 mb-3 p-3 border rounded bg-light">
+            <h5>Añadir Nuevo Objetivo Estratégico</h5>
+            <form action="{{ route('objetivos.storePrincipal', $proyecto) }}" method="POST">
+                @csrf
+                <div class="form-group mb-2">
+                    <textarea name="objetivo_principal" class="form-control" rows="2" placeholder="Describa el objetivo estratégico..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">Guardar Objetivo Estratégico</button>
+            </form>
+            @if (session('success_obj_principal'))
+                <div class="alert alert-success mt-2 alert-dismissible fade show" role="alert">
+                    {{ session('success_obj_principal') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            @error('objetivo_principal')
+                <div class="alert alert-danger mt-2">{{ $message }}</div>
+            @enderror
         </div>
+
+        {{-- Lista de Objetivos Principales y sus Específicos --}}
+        @if ($proyecto->objetivosPrincipales && $proyecto->objetivosPrincipales->count() > 0)
+            <div class="mt-4">
+                <h5>Objetivos Estratégicos Guardados</h5>
+                @foreach ($proyecto->objetivosPrincipales as $objetivoPrincipal)
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <strong>{{ $objetivoPrincipal->objetivo }}</strong>
+                        </div>
+                        <div class="card-body">
+                            {{-- Objetivos Específicos --}}
+                            @if ($objetivoPrincipal->objetivosEspecificos && $objetivoPrincipal->objetivosEspecificos->count() > 0)
+                                <ul class="list-group list-group-flush">
+                                    @foreach ($objetivoPrincipal->objetivosEspecificos as $objetivoEspecifico)
+                                        <li class="list-group-item">{{ $objetivoEspecifico->objetivo }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-muted">No hay objetivos específicos para este objetivo estratégico.</p>
+                            @endif
+
+                            {{-- Formulario para añadir Objetivo Específico --}}
+                            <div class="mt-3 pt-3 border-top">
+                                <form action="{{ route('objetivos.storeEspecifico', $objetivoPrincipal) }}" method="POST">
+                                    @csrf
+                                    <div class="form-group mb-2">
+                                        <textarea name="objetivo_especifico" class="form-control" rows="1" placeholder="Añadir objetivo específico..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-info btn-sm">Guardar Objetivo Específico</button>
+                                </form>
+                                @if (session('success_obj_especifico') && session('objetivo_principal_id') == $objetivoPrincipal->id)
+                                    <div class="alert alert-success mt-2 alert-dismissible fade show" role="alert">
+                                        {{ session('success_obj_especifico') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+                                @error('objetivo_especifico') {{-- Asumiendo que el error vendrá con este nombre --}}
+                                    @if(session('objetivo_principal_id_error') == $objetivoPrincipal->id)
+                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                                    @endif
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="mt-4">Aún no se han añadido objetivos estratégicos para este proyecto.</p>
+        @endif
+
+        {{-- Se elimina la tabla estática anterior --}}
+        {{-- <div class="table-responsive">
+            <table class="table table-bordered">
+                ...
+            </table>
+        </div> --}}
     </div>
 
 </div>

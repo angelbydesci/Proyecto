@@ -96,6 +96,14 @@ class Proyecto extends Model
     }
 
     /**
+     * Relación con el modelo ObjetivoPrincipal (uno a muchos).
+     */
+    public function objetivosPrincipales()
+    {
+        return $this->hasMany(ObjetivoPrincipal::class, 'proyecto_id');
+    }
+
+    /**
      * Obtener las unidades estratégicas de un proyecto.
      *
      * @return string|null

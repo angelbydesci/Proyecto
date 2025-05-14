@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\ValorController; // Añadir esta línea
+use App\Http\Controllers\ObjetivoController; // Añadir esta línea
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -37,6 +38,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para Objetivos (si también son específicos del proyecto)
     Route::get('/proyectos/{proyecto}/objetivos', [ProyectoController::class, 'showObjetivos'])->name('proyectos.showObjetivos');
+    // Rutas para almacenar Objetivos Principales y Específicos
+    Route::post('/proyectos/{proyecto}/objetivos-principales', [ObjetivoController::class, 'storePrincipal'])->name('objetivos.storePrincipal');
+    Route::post('/objetivos-principales/{objetivoPrincipal}/objetivos-especificos', [ObjetivoController::class, 'storeEspecifico'])->name('objetivos.storeEspecifico');
 
     // Rutas nombradas que faltan para las secciones del dashboard2
     Route::get('/proyectos/{proyecto}/cadena-de-valor', [ProyectoController::class, 'showCadenaDeValor'])->name('proyectos.showCadenaDeValor');
@@ -45,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/proyectos/{proyecto}/pest', [ProyectoController::class, 'showPest'])->name('proyectos.showPest');
     Route::get('/proyectos/{proyecto}/estrategia', [ProyectoController::class, 'showEstrategia'])->name('proyectos.showEstrategia');
     Route::get('/proyectos/{proyecto}/matriz-came', [ProyectoController::class, 'showMatrizCame'])->name('proyectos.showMatrizCame');
+    Route::get('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [ProyectoController::class, 'showAutodiagnosticoCadenaDeValor'])->name('proyectos.showAutodiagnosticoCadenaDeValor');
 });
 
 // ========================================
