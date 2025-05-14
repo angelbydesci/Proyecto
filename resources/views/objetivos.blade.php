@@ -1,8 +1,7 @@
 {{-- resources/views/objetivos.blade.php --}}
-@extends('layouts.app')
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-@section('content')
 <div class="container">
     <!-- Título -->
     <h2>OBJETIVOS ESTRATEGICOS</h2>
@@ -100,7 +99,42 @@
     {{-- Sección de reflexión y objetivos --}}
     <div class="mb-4 p-3 border rounded">
         <h4>En su caso, comente en este apartado las distintas UEN que tiene su empresa</h4>
-        <textarea class="form-control mb-4" rows="3" placeholder="Describa las Unidades Estratégicas de Negocio de su empresa..."></textarea>
+        
+        <form action="{{ route('proyectos.updateUnidadesEstrategicas', $proyecto) }}" method="POST" class="mb-4">
+            @csrf
+            @method('PATCH')
+            <div class="form-group">
+                <textarea name="unidades_estrategicas" class="form-control" rows="3" placeholder="Describa las Unidades Estratégicas de Negocio de su empresa...">{{ old('unidades_estrategicas', $proyecto->unidades_estrategicas ?? '') }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Guardar Unidades Estratégicas</button>
+        </form>
+
+        {{-- Mostrar mensajes de éxito/error para UEN --}}
+        @if (session('success_uen'))
+            <div class="alert alert-success mt-3 alert-dismissible fade show" role="alert">
+                {{ session('success_uen') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        {{-- Mostrar errores de validación generales (si los hubiera de este formulario) --}}
+        @if ($errors->has('unidades_estrategicas'))
+            <div class="alert alert-danger mt-3 alert-dismissible fade show" role="alert">
+                {{ $errors->first('unidades_estrategicas') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif ($errors->any() && !$errors->has('unidades_estrategicas') && old('unidades_estrategicas') !== null)
+            {{-- Esto es para el caso de que haya errores de otro formulario y este se haya intentado enviar.
+                 Podría ser más específico si se identifican los formularios.
+                 Por ahora, si hay errores y este campo fue enviado, mostramos una alerta genérica.
+                 Si solo hay un formulario que pueda dar error en esta página aparte de los objetivos principales,
+                 podríamos ser más específicos.
+            --}}
+            <div class="alert alert-danger mt-3 alert-dismissible fade show" role="alert">
+                Hubo un error al procesar la solicitud. Por favor, revisa los campos.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <h4>A continuación reflexione sobre la misión, visión y valores definidos y establezca los objetivos estratégicos y específicos de su empresa. Le proponemos que comience con definir 3 objetivos estratégicos y dos específicos para cada uno de ellos</h4>
         
@@ -152,4 +186,3 @@
     </div>
 
 </div>
-@endsection

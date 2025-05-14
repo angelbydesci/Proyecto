@@ -139,9 +139,8 @@ class ProyectoController extends Controller
             'mision' => 'required|string',
         ]);
         $proyecto->mision = $request->input('mision');
-        $proyecto->save();
-        return redirect()->route('proyectos.showMision', $proyecto)
-            ->with('success', 'Misión actualizada correctamente.');
+        $proyecto->save(); // Asegúrate de guardar el proyecto
+        return redirect()->route('proyectos.showMision', $proyecto)->with('success', 'Misión actualizada correctamente.');
     }
 
     public function updateVision(Request $request, Proyecto $proyecto)
@@ -150,13 +149,19 @@ class ProyectoController extends Controller
             'vision' => 'required|string',
         ]);
         $proyecto->vision = $request->input('vision');
-        $proyecto->save();
-        return redirect()->route('proyectos.showVision', $proyecto)
-            ->with('success', 'Visión actualizada correctamente.');
+        $proyecto->save(); // Asegúrate de guardar el proyecto
+        return redirect()->route('proyectos.showVision', $proyecto)->with('success', 'Visión actualizada correctamente.');
     }
 
     public function updateUnidadesEstrategicas(Request $request, Proyecto $proyecto)
     {
-        // Lógica para actualizar las unidades estratégicas
+        $request->validate([
+            'unidades_estrategicas' => 'nullable|string',
+        ]);
+
+        $proyecto->unidades_estrategicas = $request->input('unidades_estrategicas');
+        $proyecto->save();
+
+        return redirect()->route('proyectos.showObjetivos', $proyecto)->with('success_uen', 'Unidades Estratégicas actualizadas correctamente.');
     }
 }
