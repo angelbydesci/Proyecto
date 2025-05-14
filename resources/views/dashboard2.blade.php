@@ -1,75 +1,114 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Panel de Opciones</title>
     @vite(['resources/css/dashboard2.css'])
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300" rel="stylesheet">
+    <style>
+        /* Estilo para el iframe */
+        #content-frame {
+            margin-left: 260px; /* Espacio para la barra lateral */
+            width: calc(100% - 260px); /* Ajusta el ancho del iframe */
+            height: 100vh; /* Ocupa toda la altura de la ventana */
+            border: none; /* Sin bordes */
+        }
+    </style>
 </head>
 <body>
+    <div class="area"></div>
+    <nav class="main-menu">
+        <ul>
+            <li>
+                <a href="{{ route('dashboard') }}">
+                    <i class="fa fa-folder fa-2x"></i>
+                    <span class="nav-text">Proyectos</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showMision', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-home fa-2x"></i>
+                    <span class="nav-text">1. MISIÓN</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showVision', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-eye fa-2x"></i>
+                    <span class="nav-text">2. VISIÓN</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.valores.index', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-heart fa-2x"></i>
+                    <span class="nav-text">3. VALORES</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showObjetivos', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-bullseye fa-2x"></i>
+                    <span class="nav-text">4. OBJETIVOS</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showAnalisisInterno', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-search fa-2x"></i>
+                    <span class="nav-text">5. ANÁLISIS INTERNO</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showCadenaDeValor', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-link fa-2x"></i>
+                    <span class="nav-text">6. CADENA DE VALOR</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showMatrizParticipacion', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-table fa-2x"></i>
+                    <span class="nav-text">7. MATRIZ PARTICIPACIÓN</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showLas5Fuerzas', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-balance-scale fa-2x"></i>
+                    <span class="nav-text">8. 5 FUERZAS PORTER</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showPest', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-globe fa-2x"></i>
+                    <span class="nav-text">9. PEST</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showEstrategia', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-lightbulb-o fa-2x"></i>
+                    <span class="nav-text">10. ESTRATEGIA</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showMatrizCame', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-th fa-2x"></i>
+                    <span class="nav-text">11. MATRIZ CAME</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="logout">
+    <li>
+        <a href="{{ route('logout') }}" 
+           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fa fa-power-off fa-2x"></i>
+            <span class="nav-text">Logout</span>
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    </li>
+</ul>
+    </nav>
 
-    <div class="titulo">INFORMACIÓN DE LA EMPRESA</div>
-
-    <div class="links">
-      <ul class="links__list" style="--item-total:11">
-        <li class="links__item" style="--item-count:1">
-          <a class="links__link" href="{{ route('proyectos.showMision', $proyecto) }}">
-            <span class="links__text">1. MISIÓN</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:2">
-          <a class="links__link" href="{{ route('proyectos.showVision', $proyecto) }}">
-            <span class="links__text">2. VISIÓN</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:3">
-          <a class="links__link" href="{{ route('proyectos.valores.index', $proyecto) }}">
-            <span class="links__text">3. VALORES</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:4">
-          <a class="links__link" href="{{ route('proyectos.showObjetivos', $proyecto) }}">
-            <span class="links__text">4. OBJETIVOS</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:5">
-          <a class="links__link" href="{{ route('proyectos.showAnalisisInterno', $proyecto) }}">
-            <span class="links__text">5. ANÁLISIS INTERNO</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:6">
-          <a class="links__link" href="{{ route('proyectos.showCadenaDeValor', $proyecto) }}">
-            <span class="links__text">6. CADENA DE VALOR</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:7">
-          <a class="links__link" href="{{ route('proyectos.showMatrizParticipacion', $proyecto) }}">
-            <span class="links__text">7. MATRIZ PARTICIPACIÓN</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:8">
-          <a class="links__link" href="{{ route('proyectos.showLas5Fuerzas', $proyecto) }}">
-            <span class="links__text">8. 5 FUERZAS PORTER</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:9">
-          <a class="links__link" href="{{ route('proyectos.showPest', $proyecto) }}">
-            <span class="links__text">9. PEST</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:10">
-          <a class="links__link" href="{{ route('proyectos.showEstrategia', $proyecto) }}">
-            <span class="links__text">10. ESTRATEGIA</span>
-          </a>
-        </li>
-        <li class="links__item" style="--item-count:11">
-          <a class="links__link" href="{{ route('proyectos.showMatrizCame', $proyecto) }}">
-            <span class="links__text">11. MATRIZ CAME</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="titulo">RESUMEN DEL PLAN EJECUTIVO</div>
-
+    <!-- Iframe donde se cargará el contenido -->
+    <iframe id="content-frame" name="content-frame" src=""></iframe>
 </body>
 </html>
