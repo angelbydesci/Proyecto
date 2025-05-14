@@ -194,6 +194,43 @@ CREATE TABLE IF NOT EXISTS `objetivos_especificos` (
   KEY `objetivo_principal_id` (`objetivo_principal_id`),
   CONSTRAINT `objetivos_especificos_ibfk_1` FOREIGN KEY (`objetivo_principal_id`) REFERENCES `objetivos_principales` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `cadenadevalor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `reflexion` TEXT DEFAULT NULL,
+  `pregunta1` INT DEFAULT NULL,
+  `pregunta2` INT DEFAULT NULL,
+  `pregunta3` INT DEFAULT NULL,
+  `pregunta4` INT DEFAULT NULL,
+  `pregunta5` INT DEFAULT NULL,
+  `pregunta6` INT DEFAULT NULL,
+  `pregunta7` INT DEFAULT NULL,
+  `pregunta8` INT DEFAULT NULL,
+  `pregunta9` INT DEFAULT NULL,
+  `pregunta10` INT DEFAULT NULL,
+  `pregunta11` INT DEFAULT NULL,
+  `pregunta12` INT DEFAULT NULL,
+  `pregunta13` INT DEFAULT NULL,
+  `pregunta14` INT DEFAULT NULL,
+  `pregunta15` INT DEFAULT NULL,
+  `pregunta16` INT DEFAULT NULL,
+  `pregunta17` INT DEFAULT NULL,
+  `pregunta18` INT DEFAULT NULL,
+  `pregunta19` INT DEFAULT NULL,
+  `pregunta20` INT DEFAULT NULL,
+  `pregunta21` INT DEFAULT NULL,
+  `pregunta22` INT DEFAULT NULL,
+  `pregunta23` INT DEFAULT NULL,
+  `pregunta24` INT DEFAULT NULL,
+  `pregunta25` INT DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `proyecto_id_cadenadevalor_fk` (`proyecto_id`),
+  CONSTRAINT `proyecto_id_cadenadevalor_fk` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- Volcando datos para la tabla gestion_login.users: ~1 rows (aproximadamente)
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`) VALUES
 	(1, 'Administrador', 'admin@peti.com', '$2y$12$C680abLVgyqrnpTS0juqROz7Uq9Y/9PGB5eV06UTvxqagYa8k5YOS', '2025-04-14 07:49:40');
