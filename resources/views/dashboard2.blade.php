@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -61,6 +60,12 @@
                 <a href="{{ route('proyectos.showCadenaDeValor', $proyecto) }}" target="content-frame">
                     <i class="fa fa-link fa-2x"></i>
                     <span class="nav-text">6. CADENA DE VALOR</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('proyectos.showAutodiagnosticoCadenaDeValor', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-stethoscope fa-2x"></i> {{-- Icono sugerido para autodiagnóstico --}}
+                    <span class="nav-text">6.1 AUTODIAGNÓSTICO C.V.</span>
                 </a>
             </li>
             <li>

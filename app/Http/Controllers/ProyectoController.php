@@ -131,6 +131,15 @@ class ProyectoController extends Controller
         return view('matriz_came', compact('proyecto'));
     }
 
+    public function showAutodiagnosticoCadenaDeValor(Proyecto $proyecto)
+    {
+        // Asegurarse de que el proyecto pertenece al usuario autenticado (opcional, pero recomendado)
+        if ($proyecto->user_id !== auth()->id()) {
+            abort(403);
+        }
+        return view('autodiagnostico_cadena_de_valor', compact('proyecto'));
+    }
+
     // Métodos para actualizar (PATCH/PUT)
     public function updateMision(Request $request, Proyecto $proyecto)
     {
