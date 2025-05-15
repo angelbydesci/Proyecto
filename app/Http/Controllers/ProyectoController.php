@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proyecto;
+use App\Models\CadenaDeValor; // Asegúrate de importar el modelo CadenaDeValor
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
@@ -137,7 +138,10 @@ class ProyectoController extends Controller
         if ($proyecto->user_id !== auth()->id()) {
             abort(403);
         }
-        return view('autodiagnostico_cadena_de_valor', compact('proyecto'));
+        // Cargar los datos existentes de CadenaDeValor para este proyecto
+        $autodiagnostico = CadenaDeValor::where('proyecto_id', $proyecto->id)->first();
+
+        return view('autodiagnostico_cadena_de_valor', compact('proyecto', 'autodiagnostico'));
     }
 
     // Métodos para actualizar (PATCH/PUT)

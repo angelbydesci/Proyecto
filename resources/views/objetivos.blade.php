@@ -1,7 +1,6 @@
 {{-- resources/views/objetivos.blade.php --}}
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-
 <div class="container">
     <!-- Título -->
     <h2>OBJETIVOS ESTRATEGICOS</h2>
@@ -137,84 +136,77 @@
         @endif
 
         <h4>A continuación reflexione sobre la misión, visión y valores definidos y establezca los objetivos estratégicos y específicos de su empresa. Le proponemos que comience con definir 3 objetivos estratégicos y dos específicos para cada uno de ellos</h4>
-        
-        {{-- Formulario para añadir Objetivo Principal --}}
-        <div class="mt-4 mb-3 p-3 border rounded bg-light">
-            <h5>Añadir Nuevo Objetivo Estratégico</h5>
+
+<div class="container">
+    <h2 class="text-center">Gestión de Objetivos Estratégicos</h2>
+    <!-- Formulario para añadir un nuevo objetivo principal -->
+    <div class="card mb-4">
+        <div class="card-header">Añadir Nuevo Objetivo Estratégico</div>
+        <div class="card-body">
             <form action="{{ route('objetivos.storePrincipal', $proyecto) }}" method="POST">
                 @csrf
-                <div class="form-group mb-2">
-                    <textarea name="objetivo_principal" class="form-control" rows="2" placeholder="Describa el objetivo estratégico..."></textarea>
+                <div class="form-group mb-3">
+                    <textarea name="objetivo_principal" class="form-control" rows="2" placeholder="Describa el objetivo estratégico..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm">Guardar Objetivo Estratégico</button>
+                <button type="submit" class="btn btn-success">Guardar Objetivo Estratégico</button>
             </form>
-            @if (session('success_obj_principal'))
-                <div class="alert alert-success mt-2 alert-dismissible fade show" role="alert">
-                    {{ session('success_obj_principal') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-            @error('objetivo_principal')
-                <div class="alert alert-danger mt-2">{{ $message }}</div>
-            @enderror
         </div>
-
-        {{-- Lista de Objetivos Principales y sus Específicos --}}
-        @if ($proyecto->objetivosPrincipales && $proyecto->objetivosPrincipales->count() > 0)
-            <div class="mt-4">
-                <h5>Objetivos Estratégicos Guardados</h5>
-                @foreach ($proyecto->objetivosPrincipales as $objetivoPrincipal)
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <strong>{{ $objetivoPrincipal->objetivo }}</strong>
-                        </div>
-                        <div class="card-body">
-                            {{-- Objetivos Específicos --}}
-                            @if ($objetivoPrincipal->objetivosEspecificos && $objetivoPrincipal->objetivosEspecificos->count() > 0)
-                                <ul class="list-group list-group-flush">
-                                    @foreach ($objetivoPrincipal->objetivosEspecificos as $objetivoEspecifico)
-                                        <li class="list-group-item">{{ $objetivoEspecifico->objetivo }}</li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p class="text-muted">No hay objetivos específicos para este objetivo estratégico.</p>
-                            @endif
-
-                            {{-- Formulario para añadir Objetivo Específico --}}
-                            <div class="mt-3 pt-3 border-top">
-                                <form action="{{ route('objetivos.storeEspecifico', $objetivoPrincipal) }}" method="POST">
-                                    @csrf
-                                    <div class="form-group mb-2">
-                                        <textarea name="objetivo_especifico" class="form-control" rows="1" placeholder="Añadir objetivo específico..."></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-info btn-sm">Guardar Objetivo Específico</button>
-                                </form>
-                                @if (session('success_obj_especifico') && session('objetivo_principal_id') == $objetivoPrincipal->id)
-                                    <div class="alert alert-success mt-2 alert-dismissible fade show" role="alert">
-                                        {{ session('success_obj_especifico') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                @endif
-                                @error('objetivo_especifico') {{-- Asumiendo que el error vendrá con este nombre --}}
-                                    @if(session('objetivo_principal_id_error') == $objetivoPrincipal->id)
-                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                    @endif
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        @else
-            <p class="mt-4">Aún no se han añadido objetivos estratégicos para este proyecto.</p>
-        @endif
-
-        {{-- Se elimina la tabla estática anterior --}}
-        {{-- <div class="table-responsive">
-            <table class="table table-bordered">
-                ...
-            </table>
-        </div> --}}
     </div>
 
+    <!-- Lista de objetivos principales y sus objetivos específicos -->
+    @if ($proyecto->objetivosPrincipales && $proyecto->objetivosPrincipales->count() > 0)
+        @foreach ($proyecto->objetivosPrincipales as $objetivoPrincipal)
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <form action="{{ route('objetivos.updatePrincipal', $objetivoPrincipal) }}" method="POST" class="d-flex w-100">
+                        @csrf
+                        @method('PUT')
+                        <input type="text" name="objetivo_principal" class="form-control me-2" value="{{ $objetivoPrincipal->objetivo }}" required>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </form>
+                    <form action="{{ route('objetivos.destroyPrincipal', $objetivoPrincipal) }}" method="POST" class="ms-2">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <!-- Formulario para añadir un objetivo específico -->
+                    <form action="{{ route('objetivos.storeEspecifico', $objetivoPrincipal) }}" method="POST" class="mb-3">
+                        @csrf
+                        <div class="input-group">
+                            <input type="text" name="objetivo_especifico" class="form-control" placeholder="Añadir objetivo específico..." required>
+                            <button type="submit" class="btn btn-success">Añadir</button>
+                        </div>
+                    </form>
+
+                    <!-- Lista de objetivos específicos -->
+                    @if ($objetivoPrincipal->objetivosEspecificos && $objetivoPrincipal->objetivosEspecificos->count() > 0)
+                        <ul class="list-group">
+                            @foreach ($objetivoPrincipal->objetivosEspecificos as $objetivoEspecifico)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <form action="{{ route('objetivos.updateEspecifico', $objetivoEspecifico) }}" method="POST" class="d-flex w-100">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="text" name="objetivo_especifico" class="form-control me-2" value="{{ $objetivoEspecifico->objetivo }}" required>
+                                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                                    </form>
+                                    <form action="{{ route('objetivos.destroyEspecifico', $objetivoEspecifico) }}" method="POST" class="ms-2">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="text-muted">No hay objetivos específicos para este objetivo estratégico.</p>
+                    @endif
+                </div>
+            </div>
+        @endforeach
+    @else
+        <p class="text-center">Aún no se han añadido objetivos estratégicos para este proyecto.</p>
+    @endif
 </div>
+

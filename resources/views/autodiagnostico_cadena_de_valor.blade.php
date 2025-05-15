@@ -3,13 +3,37 @@
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-6 text-gray-800">Autodiagnóstico de la Cadena de Valor Interna</h1>
 
+    {{-- Mostrar mensajes de sesión --}}
+    @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">¡Éxito!</strong>
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">¡Error!</strong>
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">¡Atención!</strong>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <p class="mb-4 text-sm text-gray-600">
-        A continuación marque con una X para valorar su empresa en función de cada una de las afirmaciones, de tal forma que 0= En total en desacuerdo; 1= No está de acuerdo; 2=Está de acuerdo; 3= Está bastante de acuerdo; 4=En total acuerdo. En caso de no cumplimentar una casilla o duplicar su respuesta le aparecerá el mensaje de error ("¡REF!)
+        A continuación marque con una X para valorar su empresa en función de cada una de las afirmaciones, de tal forma que 0= En total en desacuerdo; 1= No está de acuerdo; 2=Está de acuerdo; 3= Está bastante de acuerdo; 4=En total acuerdo.
     </p>
 
-    <form method="POST" action="#"> {{-- La acción se definirá después para el backend --}}
+    <form method="POST" action="{{ route('cadenadevalor.storeOrUpdate', $proyecto) }}" id="reflexionForm">
         @csrf
-        <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+        <div class="bg-white shadow-md rounded-lg overflow-x-auto mb-8">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -31,7 +55,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @php
-                        $preguntas = [
+                        $preguntasTextos = [
                             1 => "La empresa tiene una política sistematizada de cero defectos en la producción de productos/servicios.",
                             2 => "La empresa emplea los medios productivos tecnológicamente más avanzados de su sector.",
                             3 => "La empresa dispone de un sistema de información y control de gestión eficiente y eficaz.",
@@ -58,25 +82,47 @@
                             24 => "Nuestra política y equipo de ventas y marketing es una importante ventaja competitiva de nuestra empresa respecto al sector.",
                             25 => "El servicio al cliente que prestamos es uno de nuestras principales ventajas competitivas respecto a nuestros competidores."
                         ];
+                        $totalSuma = 0;
+                        $preguntasRespondidas = 0;
                     @endphp
 
-                    @foreach ($preguntas as $num => $texto)
+                    @foreach ($preguntasTextos as $num => $texto)
+                    @php
+                        $nombreCampo = 'pregunta' . $num;
+                        $valorGuardado = null;
+                        if ($autodiagnostico && property_exists($autodiagnostico, $nombreCampo)) {
+                            $valorGuardado = $autodiagnostico->{$nombreCampo};
+                        }
+                        // Usar old() para mantener el valor si falla la validación del formulario principal (aunque aquí es menos relevante para radios AJAX)
+                        $valorActual = old($nombreCampo, $valorGuardado);
+
+                        if (!is_null($valorActual) && $valorActual !== '') {
+                            $totalSuma += (int)$valorActual;
+                            $preguntasRespondidas++;
+                        }
+                    @endphp
                     <tr>
                         <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">{{ $num }}. {{ $texto }}</td>
                         @for ($i = 0; $i <= 4; $i++)
                         <td class="px-2 py-4 text-center">
-                            <input type="radio" name="pregunta{{ $num }}" value="{{ $i }}" class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out">
+                            <input type="radio" name="pregunta{{ $num }}" value="{{ $i }}" 
+                                   class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out radio-pregunta"
+                                   data-pregunta-field="pregunta{{ $num }}"
+                                   id="pregunta{{ $num }}_{{ $i }}" {{-- Añadir ID único para posible label --}}
+                                   @if(!is_null($valorActual) && (string)$valorActual === (string)$i) checked @endif>
                         </td>
                         @endfor
+                         <td class="px-2 py-4 text-center"><span class="ajax-status text-xs"></span></td> {{-- Celda para el estado AJAX --}}
                     </tr>
                     @endforeach
                     <tr class="bg-gray-50">
                         <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             POTENCIAL DE MEJORA DE LA CADENA DE VALOR INTERNA
                         </td>
-                        <td colspan="5" class="px-6 py-3 text-center text-sm font-semibold text-gray-700">
-                            #¡REF! {{-- Esto se calculará después --}}
+                        <td colspan="5" class="px-6 py-3 text-center text-sm font-semibold text-gray-700" id="potencialMejora">
+                            {{-- El cálculo se hará con JS y también al cargar la página --}}
                         </td>
+                        <td class="px-2 py-4 text-center"></td> {{-- Celda vacía para alinear con status --}}
                     </tr>
                 </tbody>
             </table>
@@ -85,38 +131,14 @@
         <div class="mt-8 bg-white shadow-md rounded-lg p-6">
             <h2 class="text-xl font-semibold text-gray-700 mb-3">Reflexión</h2>
             <p class="text-sm text-gray-600 mb-3">
-                Reflexione sobre el resultado obtenido. Anote aquellas observaciones que puedan ser de su interés. Identifique sus fortalezas y debilidades respecto a su cadena de valor.
+                Reflexione sobre el resultado obtenido. Anote aquellas observaciones que puedan ser de su interés.
             </p>
-            <textarea name="reflexion" rows="5" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Escriba aquí sus reflexiones..."></textarea>
-        </div>
-
-        <div class="mt-6 bg-white shadow-md rounded-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">FORTALEZAS</h3>
-            <div class="mb-4">
-                <label for="f1" class="block text-sm font-medium text-gray-700">F1:</label>
-                <input type="text" name="f1" id="f1" class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2">
-            </div>
-            <div>
-                <label for="f2" class="block text-sm font-medium text-gray-700">F2:</label>
-                <input type="text" name="f2" id="f2" class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2">
-            </div>
-        </div>
-
-        <div class="mt-6 bg-white shadow-md rounded-lg p-6">
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">DEBILIDADES</h3>
-            <div class="mb-4">
-                <label for="d1" class="block text-sm font-medium text-gray-700">D1:</label>
-                <input type="text" name="d1" id="d1" class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2">
-            </div>
-            <div>
-                <label for="d2" class="block text-sm font-medium text-gray-700">D2:</label>
-                <input type="text" name="d2" id="d2" class="mt-1 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2">
-            </div>
+            <textarea name="reflexion" rows="5" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Escriba aquí sus reflexiones...">{{ old('reflexion', $autodiagnostico->reflexion ?? '') }}</textarea>
         </div>
 
         <div class="mt-8 flex justify-end">
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Guardar Autodiagnóstico
+            <button type="submit" form="reflexionForm" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Guardar Reflexión
             </button>
         </div>
     </form>
@@ -131,16 +153,147 @@
 
 @push('styles')
 <style>
-    /* Ajustes para que los radio buttons no causen demasiado espacio si las preguntas son largas */
     td input[type="radio"] {
         margin-left: auto;
         margin-right: auto;
     }
-    /* Evitar que el texto de las preguntas se expanda demasiado y rompa el layout */
     tbody td:first-child {
         word-wrap: break-word;
         overflow-wrap: break-word;
-        max-width: 400px; /* Ajusta según necesidad */
+        max-width: 400px; 
+    }
+    .ajax-status {
+        display: inline-block;
+        min-width: 60px; /* Espacio para "Guardando..." */
+        text-align: left;
+    }
+    .ajax-success {
+        color: green;
+    }
+    .ajax-error {
+        color: red;
     }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Asegurar que la meta tag CSRF existe
+    let csrfToken = document.querySelector('meta[name="csrf-token"]');
+    if (!csrfToken) {
+        csrfToken = document.createElement('meta');
+        csrfToken.setAttribute('name', 'csrf-token');
+        csrfToken.setAttribute('content', '{{ csrf_token() }}');
+        document.head.appendChild(csrfToken);
+    }
+    const csrfTokenValue = csrfToken.getAttribute('content');
+
+    const radios = document.querySelectorAll('.radio-pregunta');
+    const updatePreguntaUrl = "{{ route('cadenadevalor.updatePregunta', $proyecto) }}";
+    const potencialMejoraCell = document.getElementById('potencialMejora');
+    const totalPreguntas = {{ count($preguntasTextos) }};
+    let valoresPreguntas = {}; 
+
+    // Inicializar valoresPreguntas y calcular potencial al cargar
+    radios.forEach(radio => {
+        if (radio.checked) {
+            valoresPreguntas[radio.dataset.preguntaField] = parseInt(radio.value);
+        }
+    });
+    recalculatePotencial(); 
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', function () {
+            const preguntaField = this.dataset.preguntaField;
+            const value = this.value;
+            const statusSpan = this.closest('tr').querySelector('.ajax-status');
+
+            statusSpan.textContent = 'Guardando...';
+            statusSpan.className = 'ajax-status'; // Reset classes
+            
+            // Log de datos a enviar
+            console.log('Enviando AJAX:', { pregunta_field: preguntaField, value: value, _token: csrfTokenValue });
+
+            fetch(updatePreguntaUrl, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfTokenValue,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    pregunta_field: preguntaField,
+                    value: value
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Capturar errores HTTP (ej. 419, 500) antes de intentar parsear JSON
+                    return response.json().then(errData => {
+                        throw { status: response.status, data: errData };
+                    }).catch(() => {
+                         // Si el cuerpo del error no es JSON o está vacío
+                        throw { status: response.status, data: { error: response.statusText || 'Error de red' } };
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Respuesta AJAX:', data);
+                if (data.success) {
+                    statusSpan.textContent = 'Guardado ✓';
+                    statusSpan.classList.add('ajax-success');
+                    valoresPreguntas[preguntaField] = parseInt(value);
+                    recalculatePotencial();
+                } else {
+                    statusSpan.textContent = 'Error X';
+                    statusSpan.classList.add('ajax-error');
+                    console.error('Error al guardar (respuesta servidor):', data.error);
+                }
+                setTimeout(() => {
+                    if (statusSpan.classList.contains('ajax-success') || statusSpan.classList.contains('ajax-error')) {
+                         statusSpan.textContent = '';
+                         statusSpan.classList.remove('ajax-success', 'ajax-error');
+                    }
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Error en fetch o respuesta:', error);
+                statusSpan.textContent = 'Error X';
+                statusSpan.classList.add('ajax-error');
+                let errorMessage = 'Error de conexión.';
+                if (error.status) {
+                    errorMessage = `Error ${error.status}: ${error.data.error || 'Desconocido'}`;
+                    if (error.status === 419) {
+                        errorMessage = 'Sesión expirada o token CSRF inválido. Por favor, recargue la página.';
+                    }
+                }
+                console.error('Error detallado:', errorMessage);
+                // No limpiar el mensaje de error inmediatamente para que el usuario lo vea
+                // setTimeout(...)
+            });
+        });
+    });
+
+    function recalculatePotencial() {
+        let sumaActual = 0;
+        let respondidas = 0;
+        
+        // Recalcular desde los inputs actuales por si acaso el objeto valoresPreguntas no está sincronizado
+        // O confiar en valoresPreguntas si el guardado es la única fuente de verdad
+        document.querySelectorAll('.radio-pregunta:checked').forEach(r => {
+            sumaActual += parseInt(r.value);
+            respondidas++;
+        });
+
+        if (respondidas === totalPreguntas) {
+            const media = sumaActual / totalPreguntas;
+            potencialMejoraCell.textContent = media.toFixed(2);
+        } else {
+            potencialMejoraCell.textContent = `${respondidas}/${totalPreguntas} resp.`;
+        }
+    }
+});
+</script>
 @endpush

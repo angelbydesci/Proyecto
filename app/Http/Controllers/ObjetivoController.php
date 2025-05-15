@@ -48,4 +48,58 @@ class ObjetivoController extends Controller
 
         return redirect()->route('proyectos.showObjetivos', $objetivoPrincipal->proyecto_id)->with('success_obj_especifico', 'Objetivo específico añadido correctamente.');
     }
+
+    /**
+     * Edita un objetivo principal.
+     */
+    public function updatePrincipal(Request $request, ObjetivoPrincipal $objetivoPrincipal)
+    {
+        $request->validate([
+            'objetivo_principal' => 'required|string|max:1000',
+        ]);
+
+        $objetivoPrincipal->update([
+            'objetivo' => $request->input('objetivo_principal'),
+        ]);
+
+        return redirect()->route('proyectos.showObjetivos', $objetivoPrincipal->proyecto_id)->with('success_obj_principal', 'Objetivo principal actualizado correctamente.');
+    }
+
+    /**
+     * Elimina un objetivo principal.
+     */
+    public function destroyPrincipal(ObjetivoPrincipal $objetivoPrincipal)
+    {
+        $proyectoId = $objetivoPrincipal->proyecto_id;
+        $objetivoPrincipal->delete();
+
+        return redirect()->route('proyectos.showObjetivos', $proyectoId)->with('success_obj_principal', 'Objetivo principal eliminado correctamente.');
+    }
+
+    /**
+     * Edita un objetivo específico.
+     */
+    public function updateEspecifico(Request $request, ObjetivoEspecifico $objetivoEspecifico)
+    {
+        $request->validate([
+            'objetivo_especifico' => 'required|string|max:1000',
+        ]);
+
+        $objetivoEspecifico->update([
+            'objetivo' => $request->input('objetivo_especifico'),
+        ]);
+
+        return redirect()->route('proyectos.showObjetivos', $objetivoEspecifico->objetivoPrincipal->proyecto_id)->with('success_obj_especifico', 'Objetivo específico actualizado correctamente.');
+    }
+
+    /**
+     * Elimina un objetivo específico.
+     */
+    public function destroyEspecifico(ObjetivoEspecifico $objetivoEspecifico)
+    {
+        $proyectoId = $objetivoEspecifico->objetivoPrincipal->proyecto_id;
+        $objetivoEspecifico->delete();
+
+        return redirect()->route('proyectos.showObjetivos', $proyectoId)->with('success_obj_especifico', 'Objetivo específico eliminado correctamente.');
+    }
 }

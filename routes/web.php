@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\ValorController; // Añadir esta línea
 use App\Http\Controllers\ObjetivoController; // Añadir esta línea
+use App\Http\Controllers\CadenaDeValorController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -50,6 +51,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/proyectos/{proyecto}/estrategia', [ProyectoController::class, 'showEstrategia'])->name('proyectos.showEstrategia');
     Route::get('/proyectos/{proyecto}/matriz-came', [ProyectoController::class, 'showMatrizCame'])->name('proyectos.showMatrizCame');
     Route::get('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [ProyectoController::class, 'showAutodiagnosticoCadenaDeValor'])->name('proyectos.showAutodiagnosticoCadenaDeValor');
+
+    // Rutas para CadenaDeValorController
+    Route::post('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [CadenaDeValorController::class, 'storeOrUpdate'])->name('cadenadevalor.storeOrUpdate');
+    Route::patch('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor/pregunta', [CadenaDeValorController::class, 'updatePregunta'])->name('cadenadevalor.updatePregunta');
 });
 
 // ========================================
@@ -98,3 +103,11 @@ Route::get('/home', function () {
 // ========================================
 
 require __DIR__.'/auth.php';
+
+// Rutas para objetivos principales
+Route::put('/objetivos/principal/{objetivoPrincipal}', [ObjetivoController::class, 'updatePrincipal'])->name('objetivos.updatePrincipal');
+Route::delete('/objetivos/principal/{objetivoPrincipal}', [ObjetivoController::class, 'destroyPrincipal'])->name('objetivos.destroyPrincipal');
+
+// Rutas para objetivos específicos
+Route::put('/objetivos/especifico/{objetivoEspecifico}', [ObjetivoController::class, 'updateEspecifico'])->name('objetivos.updateEspecifico');
+Route::delete('/objetivos/especifico/{objetivoEspecifico}', [ObjetivoController::class, 'destroyEspecifico'])->name('objetivos.destroyEspecifico');
