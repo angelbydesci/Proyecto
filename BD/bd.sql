@@ -4,7 +4,9 @@
 -- SO del servidor:              Win64
 -- HeidiSQL Versión:             12.4.0.6659
 -- --------------------------------------------------------
-
+/*
+https://mermaid.live/edit#pako:eNrFV21vmzAQ_ivIn9sqOC8lfN20L5OmfZ4ioSu-UK9gI9u0SdP-95mQNEDshi1ZixRFPD7fPc-dX44NSSVDEpOFQPWVQ6agWIjAPpVGpYOXl-truQlKJdeYGqmDOFiQMP6xII3VYWBn-Qi5VHjaTt79RsMfpU5KxUXKS8gHzEqBobC_bZSddbi3drs8ioe6xJQveTpADQjIueY6WUoGA9klbXJ-42WF6hksV6kMnjYvwCj-nKRQ4FDbEpThdRpSLkV7UrvAm-alfrgwAWfBz-8HSFtHIguEjXoEYgE8P0JL0PpJKnYYMLxAbaAog1QhGGQJmGb0tfnrq3ifUg3V1BOLf3NQlcWdwmTvrUUDVyZgqFPFyzohvZHClvkIfHSBleDMFrpeSEZZPRlPQQ-R2x2tSuZPxn4XnU7FXqgnHVtHFybn3mf_TnWb1b3T_8a1ve1Pc93PO0j8SNbdY-7MzCpc5rjqrONmDmaVMBC6YeqGx2544oanbnjmhm_dcOSG5x45Iw_u0Rl6hIYepaFHaujRGnrEhh61oUdu6NFLPXqpr64evdSjl3r00umF13z3qh2w5nMQ_fWOoipsvHLYsX-5nZoM3qgO0ruTGlJ7kNQ3y2fK6TUlZ1Sh8fRhxNvt0VlleLvU4TPr4OzgzltelkyPfsf7xfdFet-pxI7GA647rAtkvCqaZgvyCrt6cFVyW403eschklymD3pAoB0sn-x3zl8E0ajrFtAVoZf_O561WtNj6zIBxmxPp_vtZD0BMhTmqDzrXLaPg9p9DtokzVFh1ju-5IpkijMSG1XhFSlQ2c7cvpIt5wUx92jbd1J_ADBQD_UXQD2nBPFLymI_TckquyfxEnJt35ri7j4I31CFgqH6Iu0FQGI6pVsnJN6QFYmvQzq6mdMZvZ1ORtE8Go_t8JrEYTS5GUfT2WwUjeY0mlD6ekWet4HDm1k0isZ0Eo0m0_FkSl__APx_eZQ
+*/
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
 /*!50503 SET NAMES utf8mb4 */;
