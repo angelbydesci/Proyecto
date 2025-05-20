@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Proyecto;
 use App\Models\CadenaDeValor; // Asegúrate de importar el modelo CadenaDeValor
+use App\Models\Fortaleza; // Importar el modelo Fortaleza
+use App\Models\Debilidad; // Importar el modelo Debilidad
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
@@ -140,8 +142,12 @@ class ProyectoController extends Controller
         }
         // Cargar los datos existentes de CadenaDeValor para este proyecto
         $autodiagnostico = CadenaDeValor::where('proyecto_id', $proyecto->id)->first();
+        // Cargar los datos existentes de Fortalezas para este proyecto
+        $fortalezas = Fortaleza::where('proyecto_id', $proyecto->id)->first();
+        // Cargar los datos existentes de Debilidades para este proyecto
+        $debilidades = Debilidad::where('proyecto_id', $proyecto->id)->first();
 
-        return view('autodiagnostico_cadena_de_valor', compact('proyecto', 'autodiagnostico'));
+        return view('autodiagnostico_cadena_de_valor', compact('proyecto', 'autodiagnostico', 'fortalezas', 'debilidades'));
     }
 
     // Métodos para actualizar (PATCH/PUT)

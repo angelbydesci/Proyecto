@@ -7,6 +7,7 @@ use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\ValorController; // Añadir esta línea
 use App\Http\Controllers\ObjetivoController; // Añadir esta línea
 use App\Http\Controllers\CadenaDeValorController;
+use App\Http\Controllers\FODAController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -54,6 +55,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para CadenaDeValorController
     Route::post('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [CadenaDeValorController::class, 'storeOrUpdate'])->name('cadenadevalor.storeOrUpdate');
+    Route::resource('foda', FODAController::class)->except(['index', 'create', 'show', 'edit', 'update', 'destroy']); // Provisional, ajustar según necesidad
+    Route::post('/foda/{proyecto}', [FODAController::class, 'store'])->name('foda.store');
 });
 
 // ========================================

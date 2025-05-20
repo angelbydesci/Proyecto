@@ -123,7 +123,41 @@
         </div>
     </form>
 
+    {{-- Sección FODA --}}
+    <div class="mt-8">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Análisis FODA</h2>
+        <form method="POST" action="{{ route('foda.store', $proyecto) }}">
+            @csrf
+            <div class="grid grid-cols-1 gap-6"> {{-- Ajustado para una sola columna --}}
+                {{-- Fortalezas --}}
+                <div class="bg-white shadow-md rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-3">FORTALEZAS</h3> {{-- Cambiado a mayúsculas como en la imagen --}}
+                    @for ($i = 1; $i <= 2; $i++) {{-- Cambiado para mostrar solo 2 --}}
+                        <div class="mb-4 flex items-center">
+                            <label for="fortaleza{{ $i }}" class="block text-sm font-medium text-gray-700 w-10">F{{ $i }}:</label>
+                            <input type="text" name="fortaleza{{ $i }}" id="fortaleza{{ $i }}" value="{{ old('fortaleza'.$i, $fortalezas['fortaleza'.$i] ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2">
+                        </div>
+                    @endfor
+                </div>
 
+                {{-- Debilidades --}}
+                <div class="bg-white shadow-md rounded-lg p-6 mt-6"> {{-- Añadido margen superior para separar de Fortalezas --}}
+                    <h3 class="text-lg font-semibold text-gray-700 mb-3">DEBILIDADES</h3> {{-- Cambiado a mayúsculas como en la imagen --}}
+                    @for ($i = 1; $i <= 2; $i++) {{-- Cambiado para mostrar solo 2 --}}
+                        <div class="mb-4 flex items-center">
+                            <label for="debilidad{{ $i }}" class="block text-sm font-medium text-gray-700 w-10">D{{ $i }}:</label>
+                            <input type="text" name="debilidad{{ $i }}" id="debilidad{{ $i }}" value="{{ old('debilidad'.$i, $debilidades['debilidad'.$i] ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2">
+                        </div>
+                    @endfor
+                </div>
+            </div>
+            <div class="mt-8 flex justify-end">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Guardar FODA
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 @push('styles')
