@@ -61,21 +61,6 @@ CREATE TABLE IF NOT EXISTS `cache_locks` (
 
 -- Volcando datos para la tabla gestion_login.cache_locks: ~0 rows (aproximadamente)
 
--- Volcando estructura para tabla gestion_login.cadena_valor
-CREATE TABLE IF NOT EXISTS `cadena_valor` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `plan_id` int(11) NOT NULL,
-  `actividad` varchar(150) DEFAULT NULL,
-  `tipo` enum('Primaria','Secundaria') DEFAULT NULL,
-  `descripcion` text DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `plan_id` (`plan_id`),
-  CONSTRAINT `cadena_valor_ibfk_1` FOREIGN KEY (`plan_id`) REFERENCES `planes_estrategicos` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Volcando datos para la tabla gestion_login.cadena_valor: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla gestion_login.fuerzas_porter
 CREATE TABLE IF NOT EXISTS `fuerzas_porter` (

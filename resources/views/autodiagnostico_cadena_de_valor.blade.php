@@ -88,8 +88,20 @@
                 </tbody>
             </table>
         </div>
-        {{-- Botón para guardar solo las preguntas --}}
-        <div class="mt-4 mb-8 flex justify-end">
+        
+        {{-- Contenedor para el botón de guardar respuestas y el campo de porcentaje --}}
+        <div class="mt-4 mb-8 flex items-center justify-end">
+            {{-- Campo para mostrar el porcentaje (no editable) --}}
+            @if (isset($autodiagnostico) && $autodiagnostico->porcentaje !== null)
+            <div class="mr-2">
+                <label for="porcentaje_mostrado" class="block text-sm font-medium text-gray-700 mb-1 sr-only">Porcentaje:</label>
+                <input type="text" id="porcentaje_mostrado" value="{{ $autodiagnostico->porcentaje }}%" 
+                       class="w-20 text-center bg-gray-100 border border-gray-300 text-gray-700 py-2 px-3 rounded-md text-sm shadow-sm"
+                       readonly>
+            </div>
+            @endif
+            
+            {{-- Botón para guardar solo las preguntas --}}
             <button type="submit" name="guardar_preguntas" value="1" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Guardar Respuestas
             </button>
@@ -111,11 +123,6 @@
         </div>
     </form>
 
-    <div class="mt-8 text-center">
-        <a href="{{ route('dashboard2', $proyecto) }}" class="text-indigo-600 hover:text-indigo-900 font-medium">
-            &larr; Volver al Dashboard del Proyecto
-        </a>
-    </div>
 
 </div>
 
