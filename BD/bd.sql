@@ -223,6 +223,61 @@ CREATE TABLE IF NOT EXISTS `cadenadevalor` (
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`) VALUES
 	(1, 'Administrador', 'admin@peti.com', '$2y$12$C680abLVgyqrnpTS0juqROz7Uq9Y/9PGB5eV06UTvxqagYa8k5YOS', '2025-04-14 07:49:40');
 
+CREATE TABLE IF NOT EXISTS `fortalezas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `fortaleza1` TEXT DEFAULT NULL,
+  `fortaleza2` TEXT DEFAULT NULL,
+  `fortaleza3` TEXT DEFAULT NULL,
+  `fortaleza4` TEXT DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_fortalezas_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_fortalezas_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `oportunidades` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `oportunidad1` TEXT DEFAULT NULL,
+  `oportunidad2` TEXT DEFAULT NULL,
+  `oportunidad3` TEXT DEFAULT NULL,
+  `oportunidad4` TEXT DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_oportunidades_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_oportunidades_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `debilidades` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `debilidad1` TEXT DEFAULT NULL,
+  `debilidad2` TEXT DEFAULT NULL,
+  `debilidad3` TEXT DEFAULT NULL,
+  `debilidad4` TEXT DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_debilidades_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_debilidades_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `amenazas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `amenaza1` TEXT DEFAULT NULL,
+  `amenaza2` TEXT DEFAULT NULL,
+  `amenaza3` TEXT DEFAULT NULL,
+  `amenaza4` TEXT DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_amenazas_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_amenazas_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
