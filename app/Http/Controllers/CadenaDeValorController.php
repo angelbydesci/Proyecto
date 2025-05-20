@@ -10,48 +10,52 @@ use Illuminate\Support\Facades\Log;
 class CadenaDeValorController extends Controller
 {
     /**
-     * Store or update the reflexion for a Proyecto.
+     * Store or update the autodiagnostico data for a Proyecto.
      */
     public function storeOrUpdate(Request $request, Proyecto $proyecto)
     {
+        // Log para ver todos los datos del request
+        Log::info('Datos recibidos en storeOrUpdate:', $request->all());
+
         $validatedData = $request->validate([
             'reflexion' => 'nullable|string',
+            // Hacer el porcentaje opcional y permitir null
+            'porcentaje' => 'nullable|numeric|min:0|max:100', 
         ]);
 
-        CadenaDeValor::updateOrCreate(
+        // Log para ver los datos validados
+        Log::info('Datos validados:', $validatedData);
+
+        $dataToUpdate = [
+            'reflexion' => $validatedData['reflexion'] ?? null,
+            // Asignar porcentaje validado o null si no está presente
+            'porcentaje' => $validatedData['porcentaje'] ?? null, 
+        ];
+
+        // Recoger las respuestas de las preguntas
+        for ($i = 1; $i <= 25; $i++) {
+            $preguntaField = 'pregunta' . $i;
+            // Si la pregunta existe en el request (radio button marcado), se guarda su valor.
+            // Si no existe (ningún radio button marcado para esa pregunta), se guarda null.
+            $dataToUpdate[$preguntaField] = $request->input($preguntaField, null);
+        }
+
+        // Actualizar o crear el registro de cadena de valor
+        $cadenaDeValor = CadenaDeValor::updateOrCreate(
             ['proyecto_id' => $proyecto->id],
-            ['reflexion' => $validatedData['reflexion'] ?? null] // Asegurar que solo se pasa la reflexión
+            $dataToUpdate
         );
 
+        // Log para confirmar el guardado y ver el objeto
+        Log::info('CadenaDeValor guardada/actualizada:', $cadenaDeValor->toArray());
+
+        // Modificar el mensaje de éxito para no mostrar el porcentaje si es null
+        $successMessage = 'Autodiagnóstico y reflexión guardados correctamente.';
+        if (isset($cadenaDeValor->porcentaje)) {
+            $successMessage .= ' Porcentaje: ' . $cadenaDeValor->porcentaje;
+        }
+
         return redirect()->route('proyectos.showAutodiagnosticoCadenaDeValor', $proyecto)
-                         ->with('success', 'Reflexión guardada correctamente.');
-    }
-
-    /**
-     * Update a specific pregunta's value for a Proyecto asynchronously.
-     */
-    public function updatePregunta(Request $request, Proyecto $proyecto)
-    {
-        $preguntaField = $request->input('pregunta_field'); // e.g., 'pregunta1', 'pregunta2'
-        $value = $request->input('value');
-
-        // Basic validation
-        if (!preg_match('/^pregunta([1-9]|1[0-9]|2[0-5])$/', $preguntaField)) {
-            return response()->json(['error' => 'Nombre de pregunta inválido.'], 400);
-        }
-        if (!in_array($value, [0, 1, 2, 3, 4])) {
-            return response()->json(['error' => 'Valor de pregunta inválido.'], 400);
-        }
-
-        try {
-            $cadenaDeValor = CadenaDeValor::firstOrNew(['proyecto_id' => $proyecto->id]);
-            $cadenaDeValor->{$preguntaField} = $value;
-            $cadenaDeValor->save();
-
-            return response()->json(['success' => 'Respuesta guardada.', 'pregunta' => $preguntaField, 'valor' => $value]);
-        } catch (\Exception $e) {
-            Log::error("Error al actualizar pregunta de cadena de valor: " . $e->getMessage());
-            return response()->json(['error' => 'No se pudo guardar la respuesta.'], 500);
-        }
+                         ->with('success', $successMessage);
     }
 }

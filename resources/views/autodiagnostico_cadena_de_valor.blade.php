@@ -6,19 +6,16 @@
     {{-- Mostrar mensajes de sesión --}}
     @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong class="font-bold">¡Éxito!</strong>
             <span class="block sm:inline">{{ session('success') }}</span>
         </div>
     @endif
     @if (session('error'))
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong class="font-bold">¡Error!</strong>
             <span class="block sm:inline">{{ session('error') }}</span>
         </div>
     @endif
     @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong class="font-bold">¡Atención!</strong>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -34,98 +31,68 @@
     <form method="POST" action="{{ route('cadenadevalor.storeOrUpdate', $proyecto) }}" id="reflexionForm">
         @csrf
         <div class="bg-white shadow-md rounded-lg overflow-x-auto mb-8">
+            {{-- Tabla de preguntas (se mantiene la estructura para los radio buttons) --}}
             <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+                <thead class="bg-gray-100">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/5">
-                            AUTODIAGNÓSTICO DE LA CADENA DE VALOR INTERNA
-                        </th>
-                        <th scope="col" colspan="5" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            VALORACIÓN
-                        </th>
-                    </tr>
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                        <th scope="col" class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">0</th>
-                        <th scope="col" class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">1</th>
-                        <th scope="col" class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2</th>
-                        <th scope="col" class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">3</th>
-                        <th scope="col" class="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">4</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Afirmación</th>
+                        <th scope="col" class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">0</th>
+                        <th scope="col" class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">1</th>
+                        <th scope="col" class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">2</th>
+                        <th scope="col" class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">3</th>
+                        <th scope="col" class="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">4</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @php
                         $preguntasTextos = [
-                            1 => "La empresa tiene una política sistematizada de cero defectos en la producción de productos/servicios.",
-                            2 => "La empresa emplea los medios productivos tecnológicamente más avanzados de su sector.",
-                            3 => "La empresa dispone de un sistema de información y control de gestión eficiente y eficaz.",
-                            4 => "Los medios técnicos y tecnológicos de la empresa están preparados para competir en un futuro a corto, medio y largo plazo.",
-                            5 => "La empresa es un referente en su sector en I+D+i.",
-                            6 => "La excelencia de los procedimientos de la empresa (en ISO, etc.) son una principal fuente de ventaja competitiva.",
-                            7 => "La empresa dispone de página web, y esta se emplea no sólo como escaparate virtual de productos/servicios, sino también para establecer relaciones con clientes y proveedores.",
-                            8 => "Los productos/servicios que desarrolla nuestra empresa llevan incorporada una tecnología difícil de imitar.",
-                            9 => "La empresa es referente en su sector en la optimización, en términos de coste, de su cadena de producción, siendo ésta una de sus principales ventajas competitivas.",
-                            10 => "La informatización de la empresa es una fuente de ventaja competitiva clara respecto a sus competidores.",
-                            11 => "Los canales de distribución de la empresa son una importante fuente de ventajas competitivas.",
-                            12 => "Los productos/servicios de la empresa son altamente, y diferencialmente, valorados por el cliente respecto a nuestros competidores.",
-                            13 => "La empresa dispone y ejecuta un sistemático plan de marketing y ventas.",
-                            14 => "La empresa tiene optimizada su gestión financiera.",
-                            15 => "La empresa busca continuamente el mejorar la relación con sus clientes cortando los plazos de ejecución, personalizando la oferta o mejorando las condiciones de entrega. Pero siempre partiendo de un plan previo.",
-                            16 => "La empresa es referente en su sector en el lanzamiento de innovadores productos y servicio de éxito demostrado en el mercado.",
-                            17 => "Los Recursos Humanos son especialmente responsables del éxito de la empresa, considerándolos incluso como el principal activo estratégico.",
-                            18 => "Se tiene una plantilla altamente motivada, que conoce con claridad las metas, objetivos y estrategias de la organización.",
-                            19 => "La empresa siempre trabaja conforme a una estrategia y objetivos claros.",
-                            20 => "La gestión del circulante está optimizada.",
-                            21 => "Se tiene definido claramente el posicionamiento estratégico de todos los productos de la empresa.",
-                            22 => "Se dispone de una política de marca basada en la reputación que la empresa genera, en la gestión de relación con el cliente y en el posicionamiento estratégico previamente definido.",
-                            23 => "La cartera de clientes de nuestra empresa está altamente fidelizada, ya que tenemos como principal propósito el deleitarlos día a día.",
-                            24 => "Nuestra política y equipo de ventas y marketing es una importante ventaja competitiva de nuestra empresa respecto al sector.",
-                            25 => "El servicio al cliente que prestamos es uno de nuestras principales ventajas competitivas respecto a nuestros competidores."
+                            'pregunta1' => '1. ¿La empresa comunica claramente su misión y visión a todos los empleados?',
+                            'pregunta2' => '2. ¿Existe un plan estratégico formal y se revisa periódicamente?',
+                            'pregunta3' => '3. ¿Se establecen objetivos claros y medibles en todos los niveles de la organización?',
+                            'pregunta4' => '4. ¿La alta dirección participa activamente en la definición y comunicación de la estrategia?',
+                            'pregunta5' => '5. ¿Se realizan reuniones periódicas para evaluar el avance en el cumplimiento de la estrategia?',
+                            'pregunta6' => '6. ¿La empresa tiene un sistema de gestión de la calidad certificado (por ejemplo, ISO 9001)?',
+                            'pregunta7' => '7. ¿Se llevan a cabo auditorías internas y externas para evaluar la conformidad con los estándares de calidad?',
+                            'pregunta8' => '8. ¿Se implementan acciones correctivas y preventivas de manera efectiva?',
+                            'pregunta9' => '9. ¿La empresa tiene un enfoque sistemático para la mejora continua (por ejemplo, Kaizen)?',
+                            'pregunta10' => '10. ¿Se utilizan indicadores clave de rendimiento (KPI) para medir el desempeño organizacional?',
+                            'pregunta11' => '11. ¿La empresa realiza análisis FODA (fortalezas, oportunidades, debilidades y amenazas) periódicamente?',
+                            'pregunta12' => '12. ¿Se lleva a cabo un análisis de la cadena de valor para identificar áreas de mejora?',
+                            'pregunta13' => '13. ¿La empresa tiene un enfoque proactivo para la gestión de riesgos?',
+                            'pregunta14' => '14. ¿Se capacita a los empleados en la identificación y gestión de riesgos?',
+                            'pregunta15' => '15. ¿La empresa tiene un plan de continuidad del negocio documentado y probado?',
+                            'pregunta16' => '16. ¿Se evalúa regularmente la satisfacción del cliente?',
+                            'pregunta17' => '17. ¿La empresa tiene un proceso para gestionar y resolver quejas de clientes?',
+                            'pregunta18' => '18. ¿Se analizan y utilizan los comentarios de los clientes para mejorar productos y servicios?',
+                            'pregunta19' => '19. ¿La empresa colabora con los clientes en el desarrollo de nuevos productos o servicios?',
+                            'pregunta20' => '20. ¿Se realizan estudios de mercado para identificar tendencias y oportunidades?',
+                            'pregunta21' => '21. ¿La empresa tiene una estrategia de marketing digital?',
+                            'pregunta22' => '22. ¿Se utilizan redes sociales para interactuar con clientes y promocionar productos/servicios?',
+                            'pregunta23' => '23. ¿La empresa tiene un proceso de ventas bien definido y documentado?',
+                            'pregunta24' => '24. ¿Se capacita regularmente al personal de ventas en técnicas de venta y negociación?',
+                            'pregunta25' => '25. ¿La empresa invierte en la formación y desarrollo de sus empleados para mejorar sus habilidades y conocimientos en relación con la cadena de valor?'
                         ];
-                        $totalSuma = 0;
-                        $preguntasRespondidas = 0;
                     @endphp
-
-                    @foreach ($preguntasTextos as $num => $texto)
-                    @php
-                        $nombreCampo = 'pregunta' . $num;
-                        $valorGuardado = null;
-                        if ($autodiagnostico && property_exists($autodiagnostico, $nombreCampo)) {
-                            $valorGuardado = $autodiagnostico->{$nombreCampo};
-                        }
-                        // Usar old() para mantener el valor si falla la validación del formulario principal (aunque aquí es menos relevante para radios AJAX)
-                        $valorActual = old($nombreCampo, $valorGuardado);
-
-                        if (!is_null($valorActual) && $valorActual !== '') {
-                            $totalSuma += (int)$valorActual;
-                            $preguntasRespondidas++;
-                        }
-                    @endphp
-                    <tr>
-                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">{{ $num }}. {{ $texto }}</td>
-                        @for ($i = 0; $i <= 4; $i++)
-                        <td class="px-2 py-4 text-center">
-                            <input type="radio" name="pregunta{{ $num }}" value="{{ $i }}" 
-                                   class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out radio-pregunta"
-                                   data-pregunta-field="pregunta{{ $num }}"
-                                   id="pregunta{{ $num }}_{{ $i }}" {{-- Añadir ID único para posible label --}}
-                                   @if(!is_null($valorActual) && (string)$valorActual === (string)$i) checked @endif>
-                        </td>
-                        @endfor
-                         <td class="px-2 py-4 text-center"><span class="ajax-status text-xs"></span></td> {{-- Celda para el estado AJAX --}}
-                    </tr>
+                    @foreach ($preguntasTextos as $key => $texto)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">{{ $texto }}</td>
+                            @for ($i = 0; $i <= 4; $i++)
+                                <td class="px-3 py-4 text-center">
+                                    <input type="radio" name="{{ $key }}" value="{{ $i }}" 
+                                           class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                                           {{ (isset($autodiagnostico) && $autodiagnostico->$key !== null && $autodiagnostico->$key == $i) ? 'checked' : '' }}>
+                                </td>
+                            @endfor
+                        </tr>
                     @endforeach
-                    <tr class="bg-gray-50">
-                        <td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            POTENCIAL DE MEJORA DE LA CADENA DE VALOR INTERNA
-                        </td>
-                        <td colspan="5" class="px-6 py-3 text-center text-sm font-semibold text-gray-700" id="potencialMejora">
-                            {{-- El cálculo se hará con JS y también al cargar la página --}}
-                        </td>
-                        <td class="px-2 py-4 text-center"></td> {{-- Celda vacía para alinear con status --}}
-                    </tr>
                 </tbody>
             </table>
+        </div>
+        {{-- Botón para guardar solo las preguntas --}}
+        <div class="mt-4 mb-8 flex justify-end">
+            <button type="submit" name="guardar_preguntas" value="1" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Guardar Respuestas
+            </button>
         </div>
 
         <div class="mt-8 bg-white shadow-md rounded-lg p-6">
@@ -134,11 +101,12 @@
                 Reflexione sobre el resultado obtenido. Anote aquellas observaciones que puedan ser de su interés.
             </p>
             <textarea name="reflexion" rows="5" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2" placeholder="Escriba aquí sus reflexiones...">{{ old('reflexion', $autodiagnostico->reflexion ?? '') }}</textarea>
+            {{-- Se elimina el input hidden para "porcentaje" --}}
         </div>
 
         <div class="mt-8 flex justify-end">
-            <button type="submit" form="reflexionForm" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Guardar Reflexión
+            <button type="submit" name="guardar_todo" value="1" form="reflexionForm" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Guardar Todo (Respuestas y Reflexión)
             </button>
         </div>
     </form>
@@ -162,138 +130,32 @@
         overflow-wrap: break-word;
         max-width: 400px; 
     }
-    .ajax-status {
-        display: inline-block;
-        min-width: 60px; /* Espacio para "Guardando..." */
-        text-align: left;
-    }
-    .ajax-success {
-        color: green;
-    }
-    .ajax-error {
-        color: red;
-    }
+    /* Se eliminan los estilos para ajax-status ya que no se usan */
 </style>
 @endpush
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Asegurar que la meta tag CSRF existe
-    let csrfToken = document.querySelector('meta[name="csrf-token"]');
-    if (!csrfToken) {
-        csrfToken = document.createElement('meta');
-        csrfToken.setAttribute('name', 'csrf-token');
-        csrfToken.setAttribute('content', '{{ csrf_token() }}');
-        document.head.appendChild(csrfToken);
-    }
-    const csrfTokenValue = csrfToken.getAttribute('content');
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('reflexionForm');
+    
+    // Se elimina toda la lógica de cálculo de JavaScript.
+    // El guardado de la posición de los botones se maneja a través del envío del formulario estándar
+    // y la recarga de la página con los valores desde el backend.
 
-    const radios = document.querySelectorAll('.radio-pregunta');
-    const updatePreguntaUrl = "{{ route('cadenadevalor.updatePregunta', $proyecto) }}";
-    const potencialMejoraCell = document.getElementById('potencialMejora');
-    const totalPreguntas = {{ count($preguntasTextos) }};
-    let valoresPreguntas = {}; 
-
-    // Inicializar valoresPreguntas y calcular potencial al cargar
-    radios.forEach(radio => {
-        if (radio.checked) {
-            valoresPreguntas[radio.dataset.preguntaField] = parseInt(radio.value);
-        }
-    });
-    recalculatePotencial(); 
-
-    radios.forEach(radio => {
-        radio.addEventListener('change', function () {
-            const preguntaField = this.dataset.preguntaField;
-            const value = this.value;
-            const statusSpan = this.closest('tr').querySelector('.ajax-status');
-
-            statusSpan.textContent = 'Guardando...';
-            statusSpan.className = 'ajax-status'; // Reset classes
-            
-            // Log de datos a enviar
-            console.log('Enviando AJAX:', { pregunta_field: preguntaField, value: value, _token: csrfTokenValue });
-
-            fetch(updatePreguntaUrl, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfTokenValue,
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    pregunta_field: preguntaField,
-                    value: value
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    // Capturar errores HTTP (ej. 419, 500) antes de intentar parsear JSON
-                    return response.json().then(errData => {
-                        throw { status: response.status, data: errData };
-                    }).catch(() => {
-                         // Si el cuerpo del error no es JSON o está vacío
-                        throw { status: response.status, data: { error: response.statusText || 'Error de red' } };
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Respuesta AJAX:', data);
-                if (data.success) {
-                    statusSpan.textContent = 'Guardado ✓';
-                    statusSpan.classList.add('ajax-success');
-                    valoresPreguntas[preguntaField] = parseInt(value);
-                    recalculatePotencial();
-                } else {
-                    statusSpan.textContent = 'Error X';
-                    statusSpan.classList.add('ajax-error');
-                    console.error('Error al guardar (respuesta servidor):', data.error);
-                }
-                setTimeout(() => {
-                    if (statusSpan.classList.contains('ajax-success') || statusSpan.classList.contains('ajax-error')) {
-                         statusSpan.textContent = '';
-                         statusSpan.classList.remove('ajax-success', 'ajax-error');
-                    }
-                }, 3000);
-            })
-            .catch(error => {
-                console.error('Error en fetch o respuesta:', error);
-                statusSpan.textContent = 'Error X';
-                statusSpan.classList.add('ajax-error');
-                let errorMessage = 'Error de conexión.';
-                if (error.status) {
-                    errorMessage = `Error ${error.status}: ${error.data.error || 'Desconocido'}`;
-                    if (error.status === 419) {
-                        errorMessage = 'Sesión expirada o token CSRF inválido. Por favor, recargue la página.';
-                    }
-                }
-                console.error('Error detallado:', errorMessage);
-                // No limpiar el mensaje de error inmediatamente para que el usuario lo vea
-                // setTimeout(...)
+    // Ejemplo de cómo podrías añadir listeners a los radios si fuera necesario para alguna otra funcionalidad futura,
+    // pero para el simple guardado y recarga, no es estrictamente necesario aquí.
+    if (form) {
+        const radios = form.querySelectorAll('input[type="radio"]');
+        radios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Podrías hacer algo aquí si necesitas reaccionar a los cambios antes de enviar,
+                // pero para el caso actual, el submit del formulario es suficiente.
+                // console.log('Radio button changed:', this.name, this.value);
             });
         });
-    });
-
-    function recalculatePotencial() {
-        let sumaActual = 0;
-        let respondidas = 0;
-        
-        // Recalcular desde los inputs actuales por si acaso el objeto valoresPreguntas no está sincronizado
-        // O confiar en valoresPreguntas si el guardado es la única fuente de verdad
-        document.querySelectorAll('.radio-pregunta:checked').forEach(r => {
-            sumaActual += parseInt(r.value);
-            respondidas++;
-        });
-
-        if (respondidas === totalPreguntas) {
-            const media = sumaActual / totalPreguntas;
-            potencialMejoraCell.textContent = media.toFixed(2);
-        } else {
-            potencialMejoraCell.textContent = `${respondidas}/${totalPreguntas} resp.`;
-        }
     }
 });
 </script>
 @endpush
+

@@ -226,6 +226,7 @@ CREATE TABLE IF NOT EXISTS `cadenadevalor` (
   `pregunta23` INT DEFAULT NULL,
   `pregunta24` INT DEFAULT NULL,
   `pregunta25` INT DEFAULT NULL,
+  `porcentaje` DOUBLE DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),

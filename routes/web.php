@@ -54,7 +54,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para CadenaDeValorController
     Route::post('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [CadenaDeValorController::class, 'storeOrUpdate'])->name('cadenadevalor.storeOrUpdate');
-    Route::patch('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor/pregunta', [CadenaDeValorController::class, 'updatePregunta'])->name('cadenadevalor.updatePregunta');
 });
 
 // ========================================

@@ -39,6 +39,7 @@ class CadenaDeValor extends Model
         'pregunta23',
         'pregunta24',
         'pregunta25',
+        'porcentaje', // Añadir el nuevo campo porcentaje
     ];
 
     /**
