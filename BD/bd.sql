@@ -279,6 +279,46 @@ CREATE TABLE IF NOT EXISTS `amenazas` (
   CONSTRAINT `fk_amenazas_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Volcando estructura para tabla gestion_login.productos
+CREATE TABLE IF NOT EXISTS `productos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `venta` float DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_productos_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_productos_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando estructura para tabla gestion_login.TCM
+CREATE TABLE IF NOT EXISTS `TCM` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `producto_id` int(11) NOT NULL,
+  `porcentaje` float DEFAULT NULL,
+  `periodo` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_tcm_producto_idx` (`producto_id`),
+  CONSTRAINT `fk_tcm_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando estructura para tabla gestion_login.Competidor
+CREATE TABLE IF NOT EXISTS `Competidor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `producto_id` int(11) NOT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `venta` float DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_competidor_producto_idx` (`producto_id`),
+  CONSTRAINT `fk_competidor_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
