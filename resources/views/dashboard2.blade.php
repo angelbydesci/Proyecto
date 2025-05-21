@@ -87,6 +87,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('proyectos.showAutodiagnosticoPorter', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-search-plus fa-2x"></i> {{-- Icono sugerido para autodiagnóstico Porter --}}
+                    <span class="nav-text">8.1 AUTODIAGNÓSTICO PORTER</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('proyectos.showPest', $proyecto) }}" target="content-frame">
                     <i class="fa fa-globe fa-2x"></i>
                     <span class="nav-text">9. PEST</span>
