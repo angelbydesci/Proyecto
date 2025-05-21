@@ -75,9 +75,15 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('proyectos.showAutodiagnosticoBCG', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-tasks fa-2x"></i> {{-- Icono cambiado --}}
+                    <span class="nav-text">7.1 AUTODIAGNÓSTICO BCG</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('proyectos.showLas5Fuerzas', $proyecto) }}" target="content-frame">
-                    <i class="fa fa-balance-scale fa-2x"></i>
-                    <span class="nav-text">8. 5 FUERZAS PORTER</span>
+                    <i class="fa fa-sitemap fa-2x"></i> {{-- Icono cambiado a fa-sitemap --}}
+                    <span class="nav-text">8. LAS 5 FUERZAS DE PORTER</span>
                 </a>
             </li>
             <li>

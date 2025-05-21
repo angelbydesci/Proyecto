@@ -114,6 +114,12 @@ class ProyectoController extends Controller
         return view('matriz_participacion', compact('proyecto'));
     }
 
+    public function showAutodiagnosticoBCG(Proyecto $proyecto)
+    {
+        // Asegúrate de tener una vista llamada 'autodiagnostico_bcg.blade.php'
+        return view('autodiagnostico_bcg', compact('proyecto'));
+    }
+    
     public function showLas5Fuerzas(Proyecto $proyecto)
     {
         return view('las_5_fuerzas', compact('proyecto'));

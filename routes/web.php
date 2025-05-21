@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     // Rutas nombradas que faltan para las secciones del dashboard2
     Route::get('/proyectos/{proyecto}/cadena-de-valor', [ProyectoController::class, 'showCadenaDeValor'])->name('proyectos.showCadenaDeValor');
     Route::get('/proyectos/{proyecto}/matriz-participacion', [ProyectoController::class, 'showMatrizParticipacion'])->name('proyectos.showMatrizParticipacion');
+    Route::get('/proyectos/{proyecto}/autodiagnostico-bcg', [ProyectoController::class, 'showAutodiagnosticoBCG'])->name('proyectos.showAutodiagnosticoBCG');
     Route::get('/proyectos/{proyecto}/las-5-fuerzas', [ProyectoController::class, 'showLas5Fuerzas'])->name('proyectos.showLas5Fuerzas');
     Route::get('/proyectos/{proyecto}/pest', [ProyectoController::class, 'showPest'])->name('proyectos.showPest');
     Route::get('/proyectos/{proyecto}/estrategia', [ProyectoController::class, 'showEstrategia'])->name('proyectos.showEstrategia');
