@@ -132,4 +132,11 @@ class Proyecto extends Model
     {
         return $this->hasMany(Valor::class, 'proyecto_id');
     }
+    /**
+     * Un proyecto tiene muchos productos.
+     */
+    public function productos()
+    {
+        return $this->hasMany(Producto::class, 'proyecto_id');
+    }
 }
