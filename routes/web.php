@@ -8,6 +8,7 @@ use App\Http\Controllers\ValorController; // Añadir esta línea
 use App\Http\Controllers\ObjetivoController; // Añadir esta línea
 use App\Http\Controllers\CadenaDeValorController;
 use App\Http\Controllers\FODAController;
+use App\Http\Controllers\AutodiagnosticoBCGController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -58,6 +59,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [CadenaDeValorController::class, 'storeOrUpdate'])->name('cadenadevalor.storeOrUpdate');
     Route::resource('foda', FODAController::class)->except(['index', 'create', 'show', 'edit', 'update', 'destroy']); // Provisional, ajustar según necesidad
     Route::post('/foda/{proyecto}', [FODAController::class, 'store'])->name('foda.store');
+
+    // Ruta para GUARDAR los datos del formulario BCG
+    Route::post('/proyectos/{proyecto}/autodiagnostico-bcg/save', [AutodiagnosticoBCGController::class, 'saveBcgData'])->name('autodiagnostico.bcg.save');
 });
 
 // ========================================

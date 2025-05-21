@@ -7,6 +7,8 @@ use App\Models\CadenaDeValor; // Asegúrate de importar el modelo CadenaDeValor
 use App\Models\Fortaleza; // Importar el modelo Fortaleza
 use App\Models\Debilidad; // Importar el modelo Debilidad
 use Illuminate\Http\Request;
+// Asegúrate de que los modelos Producto, TCM y Competidor están importados si no lo están ya.
+use App\Models\Producto; 
 
 class ProyectoController extends Controller
 {
@@ -99,25 +101,59 @@ class ProyectoController extends Controller
         return view('objetivos', compact('proyecto'));
     }
 
-    public function showAnalisisInterno(Proyecto $proyecto)
-    {
-        return view('analisis_interno', compact('proyecto'));
-    }
-
     public function showCadenaDeValor(Proyecto $proyecto)
     {
-        return view('cadena_de_valor', compact('proyecto'));
+        // Lógica para mostrar la cadena de valor
+        // Asegúrate de que la vista 'cadena_de_valor' existe y es la correcta
+        $elementosPrimarios = CadenaDeValor::where('proyecto_id', $proyecto->id)
+                                        ->where('tipo_actividad', 'primaria')
+                                        ->orderBy('orden')
+                                        ->get();
+        $elementosApoyo = CadenaDeValor::where('proyecto_id', $proyecto->id)
+                                      ->where('tipo_actividad', 'apoyo')
+                                      ->orderBy('orden')
+                                      ->get();
+        return view('cadena_de_valor', compact('proyecto', 'elementosPrimarios', 'elementosApoyo'));
     }
 
     public function showMatrizParticipacion(Proyecto $proyecto)
     {
-        return view('matriz_participacion', compact('proyecto'));
+        // Lógica para mostrar la matriz de participación
+        // Asegúrate de que la vista y los datos necesarios estén configurados
+        return view('ruta.a.tu.vista.matriz.participacion', compact('proyecto')); // Ajusta la ruta de la vista
     }
 
     public function showAutodiagnosticoBCG(Proyecto $proyecto)
     {
-        // Asegúrate de tener una vista llamada 'autodiagnostico_bcg.blade.php'
-        return view('autodiagnostico_bcg', compact('proyecto'));
+        // Asegurarse de que el proyecto pertenece al usuario autenticado (opcional, pero recomendado)
+        if ($proyecto->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // Cargar los productos del proyecto con sus relaciones TCMs y Competidores
+        $productosExistentes = $proyecto->productos()->with(['tcms', 'competidores'])->get()->map(function ($producto) {
+            return [
+                'id_producto' => $producto->id,
+                'nombre_producto' => $producto->nombre,
+                'ventas_anuales_producto' => $producto->venta,
+                'tcms' => $producto->tcms->map(function ($tcm) {
+                    return [
+                        'id_tcm' => $tcm->id,
+                        'anio_crecimiento' => $tcm->periodo, // Asume que el campo en el modelo TCM es 'periodo'
+                        'tasa_crecimiento' => $tcm->porcentaje, // Asume que el campo en el modelo TCM es 'porcentaje'
+                    ];
+                })->toArray(),
+                'competidores' => $producto->competidores->map(function ($competidor) {
+                    return [
+                        'id_competidor' => $competidor->id,
+                        'nombre_competidor' => $competidor->nombre, // Asume que el campo en el modelo Competidor es 'nombre'
+                        'ventas_anuales_competidor' => $competidor->venta, // Asume que el campo en el modelo Competidor es 'venta'
+                    ];
+                })->toArray(),
+            ];
+        })->toArray();
+
+        return view('autodiagnostico_bcg', compact('proyecto', 'productosExistentes'));
     }
     
     public function showLas5Fuerzas(Proyecto $proyecto)
