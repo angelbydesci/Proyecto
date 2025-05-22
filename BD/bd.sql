@@ -318,6 +318,36 @@ CREATE TABLE IF NOT EXISTS `Competidor` (
   CONSTRAINT `fk_competidor_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Volcando estructura para tabla gestion_login.autodiagnosticoporter
+CREATE TABLE IF NOT EXISTS `autodiagnosticoporter` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` INT(11) NOT NULL,
+  `pregunta1` INT DEFAULT NULL,
+  `pregunta2` INT DEFAULT NULL,
+  `pregunta3` INT DEFAULT NULL,
+  `pregunta4` INT DEFAULT NULL,
+  `pregunta5` INT DEFAULT NULL,
+  `pregunta6` INT DEFAULT NULL,
+  `pregunta7` INT DEFAULT NULL,
+  `pregunta8` INT DEFAULT NULL,
+  `pregunta9` INT DEFAULT NULL,
+  `pregunta10` INT DEFAULT NULL,
+  `pregunta11` INT DEFAULT NULL,
+  `pregunta12` INT DEFAULT NULL,
+  `pregunta13` INT DEFAULT NULL,
+  `pregunta14` INT DEFAULT NULL,
+  `pregunta15` INT DEFAULT NULL,
+  `pregunta16` INT DEFAULT NULL,
+  `pregunta17` INT DEFAULT NULL,
+  `conclusion` VARCHAR(255) DEFAULT NULL,
+  `puntaje` INT DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+  `updated_at` TIMESTAMP NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_autodiagnosticoporter_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_autodiagnosticoporter_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

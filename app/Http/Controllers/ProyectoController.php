@@ -120,7 +120,7 @@ class ProyectoController extends Controller
     {
         // Lógica para mostrar la matriz de participación
         // Asegúrate de que la vista y los datos necesarios estén configurados
-        return view('ruta.a.tu.vista.matriz.participacion', compact('proyecto')); // Ajusta la ruta de la vista
+        return view('matriz_participacion', compact('proyecto')); // Ajusta la ruta de la vista
     }
 
     public function showAutodiagnosticoBCG(Proyecto $proyecto)
