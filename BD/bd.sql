@@ -348,6 +348,52 @@ CREATE TABLE IF NOT EXISTS `autodiagnosticoporter` (
   CONSTRAINT `fk_autodiagnosticoporter_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE IF NOT EXISTS `pest` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `pregunta1` INT DEFAULT NULL,
+  `pregunta2` INT DEFAULT NULL,
+  `pregunta3` INT DEFAULT NULL,
+  `pregunta4` INT DEFAULT NULL,
+  `pregunta5` INT DEFAULT NULL,
+  `pregunta6` INT DEFAULT NULL,
+  `pregunta7` INT DEFAULT NULL,
+  `pregunta8` INT DEFAULT NULL,
+  `pregunta9` INT DEFAULT NULL,
+  `pregunta10` INT DEFAULT NULL,
+  `pregunta11` INT DEFAULT NULL,
+  `pregunta12` INT DEFAULT NULL,
+  `pregunta13` INT DEFAULT NULL,
+  `pregunta14` INT DEFAULT NULL,
+  `pregunta15` INT DEFAULT NULL,
+  `pregunta16` INT DEFAULT NULL,
+  `pregunta17` INT DEFAULT NULL,
+  `pregunta18` INT DEFAULT NULL,
+  `pregunta19` INT DEFAULT NULL,
+  `pregunta20` INT DEFAULT NULL,
+  `pregunta21` INT DEFAULT NULL,
+  `pregunta22` INT DEFAULT NULL,
+  `pregunta23` INT DEFAULT NULL,
+  `pregunta24` INT DEFAULT NULL,
+  `pregunta25` INT DEFAULT NULL,
+  `sumatorio` INT DEFAULT NULL,
+  `RFSociales` INT DEFAULT NULL,
+  `RFAmbientales` INT DEFAULT NULL,
+  `RFPoliticos` INT DEFAULT NULL,
+  `RFEconomicos` INT DEFAULT NULL,
+  `RFTecnologicos` INT DEFAULT NULL,
+  `reflexion_social_texto` TEXT DEFAULT NULL,
+  `reflexion_ambiental_texto` TEXT DEFAULT NULL,
+  `reflexion_politico_texto` TEXT DEFAULT NULL,
+  `reflexion_economico_texto` TEXT DEFAULT NULL,
+  `reflexion_tecnologico_texto` TEXT DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_pest_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_pest_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

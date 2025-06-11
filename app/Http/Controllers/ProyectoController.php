@@ -9,6 +9,7 @@ use App\Models\Debilidad; // Importar el modelo Debilidad
 use Illuminate\Http\Request;
 // Asegúrate de que los modelos Producto, TCM y Competidor están importados si no lo están ya.
 use App\Models\Producto; 
+use App\Models\Pest; // Asegúrate de importar el modelo Pest
 
 class ProyectoController extends Controller
 {
@@ -163,7 +164,9 @@ class ProyectoController extends Controller
 
     public function showPest(Proyecto $proyecto)
     {
-        return view('pest', compact('proyecto'));
+        // Cargar los datos de PEST existentes para este proyecto, si los hay
+        $pestData = Pest::where('proyecto_id', $proyecto->id)->first();
+        return view('pest', compact('proyecto', 'pestData')); // Pasar $pestData a la vista
     }
 
     public function showEstrategia(Proyecto $proyecto)
