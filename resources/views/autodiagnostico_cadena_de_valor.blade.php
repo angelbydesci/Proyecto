@@ -135,7 +135,7 @@
                     @for ($i = 1; $i <= 2; $i++) {{-- Cambiado para mostrar solo 2 --}}
                         <div class="mb-4 flex items-center">
                             <label for="fortaleza{{ $i }}" class="block text-sm font-medium text-gray-700 w-10">F{{ $i }}:</label>
-                            <input type="text" name="fortaleza{{ $i }}" id="fortaleza{{ $i }}" value="{{ old('fortaleza'.$i, $fortalezas['fortaleza'.$i] ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2">
+                            <input type="text" name="fortaleza{{ $i }}" id="fortaleza{{ $i }}" value="{{ old('fortaleza'.$i, $fortalezas?->{'fortaleza'.$i} ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2">
                         </div>
                     @endfor
                 </div>
@@ -146,7 +146,7 @@
                     @for ($i = 1; $i <= 2; $i++) {{-- Cambiado para mostrar solo 2 --}}
                         <div class="mb-4 flex items-center">
                             <label for="debilidad{{ $i }}" class="block text-sm font-medium text-gray-700 w-10">D{{ $i }}:</label>
-                            <input type="text" name="debilidad{{ $i }}" id="debilidad{{ $i }}" value="{{ old('debilidad'.$i, $debilidades['debilidad'.$i] ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2">
+                            <input type="text" name="debilidad{{ $i }}" id="debilidad{{ $i }}" value="{{ old('debilidad'.$i, $debilidades?->{'debilidad'.$i} ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-2">
                         </div>
                     @endfor
                 </div>

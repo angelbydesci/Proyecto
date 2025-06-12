@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -159,10 +156,10 @@
 
                     <hr class="mt-5 mb-4">
                     <h2 class="mt-4">Gráfico de Impacto de Factores Generales Externos</h2>
-                    <div style="width: 80%; margin: auto;">
-                        <canvas id="pestChart"></canvas>
+                    <div style="width: 100%; height: 400px; margin: auto;">
+                        <canvas id="pestChart" width="400" height="200"></canvas>
                     </div>
-
+                    <div id="chartDebug" class="mt-3"></div>
                 </div>
             </div>
         </div>
@@ -170,117 +167,77 @@
 </div>
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('pestChart');
-    if (!ctx) {
-        console.error("Elemento canvas 'pestChart' no encontrado.");
-        return;
-    }
-
-    const chartCtx = ctx.getContext('2d');
-    const pestDataObject = @json($pestData ?? null);
-    console.log("Datos PEST de la BD (pestDataObject):", pestDataObject);
-
-    const radioQuestionNames = [];
-    for (let i = 1; i <= 25; i++) {
-        radioQuestionNames.push(`pregunta${i}`);
-    }
-
-    let pestChartInstance;
-
-    function getSelectedRadioValue(groupName) {
-        const selectedRadio = document.querySelector(`input[name="${groupName}"]:checked`);
-        return selectedRadio ? parseInt(selectedRadio.value) : 0;
-    }
-
-    function calculateScoresForChart() {
-        let scores = {
-            sociales: 0, politicos: 0, economicos: 0, tecnologicos: 0, ambientales: 0
-        };
-        for (let i = 1; i <= 5; i++) { scores.sociales += getSelectedRadioValue(`pregunta${i}`); }
-        for (let i = 6; i <= 10; i++) { scores.politicos += getSelectedRadioValue(`pregunta${i}`); }
-        for (let i = 11; i <= 15; i++) { scores.economicos += getSelectedRadioValue(`pregunta${i}`); }
-        for (let i = 16; i <= 20; i++) { scores.tecnologicos += getSelectedRadioValue(`pregunta${i}`); }
-        for (let i = 21; i <= 25; i++) { scores.ambientales += getSelectedRadioValue(`pregunta${i}`); }
-
-        scores.sociales *= 5; scores.politicos *= 5; scores.economicos *= 5;
-        scores.tecnologicos *= 5; scores.ambientales *= 5;
-        console.log("Puntajes calculados para el gráfico (desde radios):", scores);
-        return scores;
-    }
+    // Elemento de debug para mostrar información
+    const debugElement = document.getElementById('chartDebug');
     
-    function updateChart(scores) {
-        if (pestChartInstance) {
-            console.log("Actualizando gráfico con puntajes:", scores);
-            pestChartInstance.data.datasets[0].data = [
-                scores.sociales, scores.ambientales, scores.politicos,
-                scores.economicos, scores.tecnologicos
-            ];
-            pestChartInstance.update();
-        } else {
-            console.error("Instancia del gráfico (pestChartInstance) no definida al intentar actualizar.");
+    try {
+        // Verificar si Chart.js está cargado correctamente
+        if (typeof Chart === 'undefined') {
+            debugElement.innerHTML = '<div class="alert alert-danger">Error: Chart.js no está cargado correctamente</div>';
+            return;
         }
-    }
-
-    function initializeChart(initialScores) {
-        console.log("Inicializando gráfico con puntajes:", initialScores);
-        pestChartInstance = new Chart(chartCtx, {
-            type: 'bar',
-            data: {
-                labels: ['FACTORES SOCIALES Y DEMOGRÁFICOS', 'FACTORES MEDIO AMBIENTALES', 'FACTORES POLÍTICOS', 'FACTORES ECONÓMICOS', 'FACTORES TECNOLÓGICOS'],
-                datasets: [{
-                    label: 'Nivel de impacto',
-                    data: [ initialScores.sociales, initialScores.ambientales, initialScores.politicos, initialScores.economicos, initialScores.tecnologicos ],
-                    backgroundColor: [
-                        'rgba(144, 238, 144, 0.7)', 'rgba(0, 128, 0, 0.7)', 'rgba(139, 69, 19, 0.7)',
-                        'rgba(255, 165, 0, 0.7)', 'rgba(173, 216, 230, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(144, 238, 144, 1)', 'rgba(0, 128, 0, 1)', 'rgba(139, 69, 19, 1)',
-                        'rgba(255, 165, 0, 1)', 'rgba(173, 216, 230, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true, max: 100, title: { display: true, text: 'Nivel de impacto de factores generales externos' } },
-                    x: { title: { display: true, text: 'Tipología de factores generales externos' } }
-                },
-                plugins: { legend: { display: false }, tooltip: { callbacks: { label: context => context.dataset.label + ': ' + context.parsed.y } } }
-            }
-        });
-    }
-
-    let scoresForChartInitialization;
-    if (pestDataObject && typeof pestDataObject === 'object' && Object.keys(pestDataObject).length > 0) {
-        scoresForChartInitialization = {
-            sociales: parseInt(pestDataObject.RFSociales) || 0,
-            ambientales: parseInt(pestDataObject.RFAmbientales) || 0,
-            politicos: parseInt(pestDataObject.RFPoliticos) || 0,
-            economicos: parseInt(pestDataObject.RFEconomicos) || 0,
-            tecnologicos: parseInt(pestDataObject.RFTecnologicos) || 0
+        
+        // Buscar el canvas
+        const ctx = document.getElementById('pestChart');
+        if (!ctx) {
+            debugElement.innerHTML = '<div class="alert alert-danger">Error: No se encontró el elemento canvas #pestChart</div>';
+            return;
+        }
+        
+        // Mostrar información
+        debugElement.innerHTML = '<div class="alert alert-info">Inicializando gráfico...</div>';
+        
+        // Datos simples para el gráfico
+        const datos = {
+            labels: ['Sociales', 'Ambientales', 'Políticos', 'Económicos', 'Tecnológicos'],
+            datasets: [{
+                label: 'Impacto',
+                data: [50, 50, 50, 50, 50],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(153, 102, 255, 0.7)'
+                ],
+                borderWidth: 1
+            }]
         };
-        console.log("Puntajes para inicialización del gráfico (desde pestDataObject):", scoresForChartInitialization);
-    } else {
-        console.log("pestDataObject vacío o nulo. Calculando puntajes iniciales para el gráfico desde los radios.");
-        scoresForChartInitialization = calculateScoresForChart();
+        
+        // Configuración mínima
+        const config = {
+            type: 'bar',
+            data: datos,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        };
+        
+        // Crear el gráfico
+        const myChart = new Chart(ctx, config);
+        
+        // Confirmar creación exitosa
+        debugElement.innerHTML = '<div class="alert alert-success">Gráfico creado exitosamente</div>';
+        
+        // Hacer visible después de un segundo para evitar problemas de renderizado
+        setTimeout(function() {
+            ctx.style.display = 'block';
+            myChart.update();
+            debugElement.style.display = 'none';
+        }, 1000);
+        
+    } catch (error) {
+        debugElement.innerHTML = `<div class="alert alert-danger">Error al crear el gráfico: ${error.message}</div>`;
+        console.error('Error al crear el gráfico:', error);
     }
-    initializeChart(scoresForChartInitialization);
-
-    radioQuestionNames.forEach(name => {
-        const radios = document.querySelectorAll(`input[name="${name}"]`);
-        radios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                const currentScoresForChart = calculateScoresForChart();
-                updateChart(currentScoresForChart);
-            });
-        });
-    });
 });
 </script>
 @endpush
-@endsection

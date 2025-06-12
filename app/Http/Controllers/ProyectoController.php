@@ -104,17 +104,8 @@ class ProyectoController extends Controller
 
     public function showCadenaDeValor(Proyecto $proyecto)
     {
-        // Lógica para mostrar la cadena de valor
-        // Asegúrate de que la vista 'cadena_de_valor' existe y es la correcta
-        $elementosPrimarios = CadenaDeValor::where('proyecto_id', $proyecto->id)
-                                        ->where('tipo_actividad', 'primaria')
-                                        ->orderBy('orden')
-                                        ->get();
-        $elementosApoyo = CadenaDeValor::where('proyecto_id', $proyecto->id)
-                                      ->where('tipo_actividad', 'apoyo')
-                                      ->orderBy('orden')
-                                      ->get();
-        return view('cadena_de_valor', compact('proyecto', 'elementosPrimarios', 'elementosApoyo'));
+        // Solo mostrar la vista, sin consultar la base de datos
+        return view('cadena_de_valor', compact('proyecto'));
     }
 
     public function showMatrizParticipacion(Proyecto $proyecto)
@@ -126,12 +117,10 @@ class ProyectoController extends Controller
 
     public function showAutodiagnosticoBCG(Proyecto $proyecto)
     {
-        // Asegurarse de que el proyecto pertenece al usuario autenticado (opcional, pero recomendado)
         if ($proyecto->user_id !== auth()->id()) {
             abort(403);
         }
 
-        // Cargar los productos del proyecto con sus relaciones TCMs y Competidores
         $productosExistentes = $proyecto->productos()->with(['tcms', 'competidores'])->get()->map(function ($producto) {
             return [
                 'id_producto' => $producto->id,
@@ -140,21 +129,25 @@ class ProyectoController extends Controller
                 'tcms' => $producto->tcms->map(function ($tcm) {
                     return [
                         'id_tcm' => $tcm->id,
-                        'anio_crecimiento' => $tcm->periodo, // Asume que el campo en el modelo TCM es 'periodo'
-                        'tasa_crecimiento' => $tcm->porcentaje, // Asume que el campo en el modelo TCM es 'porcentaje'
+                        'anio_crecimiento' => $tcm->periodo,
+                        'tasa_crecimiento' => $tcm->porcentaje,
                     ];
                 })->toArray(),
                 'competidores' => $producto->competidores->map(function ($competidor) {
                     return [
                         'id_competidor' => $competidor->id,
-                        'nombre_competidor' => $competidor->nombre, // Asume que el campo en el modelo Competidor es 'nombre'
-                        'ventas_anuales_competidor' => $competidor->venta, // Asume que el campo en el modelo Competidor es 'venta'
+                        'nombre_competidor' => $competidor->nombre,
+                        'ventas_anuales_competidor' => $competidor->venta,
                     ];
                 })->toArray(),
             ];
         })->toArray();
 
-        return view('autodiagnostico_bcg', compact('proyecto', 'productosExistentes'));
+        // Cargar fortalezas y debilidades del proyecto
+        $fortalezas = \App\Models\Fortaleza::where('proyecto_id', $proyecto->id)->first();
+        $debilidades = \App\Models\Debilidad::where('proyecto_id', $proyecto->id)->first();
+
+        return view('autodiagnostico_bcg', compact('proyecto', 'productosExistentes', 'fortalezas', 'debilidades'));
     }
     
     public function showLas5Fuerzas(Proyecto $proyecto)
@@ -226,5 +219,11 @@ class ProyectoController extends Controller
         $proyecto->save();
 
         return redirect()->route('proyectos.showObjetivos', $proyecto)->with('success_uen', 'Unidades Estratégicas actualizadas correctamente.');
+    }
+
+    public function showAnalisisInterno($proyecto)
+    {
+        // Puedes pasar $proyecto a la vista si lo necesitas
+        return view('analisis_interno', compact('proyecto'));
     }
 }

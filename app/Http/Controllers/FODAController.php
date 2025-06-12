@@ -34,8 +34,12 @@ class FODAController extends Controller
         $validator = Validator::make($request->all(), [
             'fortaleza1' => 'nullable|string|max:65535', // TEXT puede almacenar hasta 65,535 caracteres
             'fortaleza2' => 'nullable|string|max:65535',
+            'fortaleza3' => 'nullable|string|max:65535',
+            'fortaleza4' => 'nullable|string|max:65535',
             'debilidad1' => 'nullable|string|max:65535',
             'debilidad2' => 'nullable|string|max:65535',
+            'debilidad3' => 'nullable|string|max:65535',
+            'debilidad4' => 'nullable|string|max:65535',
         ]);
 
         if ($validator->fails()) {
@@ -44,32 +48,33 @@ class FODAController extends Controller
                         ->withInput();
         }
 
-        // Guardar o actualizar Fortalezas
-        Fortaleza::updateOrCreate(
+        // Obtener fortalezas y debilidades actuales
+        $fortalezasActual = \App\Models\Fortaleza::where('proyecto_id', $proyecto->id)->first();
+        $debilidadesActual = \App\Models\Debilidad::where('proyecto_id', $proyecto->id)->first();
+
+        // Guardar o actualizar Fortalezas SIN borrar las existentes
+        \App\Models\Fortaleza::updateOrCreate(
             ['proyecto_id' => $proyecto->id],
             [
-                'fortaleza1' => $request->filled('fortaleza1') ? $request->input('fortaleza1') : null,
-                'fortaleza2' => $request->filled('fortaleza2') ? $request->input('fortaleza2') : null,
-                // Los campos fortaleza3 y fortaleza4 se omiten ya que no están en el formulario actual
+                'fortaleza1' => $request->filled('fortaleza1') ? $request->input('fortaleza1') : ($fortalezasActual->fortaleza1 ?? null),
+                'fortaleza2' => $request->filled('fortaleza2') ? $request->input('fortaleza2') : ($fortalezasActual->fortaleza2 ?? null),
+                'fortaleza3' => $request->filled('fortaleza3') ? $request->input('fortaleza3') : ($fortalezasActual->fortaleza3 ?? null),
+                'fortaleza4' => $request->filled('fortaleza4') ? $request->input('fortaleza4') : ($fortalezasActual->fortaleza4 ?? null),
             ]
         );
 
-        // Guardar o actualizar Debilidades
-        Debilidad::updateOrCreate(
+        // Guardar o actualizar Debilidades SIN borrar las existentes
+        \App\Models\Debilidad::updateOrCreate(
             ['proyecto_id' => $proyecto->id],
             [
-                'debilidad1' => $request->filled('debilidad1') ? $request->input('debilidad1') : null,
-                'debilidad2' => $request->filled('debilidad2') ? $request->input('debilidad2') : null,
-                // Los campos debilidad3 y debilidad4 se omiten
+                'debilidad1' => $request->filled('debilidad1') ? $request->input('debilidad1') : ($debilidadesActual->debilidad1 ?? null),
+                'debilidad2' => $request->filled('debilidad2') ? $request->input('debilidad2') : ($debilidadesActual->debilidad2 ?? null),
+                'debilidad3' => $request->filled('debilidad3') ? $request->input('debilidad3') : ($debilidadesActual->debilidad3 ?? null),
+                'debilidad4' => $request->filled('debilidad4') ? $request->input('debilidad4') : ($debilidadesActual->debilidad4 ?? null),
             ]
         );
 
-        // Opcional: Eliminar registros de Oportunidades y Amenazas si ya no se usan
-        // Oportunidad::where('proyecto_id', $proyecto->id)->delete();
-        // Amenaza::where('proyecto_id', $proyecto->id)->delete();
-
-        return redirect()->route('proyectos.showAutodiagnosticoCadenaDeValor', $proyecto->id)
-                         ->with('success', 'Análisis FODA guardado correctamente.');
+        return redirect()->back()->with('success', 'Análisis FODA guardado correctamente.');
     }
 
     /**

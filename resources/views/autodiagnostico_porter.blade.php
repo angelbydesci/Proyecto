@@ -163,14 +163,12 @@
             <div class="mb-6">
                 <h3 class="text-lg font-medium text-gray-600 mb-2">Oportunidades</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @for ($i = 1; $i <= 2; $i++)
                     <div>
-                        <label for="oportunidad1" class="block text-sm font-medium text-gray-700">Oportunidad 1</label>
-                        <textarea name="oportunidad1" id="oportunidad1" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2">{{ old('oportunidad1', optional($oportunidades)->oportunidad1 ?? '') }}</textarea>
+                        <label for="oportunidad{{ $i }}" class="block text-sm font-medium text-gray-700">Oportunidad {{ $i }}</label>
+                        <textarea name="oportunidad{{ $i }}" id="oportunidad{{ $i }}" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2">{{ old('oportunidad'.$i, $oportunidades?->{'oportunidad'.$i} ?? '') }}</textarea>
                     </div>
-                    <div>
-                        <label for="oportunidad2" class="block text-sm font-medium text-gray-700">Oportunidad 2</label>
-                        <textarea name="oportunidad2" id="oportunidad2" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2">{{ old('oportunidad2', optional($oportunidades)->oportunidad2 ?? '') }}</textarea>
-                    </div>
+                    @endfor
                 </div>
             </div>
 
@@ -178,14 +176,12 @@
             <div>
                 <h3 class="text-lg font-medium text-gray-600 mb-2">Amenazas</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @for ($i = 1; $i <= 2; $i++)
                     <div>
-                        <label for="amenaza1" class="block text-sm font-medium text-gray-700">Amenaza 1</label>
-                        <textarea name="amenaza1" id="amenaza1" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2">{{ old('amenaza1', optional($amenazas)->amenaza1 ?? '') }}</textarea>
+                        <label for="amenaza{{ $i }}" class="block text-sm font-medium text-gray-700">Amenaza {{ $i }}</label>
+                        <textarea name="amenaza{{ $i }}" id="amenaza{{ $i }}" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2">{{ old('amenaza'.$i, $amenazas?->{'amenaza'.$i} ?? '') }}</textarea>
                     </div>
-                    <div>
-                        <label for="amenaza2" class="block text-sm font-medium text-gray-700">Amenaza 2</label>
-                        <textarea name="amenaza2" id="amenaza2" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2">{{ old('amenaza2', optional($amenazas)->amenaza2 ?? '') }}</textarea>
-                    </div>
+                    @endfor
                 </div>
             </div>
         </div>

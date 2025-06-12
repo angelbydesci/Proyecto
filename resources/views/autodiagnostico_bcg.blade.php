@@ -378,6 +378,47 @@
         </form>
     </div>
     
+    @php
+        // Asegura que $fortalezas y $debilidades sean objetos o null
+    @endphp
+    <div class="container-fluid" style="margin-top: 40px; margin-bottom: 40px;">
+        <h2 style="font-size: 1.3em; color: #2c3e50; margin-bottom: 20px;">Fortalezas y Debilidades (Adicionales)</h2>
+        <form method="POST" action="{{ route('foda.store', $proyecto) }}">
+            @csrf
+            <div style="display: flex; flex-wrap: wrap; gap: 30px;">
+                <!-- Fortalezas 3 y 4 -->
+                <div style="flex: 1; min-width: 250px; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); padding: 20px;">
+                    <h3 style="font-size: 1.1em; color: #2980b9; margin-bottom: 15px;">FORTALEZAS</h3>
+                    @for ($i = 3; $i <= 4; $i++)
+                        <div style="margin-bottom: 15px; display: flex; align-items: center;">
+                            <label for="fortaleza{{ $i }}" style="min-width: 60px; font-weight: 500;">F{{ $i }}:</label>
+                            <input type="text" name="fortaleza{{ $i }}" id="fortaleza{{ $i }}"
+                                value="{{ old('fortaleza'.$i, (isset($fortalezas['fortaleza'.$i]) ? $fortalezas['fortaleza'.$i] : (isset($fortalezas) && is_object($fortalezas) ? $fortalezas->{'fortaleza'.$i} : ''))) }}"
+                                style="flex: 1; padding: 7px 10px; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                    @endfor
+                </div>
+                <!-- Debilidades 3 y 4 -->
+                <div style="flex: 1; min-width: 250px; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); padding: 20px;">
+                    <h3 style="font-size: 1.1em; color: #c0392b; margin-bottom: 15px;">DEBILIDADES</h3>
+                    @for ($i = 3; $i <= 4; $i++)
+                        <div style="margin-bottom: 15px; display: flex; align-items: center;">
+                            <label for="debilidad{{ $i }}" style="min-width: 60px; font-weight: 500;">D{{ $i }}:</label>
+                            <input type="text" name="debilidad{{ $i }}" id="debilidad{{ $i }}"
+                                value="{{ old('debilidad'.$i, (isset($debilidades['debilidad'.$i]) ? $debilidades['debilidad'.$i] : (isset($debilidades) && is_object($debilidades) ? $debilidades->{'debilidad'.$i} : ''))) }}"
+                                style="flex: 1; padding: 7px 10px; border: 1px solid #ccc; border-radius: 4px;">
+                        </div>
+                    @endfor
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn-add" style="background: #3498db; color: #fff; font-weight: bold; padding: 10px 22px; border-radius: 5px; border: none;">
+                    Guardar Fortalezas y Debilidades
+                </button>
+            </div>
+        </form>
+    </div>
+    
     <script>
         let productCounter = 0;
         // let currentPeriods = [{ yearLabel: "2023-2024", startYear: 2023 }]; // Eliminado: ahora por producto

@@ -56,31 +56,6 @@
     {{-- Diagrama de la Cadena de Valor de Porter --}}
     <div class="my-4 p-3 border rounded bg-light text-center">
         <p class="text-muted">[Espacio para imagen de la Cadena de Valor de Porter]</p>
-        <div class="row mt-3">
-            <div class="col-2 text-center" style="writing-mode: vertical-rl; transform: rotate(180deg);">
-                <strong class="d-block border p-2 bg-secondary text-white">ACTIVIDADES DE APOYO</strong>
-            </div>
-            <div class="col-10">
-                <div class="p-2 border bg-info text-white mb-1">INFRAESTRUCTURA DE LA EMPRESA</div>
-                <div class="p-2 border bg-info text-white mb-1">GESTIÓN DE RECURSOS HUMANOS</div>
-                <div class="p-2 border bg-info text-white mb-1">COMPRAS</div>
-                <div class="p-2 border bg-info text-white mb-3">DESARROLLO DE TECNOLOGÍAS</div>
-                
-                <div class="row gx-1">
-                    <div class="col"><div class="p-2 border bg-success text-white">Logística de entrada</div></div>
-                    <div class="col"><div class="p-2 border bg-success text-white">Operaciones</div></div>
-                    <div class="col"><div class="p-2 border bg-success text-white">Logística de salida</div></div>
-                    <div class="col"><div class="p-2 border bg-success text-white">Marketing y ventas</div></div>
-                    <div class="col"><div class="p-2 border bg-success text-white">Servicios</div></div>
-                </div>
-                <div class="mt-2">
-                    <strong>ACTIVIDADES PRIMARIAS</strong>
-                </div>
-            </div>
-            <div class="col-12 text-center">
-                 <div class="p-2 border bg-warning text-dark mt-2 d-inline-block"><strong>MARGEN</strong></div>
-            </div>
-        </div>
     </div>
 
     <p>Cada eslabón de la cadena puede ser fuente de ventaja competitiva, ya sea porque se optimice (excelencia en la ejecución de una actividad) y/o mejore su coordinación con otra actividad.</p>
