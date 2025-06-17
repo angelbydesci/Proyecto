@@ -35,28 +35,8 @@
             <textarea name="vision" class="form-control" rows="4" placeholder="Escriba la visión de su proyecto aquí...">{{ old('vision', $proyecto->vision ?? '') }}</textarea>
         </div>
 
-        <!-- Relación entre Misión y Visión (No lo usare Creo)
-        <div class="mt-4 p-3 bg-light rounded">
-            <h3>Relación entre Misión y Visión</h3>
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <h5>¿Cuál es la situación actual?</h5>
-                    <p class="text-muted">(Misión)</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>¿Qué camino a seguir?</h5>
-                    <p class="text-muted">(Estrategia)</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>¿Cuál es la situación futura?</h5>
-                    <p class="text-muted">(Visión)</p>
-                </div>
-            </div>
-        </div> -->
-
         <!-- Botones en la parte inferior -->
         <div class="d-flex justify-content-between mt-4">
-            <!-- Botón para volver a misión (izquierda) -->
             <div>
                 <button type="submit" class="btn btn-primary mr-2">Guardar Visión</button>
             </div>

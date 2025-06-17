@@ -1,0 +1,303 @@
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .container-fluid { /* Cambiado para ocupar más ancho */
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        .main-row { /* Para organizar controles y gráfico */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        .controls-section {
+            flex: 1;
+            min-width: 400px; /* Aumentado */
+            max-width: 600px; /* Añadido para mejor control */
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            align-self: flex-start; /* Para alinear arriba */
+        }
+        .chart-section {
+            flex: 2;
+            min-width: 550px; /* Reducido para mejor ajuste */
+            display: flex;
+            flex-direction: column; /* Para alinear elementos verticalmente */
+            gap: 20px; /* Espacio entre gráfico y tabla */
+        }
+        .product-form {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+            border-left: 4px solid #3498db;
+        }
+        .competitor-form {
+            margin-top: 15px;
+            padding: 15px;
+            background: #eef2f7;
+            border-radius: 6px;
+            position: relative;
+            border-left: 3px solid #7f8c8d;
+            margin-bottom: 10px; /* Espacio inferior */
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap; /* Para mejor responsividad */
+            align-items: center;
+            gap: 10px; /* Espacio entre label e input */
+        }
+        label {
+            display: inline-block;
+            min-width: 130px; /* Aumentado */
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 5px; /* Espacio si el input va debajo */
+        }
+        input, select {
+            padding: 9px 13px; /* Aumentado padding */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 180px; /* Para que no sean muy pequeños */
+        }
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+        }
+        button {
+            padding: 10px 18px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 14px; /* Consistencia */
+        }
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+        .btn-add { background: #2ecc71; }
+        .btn-add:hover { background: #27ae60; }
+        .btn-danger { background: #e74c3c; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-secondary { background: #95a5a6; }
+        .btn-secondary:hover { background: #7f8c8d; }
+
+        .delete-btn {
+            padding: 6px 12px; /* Ajustado */
+            font-size: 13px; /* Ajustado */
+            margin-left: 10px;
+        }
+        .delete-product-btn {
+            position: absolute;
+            top: 15px; /* Ajustado */
+            right: 15px; /* Ajustado */
+        }
+        .delete-competitor-btn {
+            position: absolute;
+            top: 10px; /* Ajustado */
+            right: 10px; /* Ajustado */
+            padding: 4px 8px; /* Ajustado */
+            font-size: 11px; /* Ajustado */
+        }
+        .bcg-chart {
+            width: 100%;
+            height: 450px; /* Reducido */
+            position: relative;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            overflow: hidden; /* Para que las etiquetas no se salgan */
+        }
+        .quadrant {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px; /* Reducido */
+            color: rgba(0,0,0,0.15); /* Más sutil */
+            text-transform: uppercase; /* Estilo */
+        }
+        .quadrant-star { top: 0; right: 0; background: rgba(46, 204, 113, 0.08); }
+        .quadrant-question { top: 0; left: 0; background: rgba(52, 152, 219, 0.08); }
+        .quadrant-cashcow { bottom: 0; right: 0; background: rgba(241, 196, 15, 0.08); }
+        .quadrant-dog { bottom: 0; left: 0; background: rgba(231, 76, 60, 0.08); }
+
+        .axis { position: absolute; background: #bdc3c7; z-index: 1; }
+        .axis-x { width: 100%; height: 2px; top: 50%; left: 0; transform: translateY(-1px); }
+        .axis-y { width: 2px; height: 100%; left: 50%; top: 0; transform: translateX(-1px); }
+
+        .axis-label {
+            position: absolute;
+            font-size: 12px; /* Reducido */
+            font-weight: bold;
+            color: #7f8c8d;
+            background: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .x-axis-label-container { /* Para PRM */
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+        .y-axis-label-container { /* Para TCM */
+            position: absolute;
+            top: 0;
+            right: 5px; /* Ajustado */
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .y-axis-label-container span { transform: rotate(-90deg); white-space: nowrap; }
+
+        .axis-marker { position: absolute; font-size: 10px; color: #7f8c8d; }
+        .prm-marker-high { top: 50%; left: 5px; transform: translateY(-50%); } /* PRM > 1 (Izquierda) */
+        .prm-marker-low { top: 50%; right: 5px; transform: translateY(-50%); } /* PRM < 1 (Derecha) */
+        .tcm-marker-high { bottom: 5px; left: 50%; transform: translateX(-50%); } /* TCM > 10% (Arriba) */
+        .tcm-marker-low { top: 5px; left: 50%; transform: translateX(-50%); } /* TCM < 10% (Abajo) */
+
+
+        .product-bubble {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 11px; /* Ajustado */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            z-index: 2;
+            text-align: center;
+            padding: 5px; /* Para que el texto no se pegue al borde */
+            line-height: 1.2; /* Mejorar legibilidad */
+        }
+        .product-bubble:hover {
+            transform: scale(1.15); /* Aumentado */
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+        .metrics-table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden; /* Para bordes redondeados */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .metrics-table th, .metrics-table td {
+            border: 1px solid #ecf0f1;
+            padding: 10px 12px; /* Ajustado */
+            text-align: center;
+            font-size: 13px; /* Ajustado */
+        }
+        .metrics-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        .metrics-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .metrics-table tr:hover {
+            background-color: #f1f7fd;
+        }
+        .growth-table-container {
+            margin-top: 10px;
+            overflow-x: auto; /* Para tablas anchas */
+        }
+        .growth-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .growth-table th, .growth-table td {
+            border: 1px solid #ecf0f1;
+            padding: 8px;
+            text-align: center;
+            font-size: 12px;
+            min-width: 80px; /* Ancho mínimo para celdas de período */
+        }
+        .growth-table th {
+            background-color: #2c3e50;
+            color: white;
+            font-weight: 500;
+        }
+        .growth-table td { background-color: #f8f9fa; }
+        .growth-table input {
+            width: 100%; /* Ocupar toda la celda */
+            max-width: 70px; /* Evitar que sea muy ancho */
+            padding: 5px;
+            text-align: center;
+            box-sizing: border-box; /* Para que padding no afecte el ancho */
+        }
+        .period-controls {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .period-controls label {
+            min-width: auto; /* Ajustar label */
+            margin-bottom: 0;
+        }
+        #saveAllButton {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #1abc9c;
+        }
+        #saveAllButton:hover {
+            background-color: #16a085;
+        }
+        .info-text {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }

@@ -1,0 +1,8 @@
+.valor-texto {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.form-eliminar-valor {
+    display: inline;
+}

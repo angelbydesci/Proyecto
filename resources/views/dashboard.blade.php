@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selección de Proyectos</title>
-    @vite(['resources/css/dashboard.css', 'resources/js/app.js'])
+    @vite(['resources/css/dashboard.css', 'resources/js/app.js', 'resources/js/dashboard.js'])
 </head>
 <body>
   <div class="dashboard-container">
@@ -53,31 +53,5 @@
         </form>
     </div>
   </div>
-
-  <script>
-      document.getElementById('add-project-btn').addEventListener('click', function () {
-          const form = document.getElementById('add-project-form');
-          form.classList.toggle('active');
-      });
-
-      document.getElementById('cancel-add-project').addEventListener('click', function () {
-          const form = document.getElementById('add-project-form');
-          form.classList.remove('active');
-      });
-
-      // Nuevo script para manejar la selección de proyecto
-      document.getElementById('select-project-link').addEventListener('click', function (event) {
-          event.preventDefault(); // Prevenir la navegación por defecto del enlace
-          const selectedProjectInput = document.querySelector('input[name="selected_project"]:checked');
-          if (selectedProjectInput) {
-              const projectId = selectedProjectInput.value;
-              // Construir la URL dinámicamente. 
-              // La ruta 'dashboard2' ahora espera un parámetro de proyecto.
-              window.location.href = `/dashboard2/${projectId}`; 
-          } else {
-              alert('Por favor, seleccione un proyecto.');
-          }
-      });
-  </script>
 </body>
 </html>

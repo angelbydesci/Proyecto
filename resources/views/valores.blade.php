@@ -1,6 +1,6 @@
 {{-- resources/views/valores.blade.php --}}
 
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+@vite(['resources/css/app.css', 'resources/css/valores.css', 'resources/js/app.js'])
 
 
 <div class="container">
@@ -64,9 +64,9 @@
             <ul class="list-group mb-3">
                 @foreach ($valores as $valor)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span style="flex-grow: 1; margin-right: 10px;">{{ $valor->valor }}</span>
+                        <span class="valor-texto">{{ $valor->valor }}</span>
                         {{-- Formulario para eliminar valor --}}
-                        <form action="{{ route('valores.destroy', $valor) }}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar este valor?');" style="display: inline;">
+                        <form action="{{ route('valores.destroy', $valor) }}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar este valor?');" class="form-eliminar-valor">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>

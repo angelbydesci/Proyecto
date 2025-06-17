@@ -3,18 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Panel de Opciones</title>
-    @vite(['resources/css/dashboard2.css'])
+    @vite(['resources/css/dashboard2.css', 'resources/js/app.js']) {{-- Añadido app.js por si es necesario --}}
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300" rel="stylesheet">
-    <style>
-        /* Estilo para el iframe */
-        #content-frame {
-            margin-left: 260px; /* Espacio para la barra lateral */
-            width: calc(100% - 260px); /* Ajusta el ancho del iframe */
-            height: 100vh; /* Ocupa toda la altura de la ventana */
-            border: none; /* Sin bordes */
-        }
-    </style>
 </head>
 <body>
     <div class="area"></div>

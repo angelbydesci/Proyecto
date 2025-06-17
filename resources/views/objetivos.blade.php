@@ -1,6 +1,6 @@
 {{-- resources/views/objetivos.blade.php --}}
 
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+@vite(['resources/css/app.css', 'resources/css/objetivos.css', 'resources/js/app.js'])
 <div class="container">
     <!-- Título -->
     <h2>OBJETIVOS ESTRATEGICOS</h2>
@@ -37,7 +37,7 @@
         <table class="table table-bordered">
             <thead class="thead-light">
                 <tr>
-                    <th style="width: 10%">Letra</th>
+                    <th class="th-letra">Letra</th>
                     <th>Atributo</th>
                 </tr>
             </thead>

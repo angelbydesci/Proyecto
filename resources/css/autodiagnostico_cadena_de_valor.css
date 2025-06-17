@@ -1,0 +1,9 @@
+td input[type="radio"] {
+    margin-left: auto;
+    margin-right: auto;
+}
+tbody td:first-child {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 400px; 
+}

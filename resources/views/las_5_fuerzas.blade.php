@@ -1,4 +1,5 @@
 <!-- resources/views/las_5_fuerzas.blade.php -->
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <div class="container mx-auto py-8">
         <h1 class="text-3xl font-bold mb-6 text-center">8. ANÁLISIS EXTERNO MICROENTORNO: MATRIZ DE PORTER</h1>
