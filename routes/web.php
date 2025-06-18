@@ -11,6 +11,8 @@ use App\Http\Controllers\FODAController;
 use App\Http\Controllers\AutodiagnosticoBCGController;
 use App\Http\Controllers\PorterController; // Añadir esta línea
 use App\Http\Controllers\PestController; // Añadir esta línea
+use App\Http\Controllers\EstrategiaController;
+use App\Http\Controllers\MatrizEstrategiaController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -56,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/proyectos/{proyecto}/autodiagnostico-porter', [PorterController::class, 'store'])->name('autodiagnostico_porter.store'); // Nueva ruta para guardar
     Route::get('/proyectos/{proyecto}/pest', [ProyectoController::class, 'showPest'])->name('proyectos.showPest');
     Route::post('/proyectos/{proyecto}/pest', [PestController::class, 'store'])->name('pest.store'); // Nueva ruta para guardar PEST
-    Route::get('/proyectos/{proyecto}/estrategia', [ProyectoController::class, 'showEstrategia'])->name('proyectos.showEstrategia');
+    Route::get('/proyectos/{proyecto}/estrategia', [EstrategiaController::class, 'show'])->name('proyectos.showEstrategia');
     Route::get('/proyectos/{proyecto}/matriz-came', [ProyectoController::class, 'showMatrizCame'])->name('proyectos.showMatrizCame');
     Route::get('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [ProyectoController::class, 'showAutodiagnosticoCadenaDeValor'])->name('proyectos.showAutodiagnosticoCadenaDeValor');
 
@@ -123,3 +125,7 @@ Route::delete('/objetivos/principal/{objetivoPrincipal}', [ObjetivoController::c
 // Rutas para objetivos específicos
 Route::put('/objetivos/especifico/{objetivoEspecifico}', [ObjetivoController::class, 'updateEspecifico'])->name('objetivos.updateEspecifico');
 Route::delete('/objetivos/especifico/{objetivoEspecifico}', [ObjetivoController::class, 'destroyEspecifico'])->name('objetivos.destroyEspecifico');
+
+// Rutas para la matriz de estrategia
+Route::get('/estrategia/{id_proyecto}', [EstrategiaController::class, 'index'])->name('estrategia.index');
+Route::post('/estrategia/storeOrUpdate', [MatrizEstrategiaController::class, 'storeOrUpdate'])->name('estrategia.storeOrUpdate');

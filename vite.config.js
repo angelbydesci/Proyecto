@@ -21,6 +21,7 @@ export default defineConfig({
                  'resources/js/autodiagnostico_cadena_de_valor.js',
                  'resources/css/autodiagnostico_bcg.css',
                  'resources/js/autodiagnostico_bcg.js',
+                 'resources/js/estrategia.js',
                 ],
             refresh: true,
         }),

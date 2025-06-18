@@ -395,6 +395,67 @@ CREATE TABLE IF NOT EXISTS `pest` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+CREATE TABLE IF NOT EXISTS `estrategia_ofensiva` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `O1F1` int(11) DEFAULT NULL, `O1F2` int(11) DEFAULT NULL, `O1F3` int(11) DEFAULT NULL, `O1F4` int(11) DEFAULT NULL,
+  `O2F1` int(11) DEFAULT NULL, `O2F2` int(11) DEFAULT NULL, `O2F3` int(11) DEFAULT NULL, `O2F4` int(11) DEFAULT NULL,
+  `O3F1` int(11) DEFAULT NULL, `O3F2` int(11) DEFAULT NULL, `O3F3` int(11) DEFAULT NULL, `O3F4` int(11) DEFAULT NULL,
+  `O4F1` int(11) DEFAULT NULL, `O4F2` int(11) DEFAULT NULL, `O4F3` int(11) DEFAULT NULL, `O4F4` int(11) DEFAULT NULL,
+  `sumatoria` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_estrategia_ofensiva_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_estrategia_ofensiva_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `estrategia_defensiva` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `A1F1` int(11) DEFAULT NULL, `A1F2` int(11) DEFAULT NULL, `A1F3` int(11) DEFAULT NULL, `A1F4` int(11) DEFAULT NULL,
+  `A2F1` int(11) DEFAULT NULL, `A2F2` int(11) DEFAULT NULL, `A2F3` int(11) DEFAULT NULL, `A2F4` int(11) DEFAULT NULL,
+  `A3F1` int(11) DEFAULT NULL, `A3F2` int(11) DEFAULT NULL, `A3F3` int(11) DEFAULT NULL, `A3F4` int(11) DEFAULT NULL,
+  `A4F1` int(11) DEFAULT NULL, `A4F2` int(11) DEFAULT NULL, `A4F3` int(11) DEFAULT NULL, `A4F4` int(11) DEFAULT NULL,
+  `sumatoria` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_estrategia_defensiva_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_estrategia_defensiva_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `estrategia_supervivencia` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `A1D1` int(11) DEFAULT NULL, `A1D2` int(11) DEFAULT NULL, `A1D3` int(11) DEFAULT NULL, `A1D4` int(11) DEFAULT NULL,
+  `A2D1` int(11) DEFAULT NULL, `A2D2` int(11) DEFAULT NULL, `A2D3` int(11) DEFAULT NULL, `A2D4` int(11) DEFAULT NULL,
+  `A3D1` int(11) DEFAULT NULL, `A3D2` int(11) DEFAULT NULL, `A3D3` int(11) DEFAULT NULL, `A3D4` int(11) DEFAULT NULL,
+  `A4D1` int(11) DEFAULT NULL, `A4D2` int(11) DEFAULT NULL, `A4D3` int(11) DEFAULT NULL, `A4D4` int(11) DEFAULT NULL,
+  `sumatoria` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_estrategia_supervivencia_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_estrategia_supervivencia_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `estrategia_reorientacion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `O1D1` int(11) DEFAULT NULL, `O1D2` int(11) DEFAULT NULL, `O1D3` int(11) DEFAULT NULL, `O1D4` int(11) DEFAULT NULL,
+  `O2D1` int(11) DEFAULT NULL, `O2D2` int(11) DEFAULT NULL, `O2D3` int(11) DEFAULT NULL, `O2D4` int(11) DEFAULT NULL,
+  `O3D1` int(11) DEFAULT NULL, `O3D2` int(11) DEFAULT NULL, `O3D3` int(11) DEFAULT NULL, `O3D4` int(11) DEFAULT NULL,
+  `O4D1` int(11) DEFAULT NULL, `O4D2` int(11) DEFAULT NULL, `O4D3` int(11) DEFAULT NULL, `O4D4` int(11) DEFAULT NULL,
+  `sumatoria` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_estrategia_reorientacion_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_estrategia_reorientacion_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
