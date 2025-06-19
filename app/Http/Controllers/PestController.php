@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pest;
 use App\Models\Proyecto;
+use App\Models\Oportunidad;
+use App\Models\Amenaza;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,10 +20,19 @@ class PestController extends Controller
      */
     public function store(Request $request, Proyecto $proyecto)
     {
-        $rules = [];
+        $pestRules = [];
         for ($i = 1; $i <= 25; $i++) {
-            $rules['pregunta'.$i] = 'required|integer|min:0|max:4';
+            $pestRules['pregunta'.$i] = 'required|integer|min:0|max:4';
         }
+        
+        $fodaRules = [
+            'oportunidad3' => 'nullable|string|max:65535',
+            'oportunidad4' => 'nullable|string|max:65535',
+            'amenaza3' => 'nullable|string|max:65535',
+            'amenaza4' => 'nullable|string|max:65535',
+        ];
+
+        $rules = array_merge($pestRules, $fodaRules);
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -31,7 +42,9 @@ class PestController extends Controller
                         ->withInput();
         }
 
-        $dataToSave = $request->only(array_keys($rules));
+        $validatedData = $validator->validated();
+
+        $dataToSave = collect($validatedData)->only(array_keys($pestRules))->all();
         $dataToSave['proyecto_id'] = $proyecto->id;
 
         // Calcular sumatorio total de las preguntas PEST
@@ -76,5 +89,40 @@ class PestController extends Controller
         );
 
         return redirect()->route('proyectos.showPest', $proyecto->id)->with('success', 'Análisis PEST guardado con éxito.');
+    }
+
+    /**
+     * Store opportunities and threats (FODA) for the project.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Proyecto  $proyecto
+     * @return \Illuminate\Http\Response
+     */
+    public function storeFoda(Request $request, Proyecto $proyecto)
+    {
+        $validatedData = $request->validate([
+            'oportunidad3' => 'nullable|string|max:65535',
+            'oportunidad4' => 'nullable|string|max:65535',
+            'amenaza3' => 'nullable|string|max:65535',
+            'amenaza4' => 'nullable|string|max:65535',
+        ]);
+
+        Oportunidad::updateOrCreate(
+            ['proyecto_id' => $proyecto->id],
+            [
+                'oportunidad3' => $validatedData['oportunidad3'] ?? null,
+                'oportunidad4' => $validatedData['oportunidad4'] ?? null,
+            ]
+        );
+
+        Amenaza::updateOrCreate(
+            ['proyecto_id' => $proyecto->id],
+            [
+                'amenaza3' => $validatedData['amenaza3'] ?? null,
+                'amenaza4' => $validatedData['amenaza4'] ?? null,
+            ]
+        );
+
+        return redirect()->route('proyectos.showPest', $proyecto->id)->with('success', 'Análisis FODA (PEST) guardado con éxito.');
     }
 }

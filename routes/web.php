@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/proyectos/{proyecto}/autodiagnostico-porter', [PorterController::class, 'store'])->name('autodiagnostico_porter.store'); // Nueva ruta para guardar
     Route::get('/proyectos/{proyecto}/pest', [ProyectoController::class, 'showPest'])->name('proyectos.showPest');
     Route::post('/proyectos/{proyecto}/pest', [PestController::class, 'store'])->name('pest.store'); // Nueva ruta para guardar PEST
+    Route::post('/proyectos/{proyecto}/pest/foda', [PestController::class, 'storeFoda'])->name('pest.storeFoda');
     Route::get('/proyectos/{proyecto}/estrategia', [EstrategiaController::class, 'show'])->name('proyectos.showEstrategia');
     Route::get('/proyectos/{proyecto}/matriz-came', [CorrecionController::class, 'create'])->name('proyectos.showMatrizCame'); // Corregido: Usar CorrecionController
     Route::post('/proyectos/{proyecto}/matriz-came', [CorrecionController::class, 'store'])->name('matriz_came.store'); // Corregido: Usar CorrecionController

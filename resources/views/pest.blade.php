@@ -181,10 +181,65 @@
 
             <div class="pest-chart-section">
                 <h2 class="pest-subtitle">Gráfico de Impacto de Factores Generales Externos</h2>
-                <div class="pest-chart-container">
-                    <canvas id="pestChart"></canvas>
+                <div class="pest-chart-container" id="pestChartContainer">
+                    {{-- El gráfico se generará aquí con CSS y se actualizará con JS --}}
+                    <div class="css-chart">
+                        <div class="chart-grid">
+                            <div class="y-axis-label">Impacto (%)</div>
+                            <div class="line">100%</div>
+                            <div class="line">80%</div>
+                            <div class="line">60%</div>
+                            <div class="line">40%</div>
+                            <div class="line">20%</div>
+                            <div class="line">0%</div>
+                        </div>
+                        <div class="chart-bars">
+                            @foreach (['social', 'ambiental', 'politico', 'economico', 'tecnologico'] as $factor)
+                                <div class="chart-bar-group">
+                                    <div class="chart-bar" data-factor="{{ $factor }}">
+                                        <div class="bar-value" id="bar-{{$factor}}" style="height: 0%;"></div>
+                                    </div>
+                                    <div class="chart-label">{{ ucfirst($factor) }}</div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <form method="POST" action="{{ route('pest.storeFoda', ['proyecto' => $proyecto->id]) }}" class="pest-form">
+                @csrf
+                <div class="pest-foda-section">
+                    <h2 class="pest-subtitle">Análisis FODA (Externo)</h2>
+
+                    <div class="pest-foda-group">
+                        <h3 class="pest-foda-subtitle">Oportunidades</h3>
+                        <div class="pest-foda-grid">
+                            @for ($i = 3; $i <= 4; $i++)
+                                <div class="pest-foda-item">
+                                    <label for="oportunidad{{ $i }}" class="pest-foda-label">Oportunidad {{ $i }}</label>
+                                    <textarea name="oportunidad{{ $i }}" id="oportunidad{{ $i }}" class="pest-foda-textarea">{{ old('oportunidad'.$i, $oportunidades['oportunidad'.$i] ?? '') }}</textarea>
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+
+                    <div class="pest-foda-group">
+                        <h3 class="pest-foda-subtitle">Amenazas</h3>
+                        <div class="pest-foda-grid">
+                            @for ($i = 3; $i <= 4; $i++)
+                                <div class="pest-foda-item">
+                                    <label for="amenaza{{ $i }}" class="pest-foda-label">Amenaza {{ $i }}</label>
+                                    <textarea name="amenaza{{ $i }}" id="amenaza{{ $i }}" class="pest-foda-textarea">{{ old('amenaza'.$i, $amenazas['amenaza'.$i] ?? '') }}</textarea>
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+                    <div class="pest-actions">
+                        <button type="submit" class="pest-submit-btn">Guardar Oportunidades y Amenazas</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -195,6 +250,3 @@
         oldInput: @json(old() ?? [])
     };
 </script>
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-@endpush

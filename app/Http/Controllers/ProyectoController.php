@@ -6,6 +6,8 @@ use App\Models\Proyecto;
 use App\Models\CadenaDeValor; // Asegúrate de importar el modelo CadenaDeValor
 use App\Models\Fortaleza; // Importar el modelo Fortaleza
 use App\Models\Debilidad; // Importar el modelo Debilidad
+use App\Models\Oportunidad;
+use App\Models\Amenaza;
 use Illuminate\Http\Request;
 // Asegúrate de que los modelos Producto, TCM y Competidor están importados si no lo están ya.
 use App\Models\Producto; 
@@ -159,7 +161,9 @@ class ProyectoController extends Controller
     {
         // Cargar los datos de PEST existentes para este proyecto, si los hay
         $pestData = Pest::where('proyecto_id', $proyecto->id)->first();
-        return view('pest', compact('proyecto', 'pestData')); // Pasar $pestData a la vista
+        $oportunidades = Oportunidad::where('proyecto_id', $proyecto->id)->first();
+        $amenazas = Amenaza::where('proyecto_id', $proyecto->id)->first();
+        return view('pest', compact('proyecto', 'pestData', 'oportunidades', 'amenazas')); // Pasar $pestData a la vista
     }
 
     public function showEstrategia(Proyecto $proyecto)
