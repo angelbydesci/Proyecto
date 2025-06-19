@@ -104,6 +104,14 @@ class Proyecto extends Model
     }
 
     /**
+     * Obtener todos los objetivos específicos para el proyecto a través de los objetivos principales.
+     */
+    public function objetivosEspecificos()
+    {
+        return $this->hasManyThrough(ObjetivoEspecifico::class, ObjetivoPrincipal::class);
+    }
+
+    /**
      * Obtener las unidades estratégicas de un proyecto.
      *
      * @return string|null
@@ -138,5 +146,30 @@ class Proyecto extends Model
     public function productos()
     {
         return $this->hasMany(Producto::class, 'proyecto_id');
+    }
+
+    public function fortaleza()
+    {
+        return $this->hasOne(Fortaleza::class, 'proyecto_id');
+    }
+
+    public function oportunidad()
+    {
+        return $this->hasOne(Oportunidad::class, 'proyecto_id');
+    }
+
+    public function debilidad()
+    {
+        return $this->hasOne(Debilidad::class, 'proyecto_id');
+    }
+
+    public function amenaza()
+    {
+        return $this->hasOne(Amenaza::class, 'proyecto_id');
+    }
+
+    public function correcion()
+    {
+        return $this->hasOne(Correcion::class, 'proyecto_id');
     }
 }

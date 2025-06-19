@@ -12,7 +12,8 @@ use App\Models\EstrategiaDefensiva;
 use App\Models\EstrategiaSupervivencia;
 use App\Models\EstrategiaReorientacion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log; // Importar Log
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class EstrategiaController extends Controller
 {
@@ -23,10 +24,17 @@ class EstrategiaController extends Controller
             abort(403);
         }
 
-        $fortalezas = Fortaleza::where('proyecto_id', $proyecto->id)->first();
-        $debilidades = Debilidad::where('proyecto_id', $proyecto->id)->first();
-        $oportunidades = Oportunidad::where('proyecto_id', $proyecto->id)->first();
-        $amenazas = Amenaza::where('proyecto_id', $proyecto->id)->first();
+        // Cargar la fila única de datos para cada elemento FODA
+        $fortalezas_record = Fortaleza::where('proyecto_id', $proyecto->id)->first();
+        $oportunidades_record = Oportunidad::where('proyecto_id', $proyecto->id)->first();
+        $debilidades_record = Debilidad::where('proyecto_id', $proyecto->id)->first();
+        $amenazas_record = Amenaza::where('proyecto_id', $proyecto->id)->first();
+
+        // Extraer los valores en arrays simples
+        $fortalezas = $fortalezas_record ? [$fortalezas_record->fortaleza1, $fortalezas_record->fortaleza2, $fortalezas_record->fortaleza3, $fortalezas_record->fortaleza4] : [];
+        $oportunidades = $oportunidades_record ? [$oportunidades_record->oportunidad1, $oportunidades_record->oportunidad2, $oportunidades_record->oportunidad3, $oportunidades_record->oportunidad4] : [];
+        $debilidades = $debilidades_record ? [$debilidades_record->debilidad1, $debilidades_record->debilidad2, $debilidades_record->debilidad3, $debilidades_record->debilidad4] : [];
+        $amenazas = $amenazas_record ? [$amenazas_record->amenaza1, $amenazas_record->amenaza2, $amenazas_record->amenaza3, $amenazas_record->amenaza4] : [];
 
         $matrizOfensiva = EstrategiaOfensiva::firstOrNew(['proyecto_id' => $proyecto->id]);
         $matrizDefensiva = EstrategiaDefensiva::firstOrNew(['proyecto_id' => $proyecto->id]);
@@ -36,8 +44,8 @@ class EstrategiaController extends Controller
         return view('estrategia', compact(
             'proyecto',
             'fortalezas',
-            'debilidades',
             'oportunidades',
+            'debilidades',
             'amenazas',
             'matrizOfensiva',
             'matrizDefensiva',
@@ -46,70 +54,62 @@ class EstrategiaController extends Controller
         ));
     }
 
-    public function guardar(Request $request)
+    public function guardarTodo(Request $request)
     {
         $validated = $request->validate([
             'proyecto_id' => 'required|integer|exists:proyectos,id',
-            'matriz' => 'required|string|in:ofensiva,defensiva,supervivencia,reorientacion',
-            'celda' => 'required|string',
-            'valor' => 'required|integer|min:0|max:4',
+            'matrices' => 'required|array',
+            'matrices.ofensiva' => 'present|array',
+            'matrices.defensiva' => 'present|array',
+            'matrices.reorientacion' => 'present|array',
+            'matrices.supervivencia' => 'present|array',
         ]);
 
-        // Asegurarse de que el proyecto pertenece al usuario autenticado
         $proyecto = Proyecto::findOrFail($validated['proyecto_id']);
         if ($proyecto->user_id !== auth()->id()) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            return response()->json(['success' => false, 'message' => 'No autorizado'], 403);
         }
 
-        $modelClass = null;
-        switch ($validated['matriz']) {
-            case 'ofensiva':
-                $modelClass = EstrategiaOfensiva::class;
-                break;
-            case 'defensiva':
-                $modelClass = EstrategiaDefensiva::class;
-                break;
-            case 'supervivencia':
-                $modelClass = EstrategiaSupervivencia::class;
-                break;
-            case 'reorientacion':
-                $modelClass = EstrategiaReorientacion::class;
-                break;
-        }
-
-        if (!$modelClass) {
-            return response()->json(['success' => false, 'message' => 'Matriz no válida'], 400);
-        }
-
+        DB::beginTransaction();
         try {
-            $matriz = $modelClass::firstOrNew(['proyecto_id' => $validated['proyecto_id']]);
-            
-            // Validar que la celda existe en el modelo
-            if (!in_array($validated['celda'], $matriz->getFillable())) {
-                 return response()->json(['success' => false, 'message' => 'Celda no válida'], 400);
-            }
+            $this->actualizarMatriz('ofensiva', $validated['matrices']['ofensiva'], $validated['proyecto_id']);
+            $this->actualizarMatriz('defensiva', $validated['matrices']['defensiva'], $validated['proyecto_id']);
+            $this->actualizarMatriz('reorientacion', $validated['matrices']['reorientacion'], $validated['proyecto_id']);
+            $this->actualizarMatriz('supervivencia', $validated['matrices']['supervivencia'], $validated['proyecto_id']);
 
-            $matriz->{$validated['celda']} = $validated['valor'];
-            
-            // Recalcular sumatoria
-            $sumatoria = 0;
-            // Obtener solo las columnas que representan celdas de la matriz (ej. O1F1, A2D3)
-            $cellColumns = array_filter($matriz->getFillable(), function($column) {
-                return preg_match('/^[OADF][1-4][OADF][1-4]$/', $column);
-            });
-
-            foreach ($cellColumns as $column) {
-                $sumatoria += $matriz->{$column} ?? 0;
-            }
-            $matriz->sumatoria = $sumatoria;
-            
-            $matriz->save();
-
-            return response()->json(['success' => true, 'message' => 'Guardado con éxito', 'sumatoria' => $matriz->sumatoria]);
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Estrategias guardadas con éxito.']);
 
         } catch (\Exception $e) {
-            Log::error('Error al guardar matriz: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Error interno del servidor.'], 500);
+            DB::rollBack();
+            Log::error('Error al guardar todas las matrices: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Error interno del servidor al guardar.'], 500);
         }
+    }
+
+    private function actualizarMatriz(string $nombreMatriz, array $celdas, int $proyectoId)
+    {
+        $modelClass = null;
+        switch ($nombreMatriz) {
+            case 'ofensiva': $modelClass = EstrategiaOfensiva::class; break;
+            case 'defensiva': $modelClass = EstrategiaDefensiva::class; break;
+            case 'reorientacion': $modelClass = EstrategiaReorientacion::class; break;
+            case 'supervivencia': $modelClass = EstrategiaSupervivencia::class; break;
+        }
+
+        if (!$modelClass) return;
+
+        $matriz = $modelClass::firstOrNew(['proyecto_id' => $proyectoId]);
+        $sumatoria = 0;
+
+        // Asignar valores de las celdas y calcular sumatoria
+        foreach ($celdas as $celda => $valor) {
+            if (in_array($celda, $matriz->getFillable())) {
+                $matriz->{$celda} = $valor;
+                $sumatoria += $valor;
+            }
+        }
+        $matriz->sumatoria = $sumatoria;
+        $matriz->save();
     }
 }

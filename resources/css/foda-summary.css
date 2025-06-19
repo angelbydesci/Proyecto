@@ -1,0 +1,39 @@
+.foda-summary-table th, .foda-summary-table td {
+    vertical-align: middle;
+}
+
+.foda-summary-table .foda-header {
+    width: 150px; /* Ancho fijo para la cabecera */
+    font-weight: bold;
+    text-align: center;
+}
+
+.foda-summary-table ul {
+    padding-left: 0; /* Quitar padding por defecto de la lista */
+}
+
+.foda-summary-table li {
+    border-bottom: 1px dotted #ccc;
+    padding: 8px 12px;
+    min-height: 40px; /* Altura mínima para cada elemento */
+}
+
+.foda-summary-table li:last-child {
+    border-bottom: none;
+}
+
+.foda-debilidades {
+    background-color: #eaf2d3; /* Verde claro */
+}
+
+.foda-amenazas {
+    background-color: #d4eef3; /* Azul claro */
+}
+
+.foda-fortalezas {
+    background-color: #f5e8d8; /* Naranja claro */
+}
+
+.foda-oportunidades {
+    background-color: #fbe4e4; /* Rojo/rosa claro */
+}

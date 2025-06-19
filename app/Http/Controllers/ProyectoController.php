@@ -151,6 +151,26 @@ class ProyectoController extends Controller
 
         return view('autodiagnostico_bcg', compact('proyecto', 'productosExistentes', 'fortalezas', 'debilidades'));
     }
+
+    public function showResumen(Proyecto $proyecto)
+    {
+        if ($proyecto->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $proyecto->load(
+            'user', 
+            'valores', 
+            'objetivosPrincipales.objetivosEspecificos',
+            'fortaleza',
+            'oportunidad',
+            'debilidad',
+            'amenaza',
+            'correcion'
+        );
+
+        return view('resumen', compact('proyecto'));
+    }
     
     public function showLas5Fuerzas(Proyecto $proyecto)
     {

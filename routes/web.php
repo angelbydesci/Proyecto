@@ -63,8 +63,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/proyectos/{proyecto}/estrategia', [EstrategiaController::class, 'show'])->name('proyectos.showEstrategia');
     Route::get('/proyectos/{proyecto}/matriz-came', [CorrecionController::class, 'create'])->name('proyectos.showMatrizCame'); // Corregido: Usar CorrecionController
     Route::post('/proyectos/{proyecto}/matriz-came', [CorrecionController::class, 'store'])->name('matriz_came.store'); // Corregido: Usar CorrecionController
+    Route::get('/proyectos/{proyecto}/resumen', [ProyectoController::class, 'showResumen'])->name('proyectos.showResumen');
     Route::get('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [ProyectoController::class, 'showAutodiagnosticoCadenaDeValor'])->name('proyectos.showAutodiagnosticoCadenaDeValor');
-
+    Route::post('/estrategia/guardar-todo', [EstrategiaController::class, 'guardarTodo'])->name('estrategia.guardarTodo');
     // Rutas para CadenaDeValorController
     Route::post('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [CadenaDeValorController::class, 'storeOrUpdate'])->name('cadenadevalor.storeOrUpdate');
     Route::resource('foda', FODAController::class)->except(['index', 'create', 'show', 'edit', 'update', 'destroy']); // Provisional, ajustar según necesidad

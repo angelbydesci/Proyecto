@@ -1,0 +1,69 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.resumen-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.info-table td {
+    padding: 0.5rem;
+}
+
+.info-label {
+    font-weight: bold;
+    width: 250px;
+    background-color: #f2f2f2;
+}
+
+.resumen-section {
+    margin-bottom: 1.5rem;
+    border: 2px solid #005a9e;
+}
+
+.resumen-header {
+    background-color: #005a9e;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem;
+}
+
+.resumen-content {
+    padding: 1rem;
+    min-height: 100px;
+}
+
+.valores-list .valor-item {
+    border: 1px solid #dee2e6;
+    padding: 0.5rem;
+    margin-bottom: -1px; /* Para que los bordes se solapen */
+}
+
+.objetivos-table th, .objetivos-table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.objetivos-table thead th {
+    background-color: #005a9e;
+    color: white;
+    font-weight: bold;
+}
+
+.objetivos-table .mision-cell {
+    background-color: #eaf2d3;
+}
+
+.objetivos-table .obj-general {
+    background-color: #d4eef3;
+}
+
+.objetivos-table ul {
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.objetivos-table li {
+    padding: 0.25rem 0;
+}

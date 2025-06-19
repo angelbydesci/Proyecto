@@ -101,6 +101,12 @@
                     <span class="nav-text">11. MATRIZ CAME</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('proyectos.showResumen', $proyecto) }}" target="content-frame">
+                    <i class="fa fa-book fa-2x"></i>
+                    <span class="nav-text">12. Resumen</span>
+                </a>
+            </li>
         </ul>
         <ul class="logout">
     <li>

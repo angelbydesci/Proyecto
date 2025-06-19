@@ -1,0 +1,89 @@
+/* DAFO ANALYSIS */
+.dafo-container {
+    border: 1px solid #2f5496;
+}
+.dafo-title {
+    background-color: #2f5496;
+    color: white;
+    padding: 8px 12px;
+    font-weight: bold;
+}
+.dafo-table-new {
+    border-style: none;
+}
+.dafo-table-new th {
+    width: 200px;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: bold;
+    border: 1px dotted #b4b4b4;
+    border-left: none;
+    border-top: none;
+}
+.dafo-table-new td {
+    height: 120px;
+    border: 1px dotted #b4b4b4;
+    border-right: none;
+    border-top: none;
+    border-bottom-style: dotted;
+}
+.dafo-table-new tr:last-child th,
+.dafo-table-new tr:last-child td {
+    border-bottom: none;
+}
+.dafo-debilidades { background-color: #e2f0d9; }
+.dafo-amenazas { background-color: #ddebf7; }
+.dafo-fortalezas { background-color: #fff2cc; }
+.dafo-oportunidades { background-color: #fde4d8; }
+
+/* IDENTIFICACION ESTRATEGIA */
+.identificacion-container .d-flex {
+    flex-wrap: wrap;
+}
+.identificacion-title {
+    background-color: #2f5496;
+    color: white;
+    padding: 8px 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+.identificacion-subtitle {
+    font-weight: bold;
+}
+.identificacion-box {
+    border: 2px solid #2f5496;
+    padding: 0;
+    width: 100%;
+}
+.identificacion-box textarea {
+    border: none;
+    resize: none;
+    width: 100%;
+}
+
+/* ACCIONES COMPETITIVAS */
+.acciones-title {
+    background-color: #2f5496;
+    color: white;
+    padding: 8px 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+.acciones-table {
+    border: 2px solid #2f5496;
+}
+.acciones-table th {
+    width: 60px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f2f2f2;
+}
+.acciones-table td {
+    padding: 0;
+}
+.acciones-table input {
+    border: none;
+    height: 100%;
+    width: 100%;
+    padding: 8px 12px;
+}

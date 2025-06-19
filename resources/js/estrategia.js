@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const proyectoId = document.getElementById('proyecto_id').value;
+    const guardarBtn = document.getElementById('guardar-estrategias-btn');
 
     // Función para calcular y actualizar los totales de una matriz
     function calcularTotales(matrizContainer) {
@@ -50,10 +51,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Función para guardar el valor de una celda en la BD
-    async function guardarCelda(matriz, celda, valor) {
+    // Event listener para el botón de guardar todo
+    guardarBtn.addEventListener('click', async function () {
+        const matricesData = {
+            ofensiva: {},
+            defensiva: {},
+            reorientacion: {},
+            supervivencia: {},
+        };
+
+        document.querySelectorAll('.estrategia-container select').forEach(select => {
+            const matriz = select.dataset.matriz;
+            const celda = select.dataset.celda;
+            const valor = parseInt(select.value, 10);
+            if (matricesData[matriz]) {
+                matricesData[matriz][celda] = valor;
+            }
+        });
+
+        this.disabled = true;
+        this.textContent = 'Guardando...';
+
         try {
-            const response = await fetch('/estrategia/guardar', {
+            const response = await fetch('/estrategia/guardar-todo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,25 +81,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify({
                     proyecto_id: proyectoId,
-                    matriz: matriz,
-                    celda: celda,
-                    valor: valor
+                    matrices: matricesData
                 })
             });
 
-            if (!response.ok) {
-                throw new Error('Error al guardar los datos.');
-            }
+            const result = await response.json();
 
-            const data = await response.json();
-            // console.log(data.message);
+            if (response.ok && result.success) {
+                alert('¡Estrategias guardadas con éxito!');
+            } else {
+                throw new Error(result.message || 'Error al guardar los datos.');
+            }
 
         } catch (error) {
             console.error('Error en la petición AJAX:', error);
+            alert('Error: ' + error.message);
+        } finally {
+            this.disabled = false;
+            this.textContent = 'Guardar Todos los Cambios';
         }
-    }
+    });
 
-    // Añadir event listeners a todos los selects y calcular totales iniciales
+    // Calcular totales iniciales y añadir listeners para recalcular en cada cambio
     const estrategiaContainers = document.querySelectorAll('.estrategia-container');
     estrategiaContainers.forEach(container => {
         // Calcular totales al cargar la página
@@ -87,17 +110,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Añadir listeners para cambios
         container.querySelectorAll('select').forEach(select => {
-            select.addEventListener('change', (event) => {
-                const selectCambiado = event.target;
-                const matriz = selectCambiado.dataset.matriz;
-                const celda = selectCambiado.dataset.celda;
-                const valor = selectCambiado.value;
-
-                // Guardar el cambio en la base de datos
-                guardarCelda(matriz, celda, valor);
-
-                // Recalcular los totales para la matriz afectada
-                const matrizContainer = selectCambiado.closest('.estrategia-container');
+            select.addEventListener('change', () => {
+                const matrizContainer = select.closest('.estrategia-container');
                 calcularTotales(matrizContainer);
             });
         });
