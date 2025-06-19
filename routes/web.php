@@ -13,6 +13,7 @@ use App\Http\Controllers\PorterController; // Añadir esta línea
 use App\Http\Controllers\PestController; // Añadir esta línea
 use App\Http\Controllers\EstrategiaController;
 use App\Http\Controllers\MatrizEstrategiaController;
+use App\Http\Controllers\CorrecionController; // Nueva línea: importar CorrecionController
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -59,7 +60,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/proyectos/{proyecto}/pest', [ProyectoController::class, 'showPest'])->name('proyectos.showPest');
     Route::post('/proyectos/{proyecto}/pest', [PestController::class, 'store'])->name('pest.store'); // Nueva ruta para guardar PEST
     Route::get('/proyectos/{proyecto}/estrategia', [EstrategiaController::class, 'show'])->name('proyectos.showEstrategia');
-    Route::get('/proyectos/{proyecto}/matriz-came', [ProyectoController::class, 'showMatrizCame'])->name('proyectos.showMatrizCame');
+    Route::get('/proyectos/{proyecto}/matriz-came', [CorrecionController::class, 'create'])->name('proyectos.showMatrizCame'); // Corregido: Usar CorrecionController
+    Route::post('/proyectos/{proyecto}/matriz-came', [CorrecionController::class, 'store'])->name('matriz_came.store'); // Corregido: Usar CorrecionController
     Route::get('/proyectos/{proyecto}/autodiagnostico-cadena-de-valor', [ProyectoController::class, 'showAutodiagnosticoCadenaDeValor'])->name('proyectos.showAutodiagnosticoCadenaDeValor');
 
     // Rutas para CadenaDeValorController

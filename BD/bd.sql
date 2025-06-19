@@ -455,6 +455,32 @@ CREATE TABLE IF NOT EXISTS `estrategia_reorientacion` (
   CONSTRAINT `fk_estrategia_reorientacion_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE IF NOT EXISTS `correciones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `proyecto_id` int(11) NOT NULL,
+  `CDebilidades1` varchar(255) DEFAULT NULL,
+  `CDebilidades2` varchar(255) DEFAULT NULL,
+  `CDebilidades3` varchar(255) DEFAULT NULL,
+  `CDebilidades4` varchar(255) DEFAULT NULL,
+  `CAmenazas1` varchar(255) DEFAULT NULL,
+  `CAmenazas2` varchar(255) DEFAULT NULL,
+  `CAmenazas3` varchar(255) DEFAULT NULL,
+  `CAmenazas4` varchar(255) DEFAULT NULL,
+  `CFortalezas1` varchar(255) DEFAULT NULL,
+  `CFortalezas2` varchar(255) DEFAULT NULL,
+  `CFortalezas3` varchar(255) DEFAULT NULL,
+  `CFortalezas4` varchar(255) DEFAULT NULL,
+  `COportunidades1` varchar(255) DEFAULT NULL,
+  `COportunidades2` varchar(255) DEFAULT NULL,
+  `COportunidades3` varchar(255) DEFAULT NULL,
+  `COportunidades4` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_correciones_proyecto_idx` (`proyecto_id`),
+  CONSTRAINT `fk_correciones_proyecto` FOREIGN KEY (`proyecto_id`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -1,49 +1,60 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('.estrategia-container input[type="number"]');
+    const selects = document.querySelectorAll('.estrategia-container select');
     const proyecto_id = document.getElementById('proyecto_id').value;
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     function calcularTotales(matrizContainer) {
+        const totalsHorizontales = matrizContainer.querySelectorAll('.total-horizontal');
         const totalsVerticales = matrizContainer.querySelectorAll('.total-vertical');
-        const inputs = matrizContainer.querySelectorAll('input[type="number"]');
+        const selects = matrizContainer.querySelectorAll('tbody select');
         let sumatoriaTotal = 0;
 
+        // Calcular totales horizontales
+        for (let i = 0; i < 4; i++) {
+            let sumaHorizontal = 0;
+            for (let j = 0; j < 4; j++) {
+                const select = selects[i * 4 + j];
+                if (select) {
+                    sumaHorizontal += parseInt(select.value, 10) || 0;
+                }
+            }
+            if (totalsHorizontales[i]) {
+                totalsHorizontales[i].textContent = sumaHorizontal;
+            }
+        }
+
+        // Calcular totales verticales
         for (let j = 0; j < 4; j++) {
             let sumaVertical = 0;
             for (let i = 0; i < 4; i++) {
-                const input = inputs[i * 4 + j];
-                sumaVertical += parseInt(input.value, 10) || 0;
+                const select = selects[i * 4 + j];
+                if (select) {
+                    sumaVertical += parseInt(select.value, 10) || 0;
+                }
             }
-            totalsVerticales[j].textContent = sumaVertical;
-            sumatoriaTotal += sumaVertical;
+            if (totalsVerticales[j]) {
+                totalsVerticales[j].textContent = sumaVertical;
+            }
         }
         
+        sumatoriaTotal = Array.from(selects).reduce((acc, select) => acc + (parseInt(select.value, 10) || 0), 0);
+
         const totalMatriz = matrizContainer.querySelector('[id^="total-"]');
-        totalMatriz.textContent = sumatoriaTotal;
+        if (totalMatriz) {
+            totalMatriz.textContent = sumatoriaTotal;
+        }
 
         // Actualizar tabla de síntesis
-        const matrizId = matrizContainer.id.split('-')[1]; // ofensiva, defensiva, etc.
-        let filaSintesis;
-        if (matrizId === 'ofensiva') filaSintesis = document.querySelector('.sintesis-resultados tbody tr:nth-child(1)');
-        if (matrizId === 'defensiva') filaSintesis = document.querySelector('.sintesis-resultados tbody tr:nth-child(2)');
-        if (matrizId === 'supervivencia') filaSintesis = document.querySelector('.sintesis-resultados tbody tr:nth-child(3)');
-        if (matrizId === 'reorientacion') filaSintesis = document.querySelector('.sintesis-resultados tbody tr:nth-child(4)');
-        
-        if(filaSintesis) {
-            filaSintesis.querySelector('td:nth-child(3)').textContent = sumatoriaTotal;
+        const matrizId = matrizContainer.id.replace('matriz-', '');
+        const sintesisCell = document.getElementById(`sintesis-${matrizId}`);
+        if (sintesisCell) {
+            sintesisCell.textContent = sumatoriaTotal;
         }
     }
 
-    inputs.forEach(input => {
-        input.addEventListener('input', function() {
-            let value = parseInt(this.value, 10);
-
-            if (isNaN(value) || value < 0) {
-                this.value = 0;
-            } else if (value > 4) {
-                this.value = 4;
-            }
-            value = parseInt(this.value, 10);
+    selects.forEach(select => {
+        select.addEventListener('change', function() {
+            let value = parseInt(this.value, 10) || 0;
 
             const matriz = this.dataset.matriz;
             const celda = this.dataset.celda;
