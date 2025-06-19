@@ -12,6 +12,7 @@ use App\Models\EstrategiaDefensiva;
 use App\Models\EstrategiaSupervivencia;
 use App\Models\EstrategiaReorientacion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log; // Importar Log
 
 class EstrategiaController extends Controller
 {
@@ -45,7 +46,7 @@ class EstrategiaController extends Controller
         ));
     }
 
-    public function storeOrUpdate(Request $request)
+    public function guardar(Request $request)
     {
         $validated = $request->validate([
             'proyecto_id' => 'required|integer|exists:proyectos,id',
@@ -80,22 +81,35 @@ class EstrategiaController extends Controller
             return response()->json(['success' => false, 'message' => 'Matriz no válida'], 400);
         }
 
-        $matriz = $modelClass::firstOrNew(['proyecto_id' => $validated['proyecto_id']]);
-        $matriz->{$validated['celda']} = $validated['valor'];
-        
-        // Recalcular sumatoria
-        $sumatoria = 0;
-        $cellColumns = array_filter($matriz->getFillable(), function($column) {
-            return preg_match('/^(O|A)\d(F|D)\d$/', $column);
-        });
+        try {
+            $matriz = $modelClass::firstOrNew(['proyecto_id' => $validated['proyecto_id']]);
+            
+            // Validar que la celda existe en el modelo
+            if (!in_array($validated['celda'], $matriz->getFillable())) {
+                 return response()->json(['success' => false, 'message' => 'Celda no válida'], 400);
+            }
 
-        foreach ($cellColumns as $column) {
-            $sumatoria += $matriz->{$column} ?? 0;
+            $matriz->{$validated['celda']} = $validated['valor'];
+            
+            // Recalcular sumatoria
+            $sumatoria = 0;
+            // Obtener solo las columnas que representan celdas de la matriz (ej. O1F1, A2D3)
+            $cellColumns = array_filter($matriz->getFillable(), function($column) {
+                return preg_match('/^[OADF][1-4][OADF][1-4]$/', $column);
+            });
+
+            foreach ($cellColumns as $column) {
+                $sumatoria += $matriz->{$column} ?? 0;
+            }
+            $matriz->sumatoria = $sumatoria;
+            
+            $matriz->save();
+
+            return response()->json(['success' => true, 'message' => 'Guardado con éxito', 'sumatoria' => $matriz->sumatoria]);
+
+        } catch (\Exception $e) {
+            Log::error('Error al guardar matriz: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Error interno del servidor.'], 500);
         }
-        $matriz->sumatoria = $sumatoria;
-        
-        $matriz->save();
-
-        return response()->json(['success' => true, 'sumatoria' => $matriz->sumatoria]);
     }
 }
